@@ -16,7 +16,7 @@ const IntPhases = () => {
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
                 <div>
                     <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight uppercase tracking-tight">Interior <span className="text-orange-600">Phases</span></h1>
-                    <p className="text-gray-500 dark:text-orange-300 mt-2 font-medium tracking-wide">Customizable design journey from shell to handover.</p>
+                    <p className="text-gray-800 dark:text-orange-300 mt-2 font-medium tracking-wide">Customizable design journey from shell to handover.</p>
                 </div>
                 <button className="flex items-center gap-3 px-8 py-4 bg-orange-600 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-brand hover:scale-105 transition-all">
                     Configure Template
@@ -30,13 +30,13 @@ const IntPhases = () => {
                             <div className="w-14 h-14 rounded-2xl bg-orange-50 dark:bg-brand-800 flex items-center justify-center text-3xl group-hover:bg-orange-600 group-hover:text-white transition-all duration-500 shadow-inner">
                                 {phase.status === 'Completed' ? <FiCheckCircle /> : <FiClock className={phase.status === 'In Progress' ? 'animate-pulse text-orange-500' : 'opacity-30'} />}
                             </div>
-                            <span className={`text-[10px] font-black uppercase tracking-widest ${phase.status === 'In Progress' ? 'text-orange-600' : 'text-gray-400'}`}>{phase.status}</span>
+                            <span className={`text-[10px] font-black uppercase tracking-widest ${phase.status === 'In Progress' ? 'text-orange-600' : 'text-gray-900'}`}>{phase.status}</span>
                         </div>
                         <h3 className="text-xl font-black text-indigo-900 dark:text-white uppercase tracking-tight mb-2">{phase.name}</h3>
-                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6">In Charge: {phase.designer}</p>
+                        <p className="text-[10px] font-black text-gray-900 uppercase tracking-widest mb-6">In Charge: {phase.designer}</p>
 
                         <div className="space-y-3">
-                            <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-gray-500">
+                            <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-gray-800">
                                 <span>Progress</span>
                                 <span>{phase.progress}%</span>
                             </div>

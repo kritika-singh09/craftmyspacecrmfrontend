@@ -47,7 +47,7 @@ const SuperAdminGlobalUsers = () => {
             <div className="flex justify-between items-end">
                 <div>
                     <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Identity Nexus</h1>
-                    <p className="text-sm font-bold text-gray-700 mt-1">Cross-tenant User Authentication & Authorization</p>
+                    <p className="text-sm font-bold text-gray-900 mt-1">Cross-tenant User Authentication & Authorization</p>
                 </div>
                 <div className="flex gap-4">
                     <div className="relative group">
@@ -105,7 +105,7 @@ const SuperAdminGlobalUsers = () => {
                                     </td>
                                     <td className="px-8 py-6">
                                         <p className="text-sm font-bold text-gray-900">{user.tenant}</p>
-                                        <p className="text-[10px] font-black text-gray-600 uppercase tracking-tight mt-0.5 italic">Affiliated Entity</p>
+                                        <p className="text-[10px] font-black text-gray-800 uppercase tracking-tight mt-0.5 italic">Affiliated Entity</p>
                                     </td>
                                     <td className="px-8 py-6">
                                         <span className={`px-3 py-1 text-[10px] font-black uppercase tracking-widest border rounded-xl ${user.status === 'Active' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-red-50 text-red-700 border-red-200'
@@ -150,11 +150,11 @@ const SuperAdminGlobalUsers = () => {
                         <div className="p-8 border-b border-brand-50 bg-brand-50/30 flex justify-between items-center">
                             <div>
                                 <h2 className="text-xl font-black text-gray-900">Provision Identity</h2>
-                                <p className="text-xs font-black text-gray-600 uppercase tracking-widest mt-1">Global User Authentication Portal</p>
+                                <p className="text-xs font-black text-gray-800 uppercase tracking-widest mt-1">Global User Authentication Portal</p>
                             </div>
                             <button
                                 onClick={() => setIsModalOpen(false)}
-                                className="w-10 h-10 rounded-full hover:bg-white flex items-center justify-center text-gray-400 hover:text-gray-900 transition-colors"
+                                className="w-10 h-10 rounded-full hover:bg-white flex items-center justify-center text-gray-900 hover:text-gray-900 transition-colors"
                             >
                                 ✕
                             </button>

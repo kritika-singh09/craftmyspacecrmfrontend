@@ -64,7 +64,7 @@ const IntUsers = () => {
                                 <tr key={i} className="group hover:bg-orange-50/20 dark:hover:bg-orange-900/10 transition-colors">
                                     <td className="px-10 py-8">
                                         <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 rounded-2xl bg-orange-100 dark:bg-brand-800 flex items-center justify-center text-xl shadow-inner group-hover:scale-110 transition-transform">👤</div>
+                                            <div className="w-12 h-12 rounded-2xl bg-orange-100 dark:bg-brand-800 flex items-center justify-center text-xl shadow-inner group-hover:scale-110 transition-transform"><FiUser /></div>
                                             <div>
                                                 <p className="text-sm font-black text-black dark:text-white uppercase tracking-tight">{user.name}</p>
                                                 <p className="text-[10px] font-bold text-gray-950 group-hover:text-orange-500 transition-colors">{user.email}</p>
@@ -98,7 +98,7 @@ const IntUsers = () => {
                     <FiUserCheck className="text-4xl text-orange-400" />
                     <div>
                         <h4 className="text-lg font-black text-indigo-900 dark:text-white uppercase tracking-tight">Resource Optimization</h4>
-                        <p className="text-xs font-medium text-gray-500 dark:text-brand-300">Currently 82% of design staff is at peak capacity. Consider delay in new mood board assignments.</p>
+                        <p className="text-xs font-medium text-gray-800 dark:text-brand-300">Currently 82% of design staff is at peak capacity. Consider delay in new mood board assignments.</p>
                     </div>
                 </div>
                 <button className="px-8 py-4 bg-indigo-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-orange-600 transition-all">View Analytics</button>

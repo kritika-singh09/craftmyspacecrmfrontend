@@ -10,7 +10,7 @@ const Contractors = () => {
       <div className="flex justify-between items-end">
         <div>
           <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">Contractors</h2>
-          <p className="text-sm font-medium text-gray-500 dark:text-brand-300 mt-1">Manage external partners for {currentTenant.name}</p>
+          <p className="text-sm font-medium text-gray-800 dark:text-brand-300 mt-1">Manage external partners for {currentTenant.name}</p>
         </div>
         <button className="group flex items-center gap-2 bg-brand-600 text-white px-6 py-3 rounded-2xl font-bold text-sm shadow-premium hover:bg-brand-700 transition-all hover:-translate-y-0.5">
           <span className="text-xl leading-none group-hover:rotate-90 transition-transform">+</span>
@@ -42,7 +42,7 @@ const Contractors = () => {
                 <td className="px-8 py-6 whitespace-nowrap">
                   <div className="flex flex-wrap gap-1.5">
                     {contractor.projects.map(p => (
-                      <span key={p} className="text-[11px] font-bold text-gray-500 dark:text-brand-400 bg-gray-100 dark:bg-brand-900/50 px-2 py-0.5 rounded-lg border border-gray-200 dark:border-brand-800">{p}</span>
+                      <span key={p} className="text-[11px] font-bold text-gray-800 dark:text-brand-400 bg-gray-100 dark:bg-brand-900/50 px-2 py-0.5 rounded-lg border border-gray-200 dark:border-brand-800">{p}</span>
                     ))}
                   </div>
                 </td>

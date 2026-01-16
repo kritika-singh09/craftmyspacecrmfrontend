@@ -11,7 +11,7 @@ const Finance = () => {
       <div className="flex justify-between items-end">
         <div>
           <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">Finance</h2>
-          <p className="text-sm font-medium text-gray-500 dark:text-brand-300 mt-1">Capital and Expense Tracking</p>
+          <p className="text-sm font-medium text-gray-800 dark:text-brand-300 mt-1">Capital and Expense Tracking</p>
         </div>
         <button className="group flex items-center gap-2 bg-brand-600 text-white px-6 py-3 rounded-2xl font-bold text-sm shadow-premium hover:bg-brand-700 transition-all hover:-translate-y-0.5">
           <span className="text-xl leading-none group-hover:rotate-90 transition-transform">+</span>
@@ -47,7 +47,7 @@ const Finance = () => {
             <div className="flex justify-between items-start mb-4">
               <div>
                 <h4 className="font-black text-gray-900 dark:text-white leading-tight">Shopping Mall</h4>
-                <p className="text-[11px] font-bold text-gray-400 dark:text-brand-400 uppercase tracking-widest mt-1">Budget: ₹5 Cr • Spent: ₹3.2 Cr</p>
+                <p className="text-[11px] font-bold text-gray-900 dark:text-brand-400 uppercase tracking-widest mt-1">Budget: ₹5 Cr • Spent: ₹3.2 Cr</p>
               </div>
               <div className="text-right">
                 <span className="text-sm font-black text-green-600 dark:text-green-400">64% USED</span>
@@ -61,7 +61,7 @@ const Finance = () => {
             <div className="flex justify-between items-start mb-4">
               <div>
                 <h4 className="font-black text-gray-900 dark:text-white leading-tight">Residential Tower</h4>
-                <p className="text-[11px] font-bold text-gray-400 dark:text-brand-400 uppercase tracking-widest mt-1">Budget: ₹3 Cr • Spent: ₹1.2 Cr</p>
+                <p className="text-[11px] font-bold text-gray-900 dark:text-brand-400 uppercase tracking-widest mt-1">Budget: ₹3 Cr • Spent: ₹1.2 Cr</p>
               </div>
               <div className="text-right">
                 <span className="text-sm font-black text-brand-600 dark:text-brand-400">40% USED</span>
@@ -93,10 +93,10 @@ const Finance = () => {
             </thead>
             <tbody className="divide-y divide-brand-50">
               <tr className="group hover:bg-brand-50/30 dark:hover:bg-brand-900/30 transition-colors">
-                <td className="px-8 py-6 text-sm font-bold text-gray-600 dark:text-brand-400">2024-01-15</td>
+                <td className="px-8 py-6 text-sm font-bold text-gray-800 dark:text-brand-400">2024-01-15</td>
                 <td className="px-8 py-6">
                   <p className="font-bold text-gray-900 dark:text-white group-hover:text-brand-600 transition-colors">Material Purchase - Cement</p>
-                  <p className="text-[10px] font-bold text-gray-400 dark:text-brand-400 uppercase tracking-tight">Mall Project Supply</p>
+                  <p className="text-[10px] font-bold text-gray-900 dark:text-brand-400 uppercase tracking-tight">Mall Project Supply</p>
                 </td>
                 <td className="px-8 py-6">
                   <span className="px-3 py-1 text-[10px] font-black uppercase tracking-widest bg-red-50 text-red-700 border border-red-200 rounded-xl">Expense</span>
@@ -107,10 +107,10 @@ const Finance = () => {
                 </td>
               </tr>
               <tr className="group hover:bg-brand-50/30 dark:hover:bg-brand-900/30 transition-colors">
-                <td className="px-8 py-6 text-sm font-bold text-gray-600 dark:text-brand-400">2024-01-14</td>
+                <td className="px-8 py-6 text-sm font-bold text-gray-800 dark:text-brand-400">2024-01-14</td>
                 <td className="px-8 py-6">
                   <p className="font-bold text-gray-900 dark:text-white group-hover:text-brand-600 transition-colors">Client Payment - Mall Project</p>
-                  <p className="text-[10px] font-bold text-gray-400 dark:text-brand-400 uppercase tracking-tight">Phase 1 Milestone reached</p>
+                  <p className="text-[10px] font-bold text-gray-900 dark:text-brand-400 uppercase tracking-tight">Phase 1 Milestone reached</p>
                 </td>
                 <td className="px-8 py-6">
                   <span className="px-3 py-1 text-[10px] font-black uppercase tracking-widest bg-green-50 text-green-700 border border-green-200 rounded-xl">Income</span>
@@ -121,10 +121,10 @@ const Finance = () => {
                 </td>
               </tr>
               <tr className="group hover:bg-brand-50/30 dark:hover:bg-brand-900/30 transition-colors">
-                <td className="px-8 py-6 text-sm font-bold text-gray-600 dark:text-brand-400">2024-01-13</td>
+                <td className="px-8 py-6 text-sm font-bold text-gray-800 dark:text-brand-400">2024-01-13</td>
                 <td className="px-8 py-6">
                   <p className="font-bold text-gray-900 dark:text-white group-hover:text-brand-600 transition-colors">Contractor Payment - Foundation</p>
-                  <p className="text-[10px] font-bold text-gray-400 dark:text-brand-400 uppercase tracking-tight">Rajesh Builders Outstanding</p>
+                  <p className="text-[10px] font-bold text-gray-900 dark:text-brand-400 uppercase tracking-tight">Rajesh Builders Outstanding</p>
                 </td>
                 <td className="px-8 py-6">
                   <span className="px-3 py-1 text-[10px] font-black uppercase tracking-widest bg-red-50 text-red-700 border border-red-200 rounded-xl">Expense</span>

@@ -7,7 +7,7 @@ const IntReports = () => {
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
                 <div>
                     <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight uppercase tracking-tight">Design <span className="text-orange-600">Analytics</span></h1>
-                    <p className="text-gray-500 dark:text-orange-300 mt-2 font-medium tracking-wide">Analyze budget vs actuals, material delivery trends, and client approval efficiency.</p>
+                    <p className="text-gray-800 dark:text-orange-300 mt-2 font-medium tracking-wide">Analyze budget vs actuals, material delivery trends, and client approval efficiency.</p>
                 </div>
                 <button className="flex items-center gap-3 px-8 py-4 bg-orange-600 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-brand hover:scale-105 transition-all">
                     <FiDownload className="text-lg" /> Export Financials
@@ -28,7 +28,7 @@ const IntReports = () => {
                                 <h3 className="text-2xl font-black uppercase tracking-tight">{report.title}</h3>
                                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-500 bg-emerald-50 px-3 py-1.5 rounded-xl">{report.stats}</span>
                             </div>
-                            <p className="text-sm font-medium text-gray-500 dark:text-orange-300 leading-relaxed mb-6">{report.desc}</p>
+                            <p className="text-sm font-medium text-gray-800 dark:text-orange-300 leading-relaxed mb-6">{report.desc}</p>
                             <button className="text-[10px] font-black text-orange-600 uppercase tracking-widest hover:underline">Download Detailed CSV</button>
                         </div>
                     </div>

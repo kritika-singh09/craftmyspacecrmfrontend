@@ -15,7 +15,7 @@ const IntDocuments = () => {
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
                 <div>
                     <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight uppercase tracking-tight">Asset <span className="text-orange-600">Vault</span></h1>
-                    <p className="text-gray-500 dark:text-orange-300 mt-2 font-medium tracking-wide">Secure repository for legal agreements, site media, and technical handovers.</p>
+                    <p className="text-gray-800 dark:text-orange-300 mt-2 font-medium tracking-wide">Secure repository for legal agreements, site media, and technical handovers.</p>
                 </div>
                 <button className="flex items-center gap-3 px-8 py-4 bg-orange-600 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-brand hover:scale-105 transition-all">
                     <FiUpload className="text-lg" /> Upload Document
@@ -28,7 +28,7 @@ const IntDocuments = () => {
                         <div className="flex justify-between items-start mb-8">
                             <div className="w-16 h-16 rounded-[1.5rem] bg-orange-50 dark:bg-brand-800 flex items-center justify-center text-3xl text-orange-600 shadow-inner group-hover:scale-110 transition-transform"><FiFolder /></div>
                             <div className="text-right">
-                                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{folder.files} Items</p>
+                                <p className="text-[10px] font-black text-gray-900 uppercase tracking-widest">{folder.files} Items</p>
                                 <p className="text-[9px] font-bold text-orange-500 italic uppercase">{folder.size}</p>
                             </div>
                         </div>

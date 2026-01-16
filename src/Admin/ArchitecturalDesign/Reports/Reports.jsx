@@ -7,10 +7,10 @@ const ArchReports = () => {
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
                 <div>
                     <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight uppercase tracking-tight">Reports & <span className="text-brand-600">Analytics</span></h1>
-                    <p className="text-gray-500 dark:text-brand-300 mt-2 font-medium tracking-wide">Generate performance insights, financial audits, and project telemetry.</p>
+                    <p className="text-gray-800 dark:text-brand-300 mt-2 font-medium tracking-wide">Generate performance insights, financial audits, and project telemetry.</p>
                 </div>
                 <div className="flex gap-4">
-                    <button className="flex items-center gap-3 px-6 py-4 bg-white dark:bg-brand-900/40 border border-brand-100 dark:border-brand-800 rounded-2xl font-black text-xs uppercase tracking-widest text-gray-600 dark:text-brand-200 shadow-premium">
+                    <button className="flex items-center gap-3 px-6 py-4 bg-white dark:bg-brand-900/40 border border-brand-100 dark:border-brand-800 rounded-2xl font-black text-xs uppercase tracking-widest text-gray-800 dark:text-brand-200 shadow-premium">
                         <FiCalendar /> Last 30 Days
                     </button>
                     <button className="flex items-center gap-3 px-8 py-4 bg-brand-600 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-brand hover:scale-105 transition-all">
@@ -36,7 +36,7 @@ const ArchReports = () => {
                             </div>
                             <div>
                                 <h3 className="text-2xl font-black uppercase tracking-tight">{report.title}</h3>
-                                <p className="text-sm font-medium text-gray-500 dark:text-brand-300 mt-2 leading-relaxed">{report.desc}</p>
+                                <p className="text-sm font-medium text-gray-800 dark:text-brand-300 mt-2 leading-relaxed">{report.desc}</p>
                             </div>
                             <button className="flex items-center gap-2 text-brand-600 font-black text-[10px] uppercase tracking-widest hover:gap-4 transition-all">Generate Analysis →</button>
                         </div>

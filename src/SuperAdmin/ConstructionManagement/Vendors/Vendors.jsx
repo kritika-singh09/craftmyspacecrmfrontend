@@ -17,7 +17,7 @@ const SuperAdminVendors = () => {
             <div className="flex justify-between items-end">
                 <div>
                     <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Supply Chain Nexus</h1>
-                    <p className="text-sm font-bold text-gray-700 mt-1">Global Procurement Oversight & Vendor Performance</p>
+                    <p className="text-sm font-bold text-gray-900 mt-1">Global Procurement Oversight & Vendor Performance</p>
                 </div>
                 <div className="flex gap-4">
                     <div className="relative group">
@@ -48,7 +48,7 @@ const SuperAdminVendors = () => {
                             {stat.icon}
                         </div>
                         <div>
-                            <p className="text-[10px] font-black text-gray-600 uppercase tracking-widest">{stat.label}</p>
+                            <p className="text-[10px] font-black text-gray-800 uppercase tracking-widest">{stat.label}</p>
                             <h3 className="text-2xl font-black text-gray-900 mt-1">{stat.value}</h3>
                             <p className="text-[11px] font-bold text-brand-600 mt-1">{stat.trend}</p>
                         </div>
@@ -85,12 +85,12 @@ const SuperAdminVendors = () => {
                                             </div>
                                             <div>
                                                 <p className="font-bold text-gray-900 group-hover:text-brand-600 transition-colors">{vendor.name}</p>
-                                                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-tighter">Verified Global Partner</p>
+                                                <p className="text-[10px] font-bold text-gray-800 uppercase tracking-tighter">Verified Global Partner</p>
                                             </div>
                                         </div>
                                     </td>
                                     <td className="px-8 py-6">
-                                        <span className="px-3 py-1 text-[10px] font-black uppercase tracking-widest bg-gray-50 text-gray-700 border border-gray-100 rounded-xl">
+                                        <span className="px-3 py-1 text-[10px] font-black uppercase tracking-widest bg-gray-50 text-gray-900 border border-gray-100 rounded-xl">
                                             {vendor.material}
                                         </span>
                                     </td>

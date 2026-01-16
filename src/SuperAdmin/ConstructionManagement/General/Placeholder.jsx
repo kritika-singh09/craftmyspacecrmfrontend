@@ -7,7 +7,7 @@ const Placeholder = ({ title }) => {
                 <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-sm border-2 border-brand-600">
-                <p className="text-gray-600">This module is currently under development.</p>
+                <p className="text-gray-800">This module is currently under development.</p>
             </div>
         </div>
     );

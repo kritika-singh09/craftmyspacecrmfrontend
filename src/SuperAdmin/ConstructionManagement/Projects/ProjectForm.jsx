@@ -93,7 +93,7 @@ const ProjectForm = ({ initialData, companies, onSubmit, onCancel }) => {
                         onClick={() => setActiveTab(tab.id)}
                         className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all duration-300 ${activeTab === tab.id
                             ? 'bg-white text-brand-600 shadow-premium scale-[1.02]'
-                            : 'text-gray-400 hover:text-brand-500 hover:bg-white/50'
+                            : 'text-gray-900 hover:text-brand-500 hover:bg-white/50'
                             }`}
                     >
                         <span className="text-base">{tab.icon}</span>
@@ -195,7 +195,7 @@ const ProjectForm = ({ initialData, companies, onSubmit, onCancel }) => {
                                     </option>
                                 )) : <option value="dummy">Demo User (Super Admin)</option>}
                             </select>
-                            <p className="text-[9px] font-bold text-gray-400 pl-2">Select the person in charge of this project.</p>
+                            <p className="text-[9px] font-bold text-gray-900 pl-2">Select the person in charge of this project.</p>
                         </div>
                     </div>
                 )}

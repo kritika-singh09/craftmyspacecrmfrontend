@@ -1,6 +1,6 @@
 import { AuthProvider } from './hooks/useAuth.jsx';
 import { TenantProvider } from './hooks/useTenant.jsx';
-import { ThemeProvider } from './hooks/useTheme.jsx';
+import { ThemeProvider } from './context/ThemeContext.jsx';
 import { SubscriptionProvider } from './hooks/useSubscription.jsx';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth.jsx';

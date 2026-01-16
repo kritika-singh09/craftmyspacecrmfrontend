@@ -13,7 +13,7 @@ const IntDesign3D = () => {
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
                 <div>
                     <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight uppercase tracking-tight">Drawings <span className="text-orange-600">& 3D Views</span></h1>
-                    <p className="text-gray-500 dark:text-orange-300 mt-2 font-medium tracking-wide">High-fidelity visualization repository and technical furniture layouts.</p>
+                    <p className="text-gray-800 dark:text-orange-300 mt-2 font-medium tracking-wide">High-fidelity visualization repository and technical furniture layouts.</p>
                 </div>
                 <div className="flex gap-4">
                     <button className="flex items-center gap-3 px-8 py-4 bg-white dark:bg-brand-900/40 border border-orange-100 dark:border-brand-800 rounded-2xl font-black text-xs uppercase tracking-widest text-orange-600 shadow-premium">
@@ -28,7 +28,7 @@ const IntDesign3D = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {renders.map((render, i) => (
                     <div key={i} className="group bg-white dark:bg-brand-900/40 rounded-[3.5rem] shadow-premium border border-orange-50/50 dark:border-brand-800/50 overflow-hidden hover:border-orange-500 transition-all duration-500">
-                        <div className="aspect-video bg-orange-100 dark:bg-brand-800 flex flex-col items-center justify-center text-gray-400 relative overflow-hidden">
+                        <div className="aspect-video bg-orange-100 dark:bg-brand-800 flex flex-col items-center justify-center text-gray-900 relative overflow-hidden">
                             <FiImage className="text-5xl opacity-20" />
                             <p className="text-[10px] font-black uppercase tracking-widest mt-2">{render.type}</p>
                             <div className="absolute inset-0 bg-orange-600/0 group-hover:bg-orange-600/80 transition-all flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100">

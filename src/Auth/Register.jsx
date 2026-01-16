@@ -65,7 +65,7 @@ const Register = () => {
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Full Name</label>
+            <label className="block text-sm font-medium text-gray-900">Full Name</label>
             <input
               type="text"
               name="name"
@@ -77,7 +77,7 @@ const Register = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <label className="block text-sm font-medium text-gray-900">Email</label>
             <input
               type="email"
               name="email"
@@ -89,7 +89,7 @@ const Register = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <label className="block text-sm font-medium text-gray-900">Password</label>
             <input
               type="password"
               name="password"
@@ -101,7 +101,7 @@ const Register = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Role</label>
+            <label className="block text-sm font-medium text-gray-900">Role</label>
             <select
               name="role"
               value={formData.role}
@@ -117,9 +117,9 @@ const Register = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Company</label>
+            <label className="block text-sm font-medium text-gray-900">Company</label>
             {loading ? (
-              <div className="mt-1 block w-full px-3 py-2 border-2 border-brand-600 rounded-md bg-gray-50 text-gray-500">
+              <div className="mt-1 block w-full px-3 py-2 border-2 border-brand-600 rounded-md bg-gray-50 text-gray-800">
                 Loading companies...
               </div>
             ) : companies.length === 0 ? (

@@ -27,9 +27,11 @@ import {
   FiLock
 } from 'react-icons/fi';
 import { useSubscription } from '../../hooks/useSubscription';
+import { useTheme } from '../../context/ThemeContext.jsx';
 
 const Sidebar = ({ isOpen, onNavigate }) => {
   const { subscription, isModuleLocked } = useSubscription();
+  const { theme } = useTheme();
   const [activeMenu, setActiveMenu] = useState('dashboard');
   const [expandedSections, setExpandedSections] = useState({
     'Construction Management': true,
@@ -110,24 +112,27 @@ const Sidebar = ({ isOpen, onNavigate }) => {
   };
 
   return (
-    <aside className={`fixed left-0 top-16 h-full w-64 bg-slate-900 shadow-premium transform transition-transform duration-300 z-40 border-r border-white/5 ${isOpen ? 'translate-x-0' : '-translate-x-full'
-      } lg:translate-x-0`}>
+    <aside
+      className={`fixed left-0 top-16 h-full w-64 shadow-premium transform transition-transform duration-300 z-40 border-r border-white/5 ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}
+      style={{ background: theme.gradients.sidebar }}
+    >
       <nav className="p-4 h-full overflow-y-auto no-scrollbar pb-24">
         <ul className="space-y-4">
           <li>
             <button
               onClick={() => handleMenuClick('universal-dashboard')}
+              style={activeMenu === 'universal-dashboard' ? { background: theme.gradients.button } : {}}
               className={`w-full flex items-center px-4 py-3 text-left rounded-xl transition-all ${activeMenu === 'universal-dashboard'
-                ? 'bg-brand-600 text-white shadow-brand-sm font-semibold'
-                : 'text-slate-300 hover:bg-white/5 hover:text-white font-medium border border-white/5'
+                ? 'text-white shadow-brand-sm font-semibold'
+                : 'text-white/80 hover:bg-white/5 hover:text-white font-medium border border-white/5'
                 }`}
             >
               <span className={`mr-3 text-lg transition-colors ${activeMenu === 'universal-dashboard' ? 'text-white' : 'text-slate-400 group-hover:text-blue-200'}`}>
                 <FiGrid />
               </span>
               <div className="flex flex-col">
-                <span className="text-sm tracking-tight">Global Overview</span>
-                <span className="text-[8px] font-black uppercase tracking-[0.1em] opacity-60">Universal Dashboard</span>
+                <span className="text-sm tracking-tight" style={{ color: activeMenu === 'universal-dashboard' ? theme.textOnPrimary : 'rgba(255,255,255,0.8)' }}>Global Overview</span>
+                <span className="text-[8px] font-black uppercase tracking-[0.1em] opacity-60" style={{ color: activeMenu === 'universal-dashboard' ? theme.textOnPrimary : 'rgba(255,255,255,0.6)' }}>Universal Dashboard</span>
               </div>
             </button>
           </li>
@@ -135,17 +140,18 @@ const Sidebar = ({ isOpen, onNavigate }) => {
           <li>
             <button
               onClick={() => handleMenuClick('subscription')}
+              style={activeMenu === 'subscription' ? { background: theme.gradients.button } : {}}
               className={`w-full flex items-center px-4 py-3 text-left rounded-xl transition-all ${activeMenu === 'subscription'
-                ? 'bg-brand-600 text-white shadow-brand-sm font-semibold'
-                : 'text-slate-300 hover:bg-white/5 hover:text-white font-medium border border-white/5'
+                ? 'text-white shadow-brand-sm font-semibold'
+                : 'text-white/80 hover:bg-white/5 hover:text-white font-medium border border-white/5'
                 }`}
             >
               <span className={`mr-3 text-lg transition-colors ${activeMenu === 'subscription' ? 'text-white' : 'text-slate-400 group-hover:text-blue-200'}`}>
                 <FiCreditCard />
               </span>
               <div className="flex flex-col">
-                <span className="text-sm tracking-tight">Subscription</span>
-                <span className="text-[8px] font-black uppercase tracking-[0.1em] opacity-60">Plans & Billing</span>
+                <span className="text-sm tracking-tight" style={{ color: activeMenu === 'subscription' ? theme.textOnPrimary : 'rgba(255,255,255,0.8)' }}>Subscription</span>
+                <span className="text-[8px] font-black uppercase tracking-[0.1em] opacity-60" style={{ color: activeMenu === 'subscription' ? theme.textOnPrimary : 'rgba(255,255,255,0.6)' }}>Plans & Billing</span>
               </div>
             </button>
           </li>
@@ -158,8 +164,8 @@ const Sidebar = ({ isOpen, onNavigate }) => {
                 disabled={isModuleLocked(category.title.split(' ')[0])}
                 onClick={() => toggleSection(category.title)}
                 className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl transition-all group border ${isModuleLocked(category.title.split(' ')[0])
-                    ? 'bg-slate-800/50 opacity-40 cursor-not-allowed border-transparent'
-                    : 'bg-white/5 hover:bg-white/10 border-white/5'
+                  ? 'bg-slate-800/50 opacity-40 cursor-not-allowed border-transparent'
+                  : 'bg-white/5 hover:bg-white/10 border-white/5'
                   }`}
               >
                 <div className="flex items-center gap-2">
@@ -179,15 +185,16 @@ const Sidebar = ({ isOpen, onNavigate }) => {
                     <li key={item.id}>
                       <button
                         onClick={() => handleMenuClick(item.id)}
+                        style={activeMenu === item.id ? { background: theme.gradients.button } : {}}
                         className={`w-full flex items-center px-4 py-2.5 text-left rounded-xl transition-all ${activeMenu === item.id
-                          ? 'bg-brand-600 text-white shadow-brand-sm font-semibold'
-                          : 'text-slate-300 hover:bg-white/5 hover:text-white font-medium'
+                          ? 'text-white shadow-brand-sm font-semibold'
+                          : 'text-white/80 hover:bg-white/5 hover:text-white font-medium'
                           }`}
                       >
                         <span className={`mr-3 text-lg transition-colors ${activeMenu === item.id ? 'text-white' : 'text-slate-400 group-hover:text-blue-200'}`}>
                           {item.icon}
                         </span>
-                        <span className="text-sm tracking-tight">{item.name}</span>
+                        <span className="text-sm tracking-tight" style={{ color: activeMenu === item.id ? theme.textOnPrimary : 'rgba(255,255,255,0.8)' }}>{item.name}</span>
                       </button>
                     </li>
                   ))}

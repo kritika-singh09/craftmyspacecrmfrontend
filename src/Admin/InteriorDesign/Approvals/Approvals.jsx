@@ -35,9 +35,9 @@ const IntApprovals = () => {
                             </div>
 
                             <h3 className="text-2xl font-black uppercase tracking-tight mb-2 leading-tight group-hover:text-orange-600 transition-colors uppercase">{item.name}</h3>
-                            <p className="text-[10px] font-bold text-gray-700 mt-1">Project: {item.client}</p>
+                            <p className="text-[10px] font-bold text-gray-900 mt-1">Project: {item.client}</p>
 
-                            <div className="mt-10 pt-8 border-t border-orange-50 dark:border-brand-800 flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-gray-600">
+                            <div className="mt-10 pt-8 border-t border-orange-50 dark:border-brand-800 flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-gray-800">
                                 <span className="flex items-center gap-2"><FiClock className="text-orange-600" /> {item.date}</span>
                                 <span>TYPE: {item.type}</span>
                             </div>

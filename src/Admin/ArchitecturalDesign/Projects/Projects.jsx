@@ -23,7 +23,7 @@ const ArchProjects = () => {
                         <span className="bg-brand-600 w-1.5 h-10 rounded-full"></span>
                         Architectural Projects
                     </h1>
-                    <p className="text-gray-500 dark:text-brand-300 mt-2 font-medium tracking-wide italic">
+                    <p className="text-gray-800 dark:text-brand-300 mt-2 font-medium tracking-wide italic">
                         Visualizing, designing, and managing spaces across all project types.
                     </p>
                 </div>
@@ -45,10 +45,10 @@ const ArchProjects = () => {
                     />
                 </div>
                 <div className="flex gap-4">
-                    <button className="flex items-center gap-2 px-6 py-4 bg-white dark:bg-brand-900/30 border border-brand-100 dark:border-brand-800 rounded-2xl font-black text-[10px] uppercase tracking-widest text-gray-600 dark:text-brand-200 shadow-premium hover:bg-gray-50 transition-all">
+                    <button className="flex items-center gap-2 px-6 py-4 bg-white dark:bg-brand-900/30 border border-brand-100 dark:border-brand-800 rounded-2xl font-black text-[10px] uppercase tracking-widest text-gray-800 dark:text-brand-200 shadow-premium hover:bg-gray-50 transition-all">
                         <FiFilter /> Project Types
                     </button>
-                    <button className="flex items-center gap-2 px-6 py-4 bg-white dark:bg-brand-900/30 border border-brand-100 dark:border-brand-800 rounded-2xl font-black text-[10px] uppercase tracking-widest text-gray-600 dark:text-brand-200 shadow-premium hover:bg-gray-50 transition-all">
+                    <button className="flex items-center gap-2 px-6 py-4 bg-white dark:bg-brand-900/30 border border-brand-100 dark:border-brand-800 rounded-2xl font-black text-[10px] uppercase tracking-widest text-gray-800 dark:text-brand-200 shadow-premium hover:bg-gray-50 transition-all">
                         Latest First
                     </button>
                 </div>
@@ -66,7 +66,7 @@ const ArchProjects = () => {
                                     <h3 className="text-2xl font-black tracking-tight mt-1 group-hover:text-brand-600 transition-colors uppercase tracking-wide">{prj.name}</h3>
                                     <div className="flex items-center gap-2 mt-2">
                                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                        <p className="text-xs font-bold text-gray-400 dark:text-brand-400">Client: <span className="text-gray-900 dark:text-brand-100 uppercase tracking-tight">{prj.client}</span></p>
+                                        <p className="text-xs font-bold text-gray-900 dark:text-brand-400">Client: <span className="text-gray-900 dark:text-brand-100 uppercase tracking-tight">{prj.client}</span></p>
                                     </div>
                                 </div>
                                 <span className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest border ${prj.status === 'Ongoing' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-amber-50 text-amber-600 border-amber-100'
@@ -77,18 +77,18 @@ const ArchProjects = () => {
 
                             <div className="grid grid-cols-2 gap-6">
                                 <div className="space-y-1">
-                                    <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Project Type</p>
+                                    <p className="text-[9px] font-black text-gray-900 uppercase tracking-widest">Project Type</p>
                                     <p className="text-sm font-bold opacity-80 uppercase tracking-tight">{prj.type}</p>
                                 </div>
                                 <div className="space-y-1">
-                                    <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Current Phase</p>
+                                    <p className="text-[9px] font-black text-gray-900 uppercase tracking-widest">Current Phase</p>
                                     <p className="text-sm font-bold text-brand-600 uppercase tracking-tight italic">{prj.phase}</p>
                                 </div>
                             </div>
 
                             <div className="space-y-3">
                                 <div className="flex justify-between items-end">
-                                    <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Progress</span>
+                                    <span className="text-[9px] font-black text-gray-900 uppercase tracking-widest">Progress</span>
                                     <span className="text-xs font-black text-brand-600">{prj.progress}%</span>
                                 </div>
                                 <div className="h-2 bg-brand-50 dark:bg-brand-800 rounded-full overflow-hidden p-0.5 shadow-inner">
@@ -97,7 +97,7 @@ const ArchProjects = () => {
                             </div>
 
                             <div className="pt-8 border-t border-brand-50/50 dark:border-brand-800/50 flex justify-between items-center">
-                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Started: {prj.start}</p>
+                                <p className="text-[10px] font-bold text-gray-900 uppercase tracking-widest">Started: {prj.start}</p>
                                 <div className="flex gap-2">
                                     <button
                                         onClick={() => navigate(`/arch-projects/${prj.id}`)}
@@ -105,7 +105,7 @@ const ArchProjects = () => {
                                     >
                                         <FiEye className="text-lg" />
                                     </button>
-                                    <button className="p-4 bg-gray-50 dark:bg-brand-900 border border-brand-100 dark:border-brand-800 text-gray-400 hover:bg-white transition-all rounded-2xl shadow-sm">
+                                    <button className="p-4 bg-gray-50 dark:bg-brand-900 border border-brand-100 dark:border-brand-800 text-gray-900 hover:bg-white transition-all rounded-2xl shadow-sm">
                                         <FiEdit3 className="text-lg" />
                                     </button>
                                 </div>

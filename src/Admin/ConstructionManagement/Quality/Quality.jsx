@@ -19,7 +19,7 @@ const Quality = () => {
       <div className="flex justify-between items-end">
         <div>
           <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">Quality Assurance</h2>
-          <p className="text-sm font-medium text-gray-500 mt-1">Standards and Compliance at {currentTenant.name}</p>
+          <p className="text-sm font-medium text-gray-800 mt-1">Standards and Compliance at {currentTenant.name}</p>
         </div>
         <RoleGuard requiredRole="engineer">
           <button
@@ -70,10 +70,10 @@ const Quality = () => {
             <tbody className="divide-y divide-brand-50">
               {inspections.map((inspection) => (
                 <tr key={inspection.id} className="group hover:bg-brand-50/30 transition-colors">
-                  <td className="px-8 py-6 text-sm font-bold text-gray-600">{inspection.date}</td>
+                  <td className="px-8 py-6 text-sm font-bold text-gray-800">{inspection.date}</td>
                   <td className="px-8 py-6">
                     <p className="font-bold text-gray-900 group-hover:text-brand-600 transition-colors">{inspection.type}</p>
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-tight">Manual site verification</p>
+                    <p className="text-[10px] font-bold text-gray-900 uppercase tracking-tight">Manual site verification</p>
                   </td>
                   <td className="px-8 py-6">
                     <span className={`px-3 py-1 text-[10px] font-black uppercase tracking-widest border rounded-xl ${inspection.status === 'Passed'
@@ -83,7 +83,7 @@ const Quality = () => {
                       {inspection.status}
                     </span>
                   </td>
-                  <td className="px-8 py-6 text-sm font-bold text-gray-600">{inspection.inspector}</td>
+                  <td className="px-8 py-6 text-sm font-bold text-gray-800">{inspection.inspector}</td>
                   <td className="px-8 py-6 text-right font-black text-gray-900">{inspection.issues}</td>
                 </tr>
               ))}

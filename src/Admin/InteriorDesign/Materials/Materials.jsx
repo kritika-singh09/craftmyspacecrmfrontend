@@ -1,12 +1,13 @@
 import React from 'react';
 import { FiBox, FiSearch, FiFilter, FiPlus, FiArrowUpRight, FiFileText } from 'react-icons/fi';
+import { MdChair, MdPalette, MdVpnKey, MdLightbulb } from 'react-icons/md';
 
 const IntMaterials = () => {
     const categories = [
-        { name: 'Furniture', items: 124, icon: '🛋️' },
-        { name: 'Finishes', items: 86, icon: '🎨' },
-        { name: 'Hardware', items: 112, icon: '🗝️' },
-        { name: 'Lighting', items: 54, icon: '💡' },
+        { name: 'Furniture', items: 124, icon: <MdChair className="text-2xl" /> },
+        { name: 'Finishes', items: 86, icon: <MdPalette className="text-2xl" /> },
+        { name: 'Hardware', items: 112, icon: <MdVpnKey className="text-2xl" /> },
+        { name: 'Lighting', items: 54, icon: <MdLightbulb className="text-2xl" /> },
     ];
 
     return (

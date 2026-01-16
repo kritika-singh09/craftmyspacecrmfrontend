@@ -16,7 +16,7 @@ const IntClosure = () => {
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
                 <div>
                     <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight uppercase tracking-tight">Project <span className="text-orange-600">Handover</span></h1>
-                    <p className="text-gray-500 dark:text-orange-300 mt-2 font-medium tracking-wide">Final inspection, payment clearance, and warranty dissemination.</p>
+                    <p className="text-gray-800 dark:text-orange-300 mt-2 font-medium tracking-wide">Final inspection, payment clearance, and warranty dissemination.</p>
                 </div>
                 <button className="flex items-center gap-3 px-8 py-4 bg-emerald-600 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-lg hover:scale-105 transition-all">
                     <FiAward className="text-lg" /> Close Project
@@ -35,7 +35,7 @@ const IntClosure = () => {
                                 </div>
                                 <div>
                                     <p className="text-sm font-black uppercase tracking-tight">{item.item}</p>
-                                    <p className="text-[10px] font-bold text-gray-400 opacity-60 uppercase">{item.date !== '-' ? `Finalized on ${item.date}` : `Status: ${item.status}`}</p>
+                                    <p className="text-[10px] font-bold text-gray-900 opacity-60 uppercase">{item.date !== '-' ? `Finalized on ${item.date}` : `Status: ${item.status}`}</p>
                                 </div>
                             </div>
                             {item.status !== 'Completed' && (
@@ -53,7 +53,7 @@ const IntClosure = () => {
                         <h4 className="text-lg font-black uppercase tracking-tight">Final Settlement</h4>
                     </div>
                     <div className="flex justify-between items-center mb-4">
-                        <span className="text-xs font-bold text-gray-400 uppercase">Total Clearance</span>
+                        <span className="text-xs font-bold text-gray-900 uppercase">Total Clearance</span>
                         <span className="text-xl font-black text-emerald-600">₹8.4 L</span>
                     </div>
                     <button className="w-full py-3 bg-brand-50 dark:bg-brand-800 text-brand-900 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-orange-600 hover:text-white transition-all">Verify Receipts</button>
@@ -64,7 +64,7 @@ const IntClosure = () => {
                         <FiActivity className="text-3xl text-orange-500" />
                         <h4 className="text-lg font-black uppercase tracking-tight">Post-Handover</h4>
                     </div>
-                    <p className="text-xs font-medium text-gray-400 italic mb-6">"Setup 6-month maintenance check for plumbing and modular kitchen fittings."</p>
+                    <p className="text-xs font-medium text-gray-900 italic mb-6">"Setup 6-month maintenance check for plumbing and modular kitchen fittings."</p>
                     <button className="w-full py-3 border border-orange-200 text-orange-600 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-orange-50 transition-all">Schedule Maintenance</button>
                 </div>
             </div>

@@ -102,7 +102,7 @@ const SuperAdminProjects = () => {
                         <span className="bg-brand-600 w-1.5 h-10 rounded-full"></span>
                         Project Management
                     </h1>
-                    <p className="text-sm font-bold text-gray-500 mt-2 uppercase tracking-widest pl-4">Manage and track all company projects</p>
+                    <p className="text-sm font-bold text-gray-800 mt-2 uppercase tracking-widest pl-4">Manage and track all company projects</p>
                 </div>
 
                 <div className="flex flex-wrap gap-4 items-center w-full lg:w-auto">
@@ -155,7 +155,7 @@ const SuperAdminProjects = () => {
                             <div>
                                 <p className={`text-[10px] font-black text-${s.color}-600 uppercase tracking-[0.2em] mb-1`}>{s.label}</p>
                                 <h3 className="text-3xl font-black text-gray-900 tracking-tight">{s.val}</h3>
-                                <p className="text-[10px] font-bold text-gray-400 mt-1">{s.label_sub}</p>
+                                <p className="text-[10px] font-bold text-gray-900 mt-1">{s.label_sub}</p>
                             </div>
                             <div className={`w-14 h-14 rounded-2xl bg-${s.color}-50 flex items-center justify-center text-2xl text-${s.color}-600`}>
                                 {s.icon}
@@ -177,37 +177,37 @@ const SuperAdminProjects = () => {
                                         <span className="px-3 py-1 bg-brand-50 text-brand-600 text-[9px] font-black uppercase tracking-widest rounded-lg border border-brand-100">
                                             {p.projectCode}
                                         </span>
-                                        <span className="text-xs font-bold text-gray-400">|</span>
-                                        <span className="text-xs font-black text-gray-600 uppercase tracking-tight">{p.company?.name}</span>
+                                        <span className="text-xs font-bold text-gray-900">|</span>
+                                        <span className="text-xs font-black text-gray-800 uppercase tracking-tight">{p.company?.name}</span>
                                     </div>
                                 </div>
                                 <div className="flex gap-2">
-                                    <button onClick={() => { setEditingProject(p); setIsModalOpen(true); }} className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-gray-400 hover:bg-brand-600 hover:text-white transition-all shadow-sm"><FiMoreVertical /></button>
+                                    <button onClick={() => { setEditingProject(p); setIsModalOpen(true); }} className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-gray-900 hover:bg-brand-600 hover:text-white transition-all shadow-sm"><FiMoreVertical /></button>
                                 </div>
                             </div>
 
                             <div className="grid grid-cols-2 gap-6">
                                 <div className="space-y-1">
-                                    <p className="flex items-center gap-2 text-[10px] font-black text-gray-600 uppercase tracking-widest"><FiMapPin className="text-brand-500" /> Location</p>
+                                    <p className="flex items-center gap-2 text-[10px] font-black text-gray-800 uppercase tracking-widest"><FiMapPin className="text-brand-500" /> Location</p>
                                     <p className="text-sm font-bold text-gray-800">{p.location?.city || 'Not Specified'}</p>
                                 </div>
                                 <div className="space-y-1">
-                                    <p className="flex items-center gap-2 text-[10px] font-black text-gray-600 uppercase tracking-widest"><FiCalendar className="text-brand-500" /> Deadline</p>
+                                    <p className="flex items-center gap-2 text-[10px] font-black text-gray-800 uppercase tracking-widest"><FiCalendar className="text-brand-500" /> Deadline</p>
                                     <p className="text-sm font-bold text-gray-800">{p.endDate ? new Date(p.endDate).toLocaleDateString() : 'Active'}</p>
                                 </div>
                                 <div className="space-y-1">
-                                    <p className="flex items-center gap-2 text-[10px] font-black text-gray-600 uppercase tracking-widest"><FiUsers className="text-brand-500" /> Lead</p>
+                                    <p className="flex items-center gap-2 text-[10px] font-black text-gray-800 uppercase tracking-widest"><FiUsers className="text-brand-500" /> Lead</p>
                                     <p className="text-sm font-bold text-gray-800">{p.projectLead?.name || 'N/A'}</p>
                                 </div>
                                 <div className="space-y-1">
-                                    <p className="flex items-center gap-2 text-[10px] font-black text-gray-600 uppercase tracking-widest"><FiDollarSign className="text-brand-500" /> Budget</p>
+                                    <p className="flex items-center gap-2 text-[10px] font-black text-gray-800 uppercase tracking-widest"><FiDollarSign className="text-brand-500" /> Budget</p>
                                     <p className="text-sm font-black text-gray-900">₹ {(p.budget || 0).toLocaleString()} Cr</p>
                                 </div>
                             </div>
 
                             <div className="space-y-3">
                                 <div className="flex justify-between items-end">
-                                    <span className="text-[10px] font-black text-gray-600 uppercase tracking-widest">Project Status / Progress</span>
+                                    <span className="text-[10px] font-black text-gray-800 uppercase tracking-widest">Project Status / Progress</span>
                                     <span className="text-[11px] font-black text-brand-600">{p.progressPercentage || 0}% Complete</span>
                                 </div>
                                 <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden p-0.5 border border-gray-100 shadow-inner">
@@ -247,11 +247,11 @@ const SuperAdminProjects = () => {
                                 <h2 className="text-xl lg:text-2xl font-black text-gray-900 tracking-tight">
                                     {editingProject ? 'Edit Project' : 'Add New Project'}
                                 </h2>
-                                <p className="text-[9px] font-black text-gray-500 uppercase tracking-[0.3em] mt-1">Project details and configuration</p>
+                                <p className="text-[9px] font-black text-gray-800 uppercase tracking-[0.3em] mt-1">Project details and configuration</p>
                             </div>
                             <button
                                 onClick={() => { setIsModalOpen(false); setEditingProject(null); }}
-                                className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl bg-white border border-brand-100 flex items-center justify-center text-gray-400 hover:text-brand-600 transition-all shadow-premium group"
+                                className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl bg-white border border-brand-100 flex items-center justify-center text-gray-900 hover:text-brand-600 transition-all shadow-premium group"
                             >
                                 <span className="text-lg lg:text-xl group-hover:scale-125 transition-transform">✕</span>
                             </button>

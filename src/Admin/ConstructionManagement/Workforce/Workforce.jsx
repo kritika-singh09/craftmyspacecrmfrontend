@@ -9,7 +9,7 @@ const Workforce = () => {
       <div className="flex justify-between items-end">
         <div>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Workforce</h2>
-          <p className="text-sm font-medium text-gray-400 dark:text-brand-300 mt-1">Personnel and Performance Tracking</p>
+          <p className="text-sm font-medium text-gray-900 dark:text-brand-300 mt-1">Personnel and Performance Tracking</p>
         </div>
         <button
           onClick={() => navigate('/workforce/add')}
@@ -27,7 +27,7 @@ const Workforce = () => {
             <div className="flex justify-between items-start mb-6">
               <div>
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors leading-tight mb-1">{worker.name}</h3>
-                <p className="text-[10px] font-semibold text-gray-400 dark:text-brand-400 uppercase tracking-widest">{worker.role}</p>
+                <p className="text-[10px] font-semibold text-gray-900 dark:text-brand-400 uppercase tracking-widest">{worker.role}</p>
               </div>
               <span className="px-3 py-1 text-[10px] font-semibold uppercase tracking-wider bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-100 dark:border-green-800 rounded-lg">
                 Active
@@ -36,11 +36,11 @@ const Workforce = () => {
 
             <div className="space-y-4 mb-8">
               <div className="flex justify-between items-center py-2 border-b border-blue-50/50 dark:border-blue-800/50">
-                <span className="text-[11px] font-bold text-gray-400 dark:text-blue-400 uppercase tracking-tight">Assigned Project</span>
+                <span className="text-[11px] font-bold text-gray-900 dark:text-blue-400 uppercase tracking-tight">Assigned Project</span>
                 <span className="text-sm font-bold text-gray-800 dark:text-gray-200">{worker.project}</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b border-blue-50/50 dark:border-blue-800/50">
-                <span className="text-[11px] font-bold text-gray-400 dark:text-blue-400 uppercase tracking-tight">Daily Wage</span>
+                <span className="text-[11px] font-bold text-gray-900 dark:text-blue-400 uppercase tracking-tight">Daily Wage</span>
                 <span className="text-sm font-black text-blue-600 dark:text-blue-300 font-display">₹{worker.wage}</span>
               </div>
             </div>
@@ -49,7 +49,7 @@ const Workforce = () => {
               <button className="py-2.5 px-4 rounded-xl bg-brand-600 text-white text-[11px] font-bold uppercase tracking-wider hover:bg-brand-700 shadow-sm transition-all">
                 Attendance
               </button>
-              <button className="py-2.5 px-4 rounded-xl bg-gray-50 dark:bg-brand-900/30 text-gray-700 dark:text-brand-300 text-[11px] font-bold uppercase tracking-wider hover:bg-gray-100 dark:hover:bg-brand-800 transition-all">
+              <button className="py-2.5 px-4 rounded-xl bg-gray-50 dark:bg-brand-900/30 text-gray-900 dark:text-brand-300 text-[11px] font-bold uppercase tracking-wider hover:bg-gray-100 dark:hover:bg-brand-800 transition-all">
                 Profile
               </button>
             </div>
@@ -101,8 +101,8 @@ const Workforce = () => {
                     <div className="font-bold text-gray-900 dark:text-white">{worker.name}</div>
                   </td>
                   <td className="table-cell-premium whitespace-nowrap">
-                    <p className="text-sm font-semibold text-gray-700 dark:text-gray-200">{worker.role}</p>
-                    <p className="text-[10px] font-bold text-gray-400 dark:text-brand-400 uppercase tracking-tight">{worker.project}</p>
+                    <p className="text-sm font-semibold text-gray-900 dark:text-gray-200">{worker.role}</p>
+                    <p className="text-[10px] font-bold text-gray-900 dark:text-brand-400 uppercase tracking-tight">{worker.project}</p>
                   </td>
                   <td className="table-cell-premium whitespace-nowrap">
                     <span className="px-3 py-1 text-[10px] font-black uppercase tracking-widest bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800 rounded-xl">
@@ -111,7 +111,7 @@ const Workforce = () => {
                   </td>
                   <td className="table-cell-premium whitespace-nowrap text-right">
                     <span className="font-black text-gray-900 dark:text-white">8.0</span>
-                    <span className="text-[10px] font-bold text-gray-400 dark:text-brand-400 ml-1">HRS</span>
+                    <span className="text-[10px] font-bold text-gray-900 dark:text-brand-400 ml-1">HRS</span>
                   </td>
                 </tr>
               ))}

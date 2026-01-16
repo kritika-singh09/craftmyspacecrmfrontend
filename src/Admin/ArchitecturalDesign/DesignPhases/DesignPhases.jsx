@@ -16,7 +16,7 @@ const DesignPhases = () => {
             <div className="flex justify-between items-center">
                 <div>
                     <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight uppercase tracking-wide">Design <span className="text-brand-600">Phases</span></h1>
-                    <p className="text-gray-500 dark:text-brand-300 mt-2 font-medium">Standardized architectural workflow from concept to construction support.</p>
+                    <p className="text-gray-800 dark:text-brand-300 mt-2 font-medium">Standardized architectural workflow from concept to construction support.</p>
                 </div>
                 <button className="px-8 py-4 bg-white dark:bg-brand-900/40 border border-brand-100 dark:border-brand-800 rounded-2xl font-black text-xs uppercase tracking-widest text-brand-600 shadow-premium hover:shadow-premium-xl transition-all">
                     Configure Templates
@@ -30,12 +30,12 @@ const DesignPhases = () => {
                             <div className="w-14 h-14 rounded-2xl bg-brand-50 dark:bg-brand-800 flex items-center justify-center text-3xl group-hover:bg-brand-600 group-hover:text-white transition-all duration-500">
                                 {phase.status === 'Completed' ? <FiCheckCircle /> : phase.status === 'In Progress' ? <FiPlayCircle className="animate-pulse" /> : <FiClock className="opacity-40" />}
                             </div>
-                            <span className={`text-[10px] font-black uppercase tracking-widest ${phase.status === 'In Progress' ? 'text-brand-600' : 'text-gray-400'}`}>{phase.status}</span>
+                            <span className={`text-[10px] font-black uppercase tracking-widest ${phase.status === 'In Progress' ? 'text-brand-600' : 'text-gray-900'}`}>{phase.status}</span>
                         </div>
                         <h3 className="text-xl font-black text-gray-800 dark:text-white uppercase tracking-tight mb-6">{phase.name}</h3>
 
                         <div className="space-y-3">
-                            <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-gray-500">
+                            <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-gray-800">
                                 <span>Phase Progress</span>
                                 <span>{phase.progress}%</span>
                             </div>

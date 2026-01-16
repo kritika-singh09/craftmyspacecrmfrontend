@@ -22,7 +22,7 @@ const SuperAdminFinance = () => {
             <div className="flex justify-between items-end">
                 <div>
                     <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Financial Ledger</h1>
-                    <p className="text-sm font-bold text-gray-700 mt-1">Cross-Tenant Revenue Streams & Fiscal Performance</p>
+                    <p className="text-sm font-bold text-gray-900 mt-1">Cross-Tenant Revenue Streams & Fiscal Performance</p>
                 </div>
                 <div className="flex gap-3">
                     <button
@@ -51,7 +51,7 @@ const SuperAdminFinance = () => {
                                 {stat.positive ? <FiArrowUpRight /> : <FiArrowDownRight />} {stat.trend}
                             </div>
                         </div>
-                        <p className="text-[10px] font-black text-gray-600 uppercase tracking-widest">{stat.label}</p>
+                        <p className="text-[10px] font-black text-gray-800 uppercase tracking-widest">{stat.label}</p>
                         <h3 className="text-3xl font-black text-gray-900 mt-1 tracking-tight">{stat.value}</h3>
                         <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-600 to-purple-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
                     </div>
@@ -113,16 +113,16 @@ const SuperAdminFinance = () => {
                             <div className="absolute inset-0 border-[12px] border-brand-600 rounded-full border-t-transparent -rotate-45"></div>
                             <div>
                                 <p className="text-4xl font-black text-gray-900">₹4.2L</p>
-                                <p className="text-[10px] font-black text-gray-600 uppercase tracking-widest mt-1">Daily Avg.</p>
+                                <p className="text-[10px] font-black text-gray-800 uppercase tracking-widest mt-1">Daily Avg.</p>
                             </div>
                         </div>
                         <div className="mt-8 grid grid-cols-2 gap-4 w-full">
                             <div className="p-4 bg-gray-50 rounded-2xl">
-                                <p className="text-[10px] font-black text-gray-600 uppercase tracking-tighter">Infrastructure</p>
+                                <p className="text-[10px] font-black text-gray-800 uppercase tracking-tighter">Infrastructure</p>
                                 <p className="text-sm font-black text-gray-900">₹1.8L</p>
                             </div>
                             <div className="p-4 bg-gray-50 rounded-2xl">
-                                <p className="text-[10px] font-black text-gray-600 uppercase tracking-tighter">Operations</p>
+                                <p className="text-[10px] font-black text-gray-800 uppercase tracking-tighter">Operations</p>
                                 <p className="text-sm font-black text-gray-900">₹2.4L</p>
                             </div>
                         </div>

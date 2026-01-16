@@ -21,7 +21,7 @@ const TenantForm = ({ onSubmit, initialData = null }) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-6 form-container max-w-6xl mx-auto">
       <div>
-        <label className="block text-sm font-medium text-gray-700">Company Name *</label>
+        <label className="block text-sm font-medium text-gray-900">Company Name *</label>
         <input
           type="text"
           name="name"
@@ -33,7 +33,7 @@ const TenantForm = ({ onSubmit, initialData = null }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Address</label>
+        <label className="block text-sm font-medium text-gray-900">Address</label>
         <textarea
           name="address"
           value={formData.address}
@@ -45,7 +45,7 @@ const TenantForm = ({ onSubmit, initialData = null }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Contact Email *</label>
+          <label className="block text-sm font-medium text-gray-900">Contact Email *</label>
           <input
             type="email"
             name="contact_email"
@@ -56,7 +56,7 @@ const TenantForm = ({ onSubmit, initialData = null }) => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Contact Phone</label>
+          <label className="block text-sm font-medium text-gray-900">Contact Phone</label>
           <input
             type="tel"
             name="contact_phone"
@@ -68,7 +68,7 @@ const TenantForm = ({ onSubmit, initialData = null }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">GST Number</label>
+        <label className="block text-sm font-medium text-gray-900">GST Number</label>
         <input
           type="text"
           name="gst_number"

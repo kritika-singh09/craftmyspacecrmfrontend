@@ -17,7 +17,7 @@ const SuperAdminManagers = () => {
             <div className="flex justify-between items-end">
                 <div>
                     <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Manager Cortex</h1>
-                    <p className="text-sm font-bold text-gray-700 mt-1">Cross-tenant Project Leadership & Performance Analytics</p>
+                    <p className="text-sm font-bold text-gray-900 mt-1">Cross-tenant Project Leadership & Performance Analytics</p>
                 </div>
                 <div className="flex gap-4">
                     <div className="relative group">
@@ -44,7 +44,7 @@ const SuperAdminManagers = () => {
                             {stat.icon}
                         </div>
                         <div>
-                            <p className="text-[10px] font-black text-gray-600 uppercase tracking-widest">{stat.label}</p>
+                            <p className="text-[10px] font-black text-gray-800 uppercase tracking-widest">{stat.label}</p>
                             <h3 className="text-3xl font-black text-gray-900 mt-1">{stat.value}</h3>
                             <p className="text-[11px] font-bold text-brand-600 mt-1 italic">{stat.trend}</p>
                         </div>
@@ -86,7 +86,7 @@ const SuperAdminManagers = () => {
                                     </td>
                                     <td className="px-8 py-6">
                                         <p className="text-sm font-bold text-gray-900">{manager.company}</p>
-                                        <p className="text-[10px] font-black text-gray-600 uppercase tracking-tight">Primary Tenant</p>
+                                        <p className="text-[10px] font-black text-gray-800 uppercase tracking-tight">Primary Tenant</p>
                                     </td>
                                     <td className="px-8 py-6 text-sm font-bold text-gray-800">
                                         {manager.projects} Active
@@ -99,7 +99,7 @@ const SuperAdminManagers = () => {
                                     <td className="px-8 py-6">
                                         <span className={`px-3 py-1 text-[10px] font-black uppercase tracking-widest border rounded-xl ${manager.workload === 'Optimal' ? 'bg-green-50 text-green-700 border-green-200' :
                                             manager.workload === 'High' ? 'bg-amber-50 text-amber-700 border-amber-200' :
-                                                'bg-gray-50 text-gray-700 border-gray-200'
+                                                'bg-gray-50 text-gray-900 border-gray-200'
                                             }`}>
                                             {manager.workload}
                                         </span>

@@ -20,7 +20,7 @@ const Projects = () => {
       <div className="flex justify-between items-end">
         <div>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Projects</h2>
-          <p className="text-sm font-medium text-gray-400 dark:text-brand-300 mt-1">{currentTenant.name} / {user?.role}</p>
+          <p className="text-sm font-medium text-gray-900 dark:text-brand-300 mt-1">{currentTenant.name} / {user?.role}</p>
         </div>
         <RoleGuard requiredRole="manager">
           <button
@@ -39,7 +39,7 @@ const Projects = () => {
             <div className="flex justify-between items-start mb-6">
               <div>
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors leading-tight mb-1">{project.name}</h3>
-                <p className="text-[11px] font-semibold text-gray-400 dark:text-brand-400 uppercase tracking-widest flex items-center">
+                <p className="text-[11px] font-semibold text-gray-900 dark:text-brand-400 uppercase tracking-widest flex items-center">
                   <span className="mr-1.5 text-brand-400">📍</span>
                   {project.location}
                 </p>
@@ -47,7 +47,7 @@ const Projects = () => {
               <span className={`px-3 py-1 text-[10px] font-semibold uppercase tracking-wider rounded-lg border ${project.status === 'Ongoing' ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800' :
                 project.status === 'Planning' ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800' :
                   project.status === 'Completed' ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800' :
-                    'bg-gray-50 dark:bg-brand-900/20 text-gray-700 dark:text-brand-300 border-gray-200 dark:border-brand-800'
+                    'bg-gray-50 dark:bg-brand-900/20 text-gray-900 dark:text-brand-300 border-gray-200 dark:border-brand-800'
                 }`}>
                 {project.status}
               </span>
@@ -55,7 +55,7 @@ const Projects = () => {
 
             <div className="mb-8 mt-auto">
               <div className="flex justify-between items-end mb-2.5">
-                <span className="text-[10px] font-bold text-gray-400 dark:text-brand-400 uppercase tracking-widest">Construction Progress</span>
+                <span className="text-[10px] font-bold text-gray-900 dark:text-brand-400 uppercase tracking-widest">Construction Progress</span>
                 <span className="text-sm font-bold text-gray-900 dark:text-white">{project.progress}%</span>
               </div>
               <div className="w-full bg-brand-50 dark:bg-brand-900/30 rounded-full h-3 p-0.5 border border-brand-100/30 dark:border-brand-800/30">
@@ -69,7 +69,7 @@ const Projects = () => {
             </div>
 
             <div className="flex items-center justify-between py-4 border-y border-gray-100 dark:border-brand-800/50 mb-6">
-              <span className="text-[11px] font-semibold text-gray-400 dark:text-brand-400 uppercase tracking-tight">Project Budget</span>
+              <span className="text-[11px] font-semibold text-gray-900 dark:text-brand-400 uppercase tracking-tight">Project Budget</span>
               <span className="text-sm font-bold text-gray-900 dark:text-white">₹{(project.budget / 10000000).toFixed(1)} Cr</span>
             </div>
 
@@ -80,7 +80,7 @@ const Projects = () => {
               <RoleGuard requiredRole="manager">
                 <button
                   onClick={() => handleEdit(project)}
-                  className="py-2.5 px-4 rounded-xl bg-gray-50 dark:bg-brand-900/30 text-gray-700 dark:text-brand-300 text-[11px] font-bold uppercase tracking-wider hover:bg-gray-200 dark:hover:bg-brand-800 transition-all"
+                  className="py-2.5 px-4 rounded-xl bg-gray-50 dark:bg-brand-900/30 text-gray-900 dark:text-brand-300 text-[11px] font-bold uppercase tracking-wider hover:bg-gray-200 dark:hover:bg-brand-800 transition-all"
                 >
                   Edit
                 </button>

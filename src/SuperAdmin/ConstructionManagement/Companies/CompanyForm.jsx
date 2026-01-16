@@ -50,7 +50,7 @@ const CompanyForm = ({ initialData, onSubmit, onCancel }) => {
                             className="w-full px-5 py-4 bg-brand-50/30 border border-brand-100 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 outline-none transition-all font-semibold"
                             placeholder="apex"
                         />
-                        <span className="absolute right-5 top-1/2 -translate-y-1/2 text-sm font-black text-gray-600">.craftmyspace.com</span>
+                        <span className="absolute right-5 top-1/2 -translate-y-1/2 text-sm font-black text-gray-800">.craftmyspace.com</span>
                     </div>
                 </div>
             </div>

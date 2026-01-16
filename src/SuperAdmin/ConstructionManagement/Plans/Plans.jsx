@@ -70,7 +70,7 @@ const SuperAdminPlans = () => {
             <div className="flex justify-between items-end">
                 <div>
                     <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Revenue & Billing Matrix</h1>
-                    <p className="text-sm font-bold text-gray-700 mt-1">Global Subscription Tiers & Transactional Ledger Oversight</p>
+                    <p className="text-sm font-bold text-gray-900 mt-1">Global Subscription Tiers & Transactional Ledger Oversight</p>
                 </div>
                 <div className="flex gap-3">
                     <button
@@ -100,7 +100,7 @@ const SuperAdminPlans = () => {
                             <h3 className="text-xl font-black text-gray-900 uppercase tracking-widest">{plan.name}</h3>
                             <div className="mt-4 flex items-baseline gap-1">
                                 <span className="text-4xl font-black text-gray-900">{plan.price}</span>
-                                <span className="text-sm font-black text-gray-600">{plan.period}</span>
+                                <span className="text-sm font-black text-gray-800">{plan.period}</span>
                             </div>
                         </div>
 
@@ -113,8 +113,8 @@ const SuperAdminPlans = () => {
                             ))}
                             {plan.excluded.map((feature, j) => (
                                 <div key={j} className="flex items-start gap-3 opacity-40">
-                                    <FiX className="text-gray-400 mt-1" />
-                                    <span className="text-sm font-black text-gray-600 line-through">{feature}</span>
+                                    <FiX className="text-gray-900 mt-1" />
+                                    <span className="text-sm font-black text-gray-800 line-through">{feature}</span>
                                 </div>
                             ))}
                         </div>
@@ -167,7 +167,7 @@ const SuperAdminPlans = () => {
                                         <span className="px-2 py-1 bg-brand-50 text-brand-600 text-[10px] font-bold rounded-lg border border-brand-100 uppercase">{inv.tier}</span>
                                     </td>
                                     <td className="px-8 py-6 text-sm font-black text-gray-900">{inv.amount}</td>
-                                    <td className="px-8 py-6 text-sm font-bold text-gray-700">{inv.date}</td>
+                                    <td className="px-8 py-6 text-sm font-bold text-gray-900">{inv.date}</td>
                                     <td className="px-8 py-6 text-right">
                                         <span className={`px-3 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-xl border ${inv.status === 'Settled' ? 'bg-green-50 text-green-700 border-green-200' :
                                             inv.status === 'Pending' ? 'bg-amber-50 text-amber-700 border-amber-200' :
@@ -191,7 +191,7 @@ const SuperAdminPlans = () => {
                         </div>
                         <div>
                             <h4 className="text-xl font-black text-gray-900">Yield Optimization Intelligence</h4>
-                            <p className="text-sm font-bold text-gray-700">Auto-calculated plan recommendations based on tenant usage patterns.</p>
+                            <p className="text-sm font-bold text-gray-900">Auto-calculated plan recommendations based on tenant usage patterns.</p>
                         </div>
                     </div>
                     <button
@@ -212,13 +212,13 @@ const SuperAdminPlans = () => {
                                 <h2 className="text-xl font-black text-gray-900">
                                     {isCouponModalOpen ? 'Coupon Configuration' : 'Tier Architecture'}
                                 </h2>
-                                <p className="text-xs font-black text-gray-600 uppercase tracking-widest mt-1">
+                                <p className="text-xs font-black text-gray-800 uppercase tracking-widest mt-1">
                                     {isCouponModalOpen ? 'Promotional Revenue Logic' : 'Enterprise Subscription Modeling'}
                                 </p>
                             </div>
                             <button
                                 onClick={() => { setIsCouponModalOpen(false); setIsTierModalOpen(false); }}
-                                className="w-10 h-10 rounded-full hover:bg-white flex items-center justify-center text-gray-400 hover:text-gray-900 transition-colors"
+                                className="w-10 h-10 rounded-full hover:bg-white flex items-center justify-center text-gray-900 hover:text-gray-900 transition-colors"
                             >
                                 ✕
                             </button>

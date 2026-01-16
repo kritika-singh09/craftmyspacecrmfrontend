@@ -30,7 +30,7 @@ const SuperAdminYield = () => {
                     </button>
                     <div>
                         <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Yield Intelligence</h1>
-                        <p className="text-sm font-bold text-gray-700 mt-1">Tenant Economics, Usage Patterns & Revenue Velocity</p>
+                        <p className="text-sm font-bold text-gray-900 mt-1">Tenant Economics, Usage Patterns & Revenue Velocity</p>
                     </div>
                 </div>
                 <button className="px-6 py-3 bg-brand-600 text-white text-[11px] font-black uppercase tracking-widest rounded-2xl hover:bg-brand-700 shadow-premium transition-all">
@@ -50,7 +50,7 @@ const SuperAdminYield = () => {
                                 {m.change}
                             </span>
                         </div>
-                        <p className="text-[10px] font-black text-gray-600 uppercase tracking-widest">{m.label}</p>
+                        <p className="text-[10px] font-black text-gray-800 uppercase tracking-widest">{m.label}</p>
                         <h3 className="text-2xl font-black text-gray-900 mt-1">{m.value}</h3>
                     </div>
                 ))}

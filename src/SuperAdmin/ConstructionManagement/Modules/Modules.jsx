@@ -15,7 +15,7 @@ const SuperAdminModules = () => {
             <div className="flex justify-between items-end">
                 <div>
                     <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Module Warehouse</h1>
-                    <p className="text-sm font-bold text-gray-700 mt-1">Global Microservice Orchestration and Version Control</p>
+                    <p className="text-sm font-bold text-gray-900 mt-1">Global Microservice Orchestration and Version Control</p>
                 </div>
                 <div className="flex gap-3">
                     <button
@@ -44,7 +44,7 @@ const SuperAdminModules = () => {
                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg ${stat.bg} ${stat.color} mb-4`}>
                             {stat.icon}
                         </div>
-                        <p className="text-[10px] font-black text-gray-600 uppercase tracking-widest">{stat.label}</p>
+                        <p className="text-[10px] font-black text-gray-800 uppercase tracking-widest">{stat.label}</p>
                         <h3 className="text-2xl font-black text-gray-900 mt-1">{stat.value}</h3>
                     </div>
                 ))}
@@ -77,7 +77,7 @@ const SuperAdminModules = () => {
                             {modules.map((m) => (
                                 <tr key={m.id} className="group hover:bg-brand-50/30 transition-colors">
                                     <td className="px-8 py-6 font-bold text-gray-900">{m.name}</td>
-                                    <td className="px-8 py-6 text-[10px] font-black text-gray-600 uppercase tracking-widest">{m.category}</td>
+                                    <td className="px-8 py-6 text-[10px] font-black text-gray-800 uppercase tracking-widest">{m.category}</td>
                                     <td className="px-8 py-6">
                                         <span className="px-2 py-1 bg-gray-50 text-gray-800 text-[10px] font-bold rounded-lg border border-gray-100">{m.version}</span>
                                     </td>
@@ -86,14 +86,14 @@ const SuperAdminModules = () => {
                                             <div className="w-16 h-1.5 bg-gray-100 rounded-full overflow-hidden">
                                                 <div className="h-full bg-brand-600" style={{ width: m.usage }}></div>
                                             </div>
-                                            <span className="text-[10px] font-black text-gray-700">{m.usage}</span>
+                                            <span className="text-[10px] font-black text-gray-900">{m.usage}</span>
                                         </div>
                                     </td>
                                     <td className="px-8 py-6">
                                         <span className={`px-3 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-xl border ${m.status === 'Healthy' ? 'bg-green-50 text-green-700 border-green-200' :
                                             m.status === 'Warning' ? 'bg-amber-50 text-amber-700 border-amber-200' :
                                                 m.status === 'Deprecated' ? 'bg-red-50 text-red-700 border-red-200' :
-                                                    'bg-gray-50 text-gray-700 border-gray-200'
+                                                    'bg-gray-50 text-gray-900 border-gray-200'
                                             }`}>
                                             {m.status}
                                         </span>
@@ -107,7 +107,7 @@ const SuperAdminModules = () => {
                                         </button>
                                         <button
                                             onClick={() => alert(`Advanced configuration for ${m.name} is coming in the next security update.`)}
-                                            className="p-2 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-400 hover:text-gray-900 transition-colors"
+                                            className="p-2 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-900 hover:text-gray-900 transition-colors"
                                         >
                                             <FiSettings />
                                         </button>

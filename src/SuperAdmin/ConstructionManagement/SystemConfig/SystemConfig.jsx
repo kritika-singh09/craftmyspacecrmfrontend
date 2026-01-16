@@ -36,7 +36,7 @@ const SuperAdminSystemConfig = () => {
             <div className="flex justify-between items-end">
                 <div>
                     <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">System Core</h1>
-                    <p className="text-sm font-bold text-gray-700 mt-1">Global Parameters and Module Entitlements</p>
+                    <p className="text-sm font-bold text-gray-900 mt-1">Global Parameters and Module Entitlements</p>
                 </div>
                 <button
                     onClick={handleSave}
@@ -162,7 +162,7 @@ const SuperAdminSystemConfig = () => {
                                 <div key={module.id} className="flex items-center justify-between p-5 bg-brand-50/20 rounded-2xl border border-brand-50 group hover:bg-brand-50/50 transition-all">
                                     <div className="flex-1">
                                         <h3 className="text-sm font-black text-gray-900 uppercase tracking-widest text-[11px]">{module.name}</h3>
-                                        <p className="text-[10px] font-black text-gray-600 mt-0.5">{module.desc}</p>
+                                        <p className="text-[10px] font-black text-gray-800 mt-0.5">{module.desc}</p>
                                     </div>
                                     <label className="relative inline-flex items-center cursor-pointer group">
                                         <input

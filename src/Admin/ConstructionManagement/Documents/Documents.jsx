@@ -19,7 +19,7 @@ const Documents = () => {
       <div className="flex justify-between items-end">
         <div>
           <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">Vault</h2>
-          <p className="text-sm font-medium text-gray-500 mt-1">Project Documents and Blueprints</p>
+          <p className="text-sm font-medium text-gray-800 mt-1">Project Documents and Blueprints</p>
         </div>
         <RoleGuard requiredRole="engineer">
           <button
@@ -90,9 +90,9 @@ const Documents = () => {
                       {doc.type}
                     </span>
                   </td>
-                  <td className="px-8 py-6 text-sm font-bold text-gray-500">{doc.size}</td>
-                  <td className="px-8 py-6 text-sm font-bold text-gray-600">{doc.uploadedBy}</td>
-                  <td className="px-8 py-6 text-right text-sm font-bold text-gray-600">{doc.date}</td>
+                  <td className="px-8 py-6 text-sm font-bold text-gray-800">{doc.size}</td>
+                  <td className="px-8 py-6 text-sm font-bold text-gray-800">{doc.uploadedBy}</td>
+                  <td className="px-8 py-6 text-right text-sm font-bold text-gray-800">{doc.date}</td>
                   <td className="px-8 py-6 text-right">
                     <div className="flex justify-end gap-2">
                       <button className="p-2 hover:bg-brand-100 rounded-lg text-brand-600 transition-colors" title="Download">

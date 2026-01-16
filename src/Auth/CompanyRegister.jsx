@@ -47,7 +47,7 @@ const CompanyRegister = () => {
           <h2 className="mt-6 text-center text-3xl font-extrabold bg-gradient-to-r from-brand-400 to-brand-600 bg-clip-text text-transparent">
             Register Your Construction Company
           </h2>
-          <p className="text-center text-gray-600 mt-2">Start managing your construction projects</p>
+          <p className="text-center text-gray-800 mt-2">Start managing your construction projects</p>
         </div>
 
         <form className="mt-8 space-y-6 bg-white p-8 rounded-lg shadow-md border border-brand-200" onSubmit={handleSubmit}>
@@ -59,7 +59,7 @@ const CompanyRegister = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Company Name *</label>
+              <label className="block text-sm font-medium text-gray-900">Company Name *</label>
               <input
                 type="text"
                 name="companyName"
@@ -72,7 +72,7 @@ const CompanyRegister = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Owner Name *</label>
+              <label className="block text-sm font-medium text-gray-900">Owner Name *</label>
               <input
                 type="text"
                 name="ownerName"
@@ -87,7 +87,7 @@ const CompanyRegister = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Email *</label>
+              <label className="block text-sm font-medium text-gray-900">Email *</label>
               <input
                 type="email"
                 name="email"
@@ -100,7 +100,7 @@ const CompanyRegister = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Password *</label>
+              <label className="block text-sm font-medium text-gray-900">Password *</label>
               <input
                 type="password"
                 name="password"
@@ -115,7 +115,7 @@ const CompanyRegister = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Phone Number</label>
+              <label className="block text-sm font-medium text-gray-900">Phone Number</label>
               <input
                 type="tel"
                 name="phone"
@@ -127,7 +127,7 @@ const CompanyRegister = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">GST Number</label>
+              <label className="block text-sm font-medium text-gray-900">GST Number</label>
               <input
                 type="text"
                 name="gstNumber"
@@ -140,7 +140,7 @@ const CompanyRegister = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Company Address</label>
+            <label className="block text-sm font-medium text-gray-900">Company Address</label>
             <textarea
               name="address"
               value={formData.address}
@@ -152,7 +152,7 @@ const CompanyRegister = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Company Type</label>
+            <label className="block text-sm font-medium text-gray-900 mb-2">Company Type</label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-brand-50/50 p-4 rounded-lg border border-brand-100">
               {[
                 { id: 'CONSTRUCTION_COMPANY', label: 'Construction Company' },
@@ -170,7 +170,7 @@ const CompanyRegister = () => {
                       className="w-5 h-5 rounded border-2 border-brand-400 text-brand-600 focus:ring-brand-500 cursor-pointer transition-all"
                     />
                   </div>
-                  <span className="text-gray-700 group-hover:text-brand-700 transition-colors">{type.label}</span>
+                  <span className="text-gray-900 group-hover:text-brand-700 transition-colors">{type.label}</span>
                 </label>
               ))}
             </div>

@@ -23,7 +23,7 @@ const UserForm = ({ onSubmit, initialData = null, tenants = [] }) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-6 form-container">
       <div>
-        <label className="block text-sm font-medium text-gray-700">Company *</label>
+        <label className="block text-sm font-medium text-gray-900">Company *</label>
         <select
           name="tenant_id"
           value={formData.tenant_id}
@@ -42,7 +42,7 @@ const UserForm = ({ onSubmit, initialData = null, tenants = [] }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Full Name *</label>
+          <label className="block text-sm font-medium text-gray-900">Full Name *</label>
           <input
             type="text"
             name="name"
@@ -53,7 +53,7 @@ const UserForm = ({ onSubmit, initialData = null, tenants = [] }) => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Email *</label>
+          <label className="block text-sm font-medium text-gray-900">Email *</label>
           <input
             type="email"
             name="email"
@@ -80,7 +80,7 @@ const UserForm = ({ onSubmit, initialData = null, tenants = [] }) => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Role *</label>
+          <label className="block text-sm font-medium text-gray-900">Role *</label>
           <select
             name="role"
             value={formData.role}
@@ -96,7 +96,7 @@ const UserForm = ({ onSubmit, initialData = null, tenants = [] }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Phone Number</label>
+        <label className="block text-sm font-medium text-gray-900">Phone Number</label>
         <input
           type="tel"
           name="phone"

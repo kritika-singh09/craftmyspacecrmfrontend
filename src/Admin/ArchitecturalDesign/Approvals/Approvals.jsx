@@ -13,7 +13,7 @@ const ArchApprovals = () => {
             <div className="flex justify-between items-end">
                 <div>
                     <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight">Client <span className="text-brand-600">Approvals</span></h1>
-                    <p className="text-gray-500 dark:text-brand-300 mt-2 font-medium tracking-wide">Manage the formal approval cycle for drawings, designs, and project phases.</p>
+                    <p className="text-gray-800 dark:text-brand-300 mt-2 font-medium tracking-wide">Manage the formal approval cycle for drawings, designs, and project phases.</p>
                 </div>
             </div>
 

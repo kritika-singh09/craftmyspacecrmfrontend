@@ -13,7 +13,7 @@ const DailySite = () => {
       <div className="flex justify-between items-end">
         <div>
           <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">Daily Site</h2>
-          <p className="text-sm font-medium text-gray-500 mt-1">Real-time Project Updates</p>
+          <p className="text-sm font-medium text-gray-800 mt-1">Real-time Project Updates</p>
         </div>
         <RoleGuard requiredRole="engineer">
           <button
@@ -54,8 +54,8 @@ const DailySite = () => {
             <div className="relative pl-8 border-l-2 border-green-500/30 group">
               <div className="absolute top-0 -left-[9px] w-4 h-4 rounded-full bg-green-500 border-4 border-white shadow-sm transition-transform group-hover:scale-125"></div>
               <h4 className="font-black text-gray-900 text-lg leading-tight mb-1">Today • Mall Project</h4>
-              <p className="text-sm font-semibold text-gray-600 mb-2">Foundation work 80% complete - Structural phase approaching.</p>
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5 cursor-default">
+              <p className="text-sm font-semibold text-gray-800 mb-2">Foundation work 80% complete - Structural phase approaching.</p>
+              <p className="text-[10px] font-bold text-gray-900 uppercase tracking-widest flex items-center gap-1.5 cursor-default">
                 <span className="w-5 h-5 rounded-lg bg-green-100 flex items-center justify-center text-[10px]">👷</span>
                 Supervisor: Amit Sharma
               </p>
@@ -63,8 +63,8 @@ const DailySite = () => {
             <div className="relative pl-8 border-l-2 border-brand-500/30 group">
               <div className="absolute top-0 -left-[9px] w-4 h-4 rounded-full bg-brand-500 border-4 border-white shadow-sm transition-transform group-hover:scale-125"></div>
               <h4 className="font-black text-gray-900 text-lg leading-tight mb-1">Yesterday • Tower Project</h4>
-              <p className="text-sm font-semibold text-gray-600 mb-2">Steel reinforcement fabrication ongoing for the 4th floor columns.</p>
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5 cursor-default">
+              <p className="text-sm font-semibold text-gray-800 mb-2">Steel reinforcement fabrication ongoing for the 4th floor columns.</p>
+              <p className="text-[10px] font-bold text-gray-900 uppercase tracking-widest flex items-center gap-1.5 cursor-default">
                 <span className="w-5 h-5 rounded-lg bg-brand-100 flex items-center justify-center text-[10px]">👷</span>
                 Supervisor: Rajesh Kumar
               </p>

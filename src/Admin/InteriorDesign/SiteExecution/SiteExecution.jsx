@@ -13,7 +13,7 @@ const IntSiteExecution = () => {
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
                 <div>
                     <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight uppercase tracking-tight">Site <span className="text-orange-600">Execution</span></h1>
-                    <p className="text-gray-500 dark:text-orange-300 mt-2 font-medium tracking-wide">Daily work logs, manpower tracking, and on-site issue management.</p>
+                    <p className="text-gray-800 dark:text-orange-300 mt-2 font-medium tracking-wide">Daily work logs, manpower tracking, and on-site issue management.</p>
                 </div>
                 <button className="flex items-center gap-3 px-8 py-4 bg-orange-600 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-brand hover:scale-105 transition-all">
                     <FiPlus className="text-lg" /> Create Daily Log
@@ -66,7 +66,7 @@ const IntSiteExecution = () => {
                         <div className="h-2 bg-orange-50 dark:bg-brand-800 rounded-full overflow-hidden">
                             <div className="h-full bg-orange-500" style={{ width: '88%' }}></div>
                         </div>
-                        <p className="text-[9px] font-medium text-gray-400 mt-4 leading-relaxed italic">Site staff productivity is currently above target for current sprint.</p>
+                        <p className="text-[9px] font-medium text-gray-900 mt-4 leading-relaxed italic">Site staff productivity is currently above target for current sprint.</p>
                     </div>
                 </div>
             </div>

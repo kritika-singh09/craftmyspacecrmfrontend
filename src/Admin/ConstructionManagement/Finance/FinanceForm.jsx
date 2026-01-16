@@ -27,7 +27,7 @@ const FinanceForm = ({ onSubmit, initialData = null, projects = [], vendors = []
     <form onSubmit={handleSubmit} className="space-y-6 form-container">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Project *</label>
+          <label className="block text-sm font-medium text-gray-900">Project *</label>
           <select
             name="project_id"
             value={formData.project_id}
@@ -44,7 +44,7 @@ const FinanceForm = ({ onSubmit, initialData = null, projects = [], vendors = []
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Type *</label>
+          <label className="block text-sm font-medium text-gray-900">Type *</label>
           <select
             name="type"
             value={formData.type}
@@ -60,7 +60,7 @@ const FinanceForm = ({ onSubmit, initialData = null, projects = [], vendors = []
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Description *</label>
+        <label className="block text-sm font-medium text-gray-900">Description *</label>
         <textarea
           name="description"
           value={formData.description}
@@ -73,7 +73,7 @@ const FinanceForm = ({ onSubmit, initialData = null, projects = [], vendors = []
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Amount (₹) *</label>
+        <label className="block text-sm font-medium text-gray-900">Amount (₹) *</label>
         <input
           type="number"
           name="amount"
@@ -89,7 +89,7 @@ const FinanceForm = ({ onSubmit, initialData = null, projects = [], vendors = []
       {formData.type === 'Expense' && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Vendor</label>
+            <label className="block text-sm font-medium text-gray-900">Vendor</label>
             <select
               name="vendor_id"
               value={formData.vendor_id}
@@ -105,7 +105,7 @@ const FinanceForm = ({ onSubmit, initialData = null, projects = [], vendors = []
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Contractor</label>
+            <label className="block text-sm font-medium text-gray-900">Contractor</label>
             <select
               name="contractor_id"
               value={formData.contractor_id}
@@ -125,7 +125,7 @@ const FinanceForm = ({ onSubmit, initialData = null, projects = [], vendors = []
 
       {formData.type === 'Revenue' && (
         <div>
-          <label className="block text-sm font-medium text-gray-700">Client</label>
+          <label className="block text-sm font-medium text-gray-900">Client</label>
           <select
             name="client_id"
             value={formData.client_id}
@@ -144,7 +144,7 @@ const FinanceForm = ({ onSubmit, initialData = null, projects = [], vendors = []
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Status</label>
+          <label className="block text-sm font-medium text-gray-900">Status</label>
           <select
             name="status"
             value={formData.status}
@@ -157,7 +157,7 @@ const FinanceForm = ({ onSubmit, initialData = null, projects = [], vendors = []
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Payment Date</label>
+          <label className="block text-sm font-medium text-gray-900">Payment Date</label>
           <input
             type="date"
             name="payment_date"

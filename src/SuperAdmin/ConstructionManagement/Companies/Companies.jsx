@@ -60,7 +60,7 @@ const SuperAdminCompanies = () => {
             <div className="flex justify-between items-end">
                 <div>
                     <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Enterprise Hub</h1>
-                    <p className="text-sm font-bold text-gray-700 mt-1">Tenant Subscriptions and Lifecycle Management</p>
+                    <p className="text-sm font-bold text-gray-900 mt-1">Tenant Subscriptions and Lifecycle Management</p>
                 </div>
                 <button
                     onClick={handleOpenCreate}
@@ -99,12 +99,12 @@ const SuperAdminCompanies = () => {
                                     <td className="px-8 py-6 font-bold text-gray-900 group-hover:text-brand-600 transition-colors">{company.name}</td>
                                     <td className="px-8 py-6">
                                         <p className="text-sm font-bold text-gray-900">{company.ownerEmail}</p>
-                                        <p className="text-[10px] font-black text-gray-600 uppercase tracking-tight mt-0.5">Verified Identity</p>
+                                        <p className="text-[10px] font-black text-gray-800 uppercase tracking-tight mt-0.5">Verified Identity</p>
                                     </td>
                                     <td className="px-8 py-6">
                                         <span className={`px-3 py-1 text-[10px] font-black uppercase tracking-widest border rounded-xl ${company.plan === 'Enterprise' ? 'bg-purple-50 text-purple-700 border-purple-200' :
                                             company.plan === 'Pro' ? 'bg-brand-50 text-brand-700 border-brand-200' :
-                                                'bg-gray-50 text-gray-700 border-gray-200'
+                                                'bg-gray-50 text-gray-900 border-gray-200'
                                             }`}>
                                             {company.plan}
                                         </span>
@@ -152,13 +152,13 @@ const SuperAdminCompanies = () => {
                                 <h2 className="text-xl font-black text-gray-900">
                                     {editingCompany ? 'Modify Enterprise' : 'Provision Enterprise'}
                                 </h2>
-                                <p className="text-xs font-black text-gray-600 uppercase tracking-widest mt-1">
+                                <p className="text-xs font-black text-gray-800 uppercase tracking-widest mt-1">
                                     {editingCompany ? 'Updating Registry Identity' : 'Tenant Registration Portal'}
                                 </p>
                             </div>
                             <button
                                 onClick={() => setIsModalOpen(false)}
-                                className="w-10 h-10 rounded-full hover:bg-white flex items-center justify-center text-gray-400 hover:text-gray-900 transition-colors"
+                                className="w-10 h-10 rounded-full hover:bg-white flex items-center justify-center text-gray-900 hover:text-gray-900 transition-colors"
                             >
                                 ✕
                             </button>

@@ -18,7 +18,7 @@ const StatCard = ({ title, value, subtext, icon, color }) => (
                     <span className="flex items-center justify-center w-5 h-5 rounded-full bg-green-50 text-green-600 text-[10px] font-black">↑</span>
                     <span className="text-[11px] font-black text-green-600">12%</span>
                 </div>
-                <span className="text-[10px] font-black text-gray-600 uppercase tracking-tight">{subtext}</span>
+                <span className="text-[10px] font-black text-gray-800 uppercase tracking-tight">{subtext}</span>
             </div>
         )}
     </div>
@@ -38,7 +38,7 @@ const SuperAdminDashboard = () => {
             <div className="flex justify-between items-end">
                 <div>
                     <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Cloud Command</h1>
-                    <p className="text-sm font-bold text-gray-700 mt-1">Global System Intelligence & Oversight</p>
+                    <p className="text-sm font-bold text-gray-900 mt-1">Global System Intelligence & Oversight</p>
                 </div>
                 <div className="flex gap-3">
                     <button className="px-5 py-2.5 rounded-xl bg-white border border-brand-100 text-brand-600 text-[11px] font-black uppercase tracking-widest hover:bg-brand-50 shadow-sm transition-all">Export Stats</button>
@@ -71,7 +71,7 @@ const SuperAdminDashboard = () => {
                                 </div>
                                 <div className="flex-1">
                                     <p className="text-sm font-bold text-gray-900 leading-snug">{activity.text}</p>
-                                    <p className="text-[10px] font-black text-gray-600 uppercase tracking-widest mt-1">{activity.time}</p>
+                                    <p className="text-[10px] font-black text-gray-800 uppercase tracking-widest mt-1">{activity.time}</p>
                                 </div>
                             </div>
                         ))}

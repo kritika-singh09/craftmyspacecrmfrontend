@@ -7,7 +7,7 @@ const SuperAdminReports = () => {
             <div className="flex justify-between items-end">
                 <div>
                     <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Intelligence Hub</h1>
-                    <p className="text-sm font-bold text-gray-700 mt-1">Cross-Platform Analytical Data & Performance Reports</p>
+                    <p className="text-sm font-bold text-gray-900 mt-1">Cross-Platform Analytical Data & Performance Reports</p>
                 </div>
                 <div className="flex gap-3">
                     <button
@@ -26,7 +26,7 @@ const SuperAdminReports = () => {
                     <div className="flex justify-between items-start mb-10">
                         <div>
                             <h3 className="text-xl font-black text-gray-900">Platform Growth Velocity</h3>
-                            <p className="text-[10px] font-black text-gray-600 uppercase tracking-widest mt-1">Entity Onboarding vs Exit Metrics</p>
+                            <p className="text-[10px] font-black text-gray-800 uppercase tracking-widest mt-1">Entity Onboarding vs Exit Metrics</p>
                         </div>
                         <div className="flex gap-2">
                             {['Daily', 'Weekly', 'Monthly'].map((period) => (
@@ -48,15 +48,15 @@ const SuperAdminReports = () => {
 
                     <div className="mt-8 grid grid-cols-3 gap-6">
                         <div className="text-center">
-                            <p className="text-[10px] font-black text-gray-600 uppercase tracking-widest">New Signups</p>
+                            <p className="text-[10px] font-black text-gray-800 uppercase tracking-widest">New Signups</p>
                             <p className="text-2xl font-black text-gray-900 mt-1">128</p>
                         </div>
                         <div className="text-center">
-                            <p className="text-[10px] font-black text-gray-600 uppercase tracking-widest">Growth Rate</p>
+                            <p className="text-[10px] font-black text-gray-800 uppercase tracking-widest">Growth Rate</p>
                             <p className="text-2xl font-black text-green-600 mt-1">+14.2%</p>
                         </div>
                         <div className="text-center">
-                            <p className="text-[10px] font-black text-gray-600 uppercase tracking-widest">LTV (Avg)</p>
+                            <p className="text-[10px] font-black text-gray-800 uppercase tracking-widest">LTV (Avg)</p>
                             <p className="text-2xl font-black text-brand-600 mt-1">₹4.2L</p>
                         </div>
                     </div>
@@ -74,7 +74,7 @@ const SuperAdminReports = () => {
                             ].map((module) => (
                                 <div key={module.name}>
                                     <div className="flex justify-between mb-2">
-                                        <span className="text-[10px] font-black text-gray-700 uppercase tracking-widest">{module.name}</span>
+                                        <span className="text-[10px] font-black text-gray-900 uppercase tracking-widest">{module.name}</span>
                                         <span className="text-[10px] font-black text-gray-900">{module.usage}%</span>
                                     </div>
                                     <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
@@ -105,7 +105,7 @@ const SuperAdminReports = () => {
                         <FiBarChart2 />
                     </div>
                     <h2 className="text-2xl font-black text-gray-900">Custom Data Extraction</h2>
-                    <p className="text-gray-700 font-bold">Generate cross-tenant reports with granular filters. Select metrics, entities, and date ranges to build your custom intelligence stream.</p>
+                    <p className="text-gray-900 font-bold">Generate cross-tenant reports with granular filters. Select metrics, entities, and date ranges to build your custom intelligence stream.</p>
                     <button
                         onClick={() => alert('Report Builder Engine initializing...')}
                         className="px-10 py-5 bg-brand-600 text-white rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-brand-700 shadow-premium transition-all hover:-translate-y-1"

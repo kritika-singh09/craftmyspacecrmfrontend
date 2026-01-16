@@ -47,7 +47,7 @@ const SuperAdminDailyReports = () => {
             <div className="flex justify-between items-end">
                 <div>
                     <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Daily Logs</h1>
-                    <p className="text-sm font-bold text-gray-700 mt-1">Global Site Intelligence & Real-time Log Monitoring</p>
+                    <p className="text-sm font-bold text-gray-900 mt-1">Global Site Intelligence & Real-time Log Monitoring</p>
                 </div>
                 <div className="flex gap-3">
                     <button
@@ -73,9 +73,9 @@ const SuperAdminDailyReports = () => {
                             {stat.icon}
                         </div>
                         <div>
-                            <p className="text-[10px] font-black text-gray-600 uppercase tracking-widest">{stat.label}</p>
+                            <p className="text-[10px] font-black text-gray-800 uppercase tracking-widest">{stat.label}</p>
                             <h3 className="text-3xl font-black text-gray-900 mt-1">{stat.value}</h3>
-                            <p className="text-[11px] font-bold text-gray-700 mt-1 italic">{stat.detail}</p>
+                            <p className="text-[11px] font-bold text-gray-900 mt-1 italic">{stat.detail}</p>
                         </div>
                     </div>
                 ))}
@@ -120,9 +120,9 @@ const SuperAdminDailyReports = () => {
                                         <div className="flex items-center gap-3 mt-1">
                                             <span className="text-[10px] font-black text-brand-500 uppercase tracking-widest">{report.type}</span>
                                             <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
-                                            <span className="text-[10px] font-black text-gray-600 uppercase tracking-widest">{report.company}</span>
+                                            <span className="text-[10px] font-black text-gray-800 uppercase tracking-widest">{report.company}</span>
                                         </div>
-                                        <div className="flex items-center gap-4 mt-3 text-[11px] font-bold text-gray-700">
+                                        <div className="flex items-center gap-4 mt-3 text-[11px] font-bold text-gray-900">
                                             <span className="flex items-center gap-1"><FiMapPin className="text-brand-600" /> Ground Floor Slab</span>
                                             <span className="flex items-center gap-1"><FiClock className="text-brand-600" /> {report.time}</span>
                                             <span className="flex items-center gap-1 text-brand-600 bg-brand-50 px-2 py-0.5 rounded-lg">{report.items} check-items</span>
@@ -132,7 +132,7 @@ const SuperAdminDailyReports = () => {
                                 <div className="flex items-center gap-6">
                                     <div className="text-right">
                                         <p className="text-sm font-bold text-gray-900">{report.supervisor}</p>
-                                        <p className="text-[10px] font-black text-gray-600 uppercase tracking-tighter">Field Supervisor</p>
+                                        <p className="text-[10px] font-black text-gray-800 uppercase tracking-tighter">Field Supervisor</p>
                                     </div>
                                     <span className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest border rounded-xl ${report.status === 'Submitted' ? 'bg-green-50 text-green-700 border-green-200' :
                                         report.status === 'Critical' ? 'bg-red-50 text-red-700 border-red-200' :
@@ -165,13 +165,13 @@ const SuperAdminDailyReports = () => {
                         <div className="p-8 border-b border-brand-50 bg-brand-50/30 flex justify-between items-center text-left">
                             <div>
                                 <h2 className="text-xl font-black text-gray-900">{selectedReport.project}</h2>
-                                <p className="text-xs font-black text-gray-600 uppercase tracking-widest mt-1">
+                                <p className="text-xs font-black text-gray-800 uppercase tracking-widest mt-1">
                                     Full Daily Inspection Signature
                                 </p>
                             </div>
                             <button
                                 onClick={() => setSelectedReport(null)}
-                                className="w-10 h-10 rounded-full hover:bg-white flex items-center justify-center text-gray-400 hover:text-gray-900 transition-colors"
+                                className="w-10 h-10 rounded-full hover:bg-white flex items-center justify-center text-gray-900 hover:text-gray-900 transition-colors"
                             >
                                 ✕
                             </button>
@@ -200,7 +200,7 @@ const SuperAdminDailyReports = () => {
 
                             <div className="bg-brand-50/30 p-6 rounded-2xl border border-brand-50 text-left">
                                 <label className="text-[10px] font-black text-brand-500 uppercase tracking-[0.2em]">Progress Intelligence Summary</label>
-                                <p className="text-gray-700 font-medium mt-3 leading-relaxed">
+                                <p className="text-gray-900 font-medium mt-3 leading-relaxed">
                                     {selectedReport.summary}
                                 </p>
                             </div>
@@ -208,7 +208,7 @@ const SuperAdminDailyReports = () => {
                             <div className="flex gap-4">
                                 <button
                                     onClick={() => setSelectedReport(null)}
-                                    className="flex-1 px-4 py-4 rounded-2xl bg-gray-50 text-gray-600 text-xs font-black uppercase tracking-widest hover:bg-gray-100 transition-all border border-gray-100"
+                                    className="flex-1 px-4 py-4 rounded-2xl bg-gray-50 text-gray-800 text-xs font-black uppercase tracking-widest hover:bg-gray-100 transition-all border border-gray-100"
                                 >
                                     Close Inspection
                                 </button>

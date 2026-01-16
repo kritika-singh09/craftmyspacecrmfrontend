@@ -26,7 +26,7 @@ const TaskForm = ({ onSubmit, initialData = null, projects = [], sites = [], con
   return (
     <form onSubmit={handleSubmit} className="space-y-6 form-container">
       <div>
-        <label className="block text-sm font-medium text-gray-700">Task Name *</label>
+        <label className="block text-sm font-medium text-gray-900">Task Name *</label>
         <input
           type="text"
           name="name"
@@ -40,7 +40,7 @@ const TaskForm = ({ onSubmit, initialData = null, projects = [], sites = [], con
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Project *</label>
+          <label className="block text-sm font-medium text-gray-900">Project *</label>
           <select
             name="project_id"
             value={formData.project_id}
@@ -57,7 +57,7 @@ const TaskForm = ({ onSubmit, initialData = null, projects = [], sites = [], con
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Site</label>
+          <label className="block text-sm font-medium text-gray-900">Site</label>
           <select
             name="site_id"
             value={formData.site_id}
@@ -73,7 +73,7 @@ const TaskForm = ({ onSubmit, initialData = null, projects = [], sites = [], con
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Contractor *</label>
+          <label className="block text-sm font-medium text-gray-900">Contractor *</label>
           <select
             name="contractor_id"
             value={formData.contractor_id}
@@ -93,7 +93,7 @@ const TaskForm = ({ onSubmit, initialData = null, projects = [], sites = [], con
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Start Date *</label>
+          <label className="block text-sm font-medium text-gray-900">Start Date *</label>
           <input
             type="date"
             name="start_date"
@@ -104,7 +104,7 @@ const TaskForm = ({ onSubmit, initialData = null, projects = [], sites = [], con
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">End Date *</label>
+          <label className="block text-sm font-medium text-gray-900">End Date *</label>
           <input
             type="date"
             name="end_date"
@@ -118,7 +118,7 @@ const TaskForm = ({ onSubmit, initialData = null, projects = [], sites = [], con
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Status</label>
+          <label className="block text-sm font-medium text-gray-900">Status</label>
           <select
             name="status"
             value={formData.status}
@@ -131,7 +131,7 @@ const TaskForm = ({ onSubmit, initialData = null, projects = [], sites = [], con
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Progress (%)</label>
+          <label className="block text-sm font-medium text-gray-900">Progress (%)</label>
           <input
             type="number"
             name="progress_percent"
@@ -146,7 +146,7 @@ const TaskForm = ({ onSubmit, initialData = null, projects = [], sites = [], con
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Daily Report</label>
+        <label className="block text-sm font-medium text-gray-900">Daily Report</label>
         <textarea
           name="daily_report"
           value={formData.daily_report}

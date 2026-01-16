@@ -36,7 +36,7 @@ const SuperAdminRegister = () => {
                     <h2 className="mt-6 text-center text-3xl font-extrabold bg-gradient-to-r from-brand-400 to-brand-600 bg-clip-text text-transparent">
                         Super Admin Registration
                     </h2>
-                    <p className="text-center text-gray-600 mt-2">Platform administrator access</p>
+                    <p className="text-center text-gray-800 mt-2">Platform administrator access</p>
                 </div>
 
                 <form className="mt-8 space-y-6 bg-white p-8 rounded-lg shadow-md border border-brand-200" onSubmit={handleSubmit}>
@@ -47,7 +47,7 @@ const SuperAdminRegister = () => {
                     )}
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Full Name *</label>
+                        <label className="block text-sm font-medium text-gray-900">Full Name *</label>
                         <input
                             type="text"
                             name="name"
@@ -60,7 +60,7 @@ const SuperAdminRegister = () => {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Email *</label>
+                        <label className="block text-sm font-medium text-gray-900">Email *</label>
                         <input
                             type="email"
                             name="email"
@@ -73,7 +73,7 @@ const SuperAdminRegister = () => {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Password *</label>
+                        <label className="block text-sm font-medium text-gray-900">Password *</label>
                         <input
                             type="password"
                             name="password"
@@ -86,7 +86,7 @@ const SuperAdminRegister = () => {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Secret Key *</label>
+                        <label className="block text-sm font-medium text-gray-900">Secret Key *</label>
                         <input
                             type="password"
                             name="secretKey"
@@ -96,7 +96,7 @@ const SuperAdminRegister = () => {
                             placeholder="Enter super admin secret key"
                             required
                         />
-                        <p className="mt-1 text-xs text-gray-500">Contact platform administrator for the secret key</p>
+                        <p className="mt-1 text-xs text-gray-800">Contact platform administrator for the secret key</p>
                     </div>
 
                     <button

@@ -27,7 +27,7 @@ const ArchProfile = () => {
             <div className="flex justify-between items-center">
                 <div>
                     <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight">Firm <span className="text-brand-600">Profile</span></h1>
-                    <p className="text-gray-500 dark:text-brand-300 mt-2 font-medium">Manage your architectural firm's identity and professional details.</p>
+                    <p className="text-gray-800 dark:text-brand-300 mt-2 font-medium">Manage your architectural firm's identity and professional details.</p>
                 </div>
                 <button className="flex items-center gap-2 px-8 py-4 bg-brand-600 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-brand hover:bg-brand-700 transition-all active:scale-95">
                     <FiSave className="text-lg" /> Save Changes
@@ -50,11 +50,11 @@ const ArchProfile = () => {
                         <p className="text-[10px] font-black text-brand-600 uppercase tracking-widest mt-1">Professional Architect Firm</p>
 
                         <div className="mt-8 pt-8 border-t border-brand-50 dark:border-brand-800 w-full space-y-4">
-                            <div className="flex items-center gap-3 text-gray-500 dark:text-brand-300 text-sm">
+                            <div className="flex items-center gap-3 text-gray-800 dark:text-brand-300 text-sm">
                                 <FiMail className="shrink-0 text-brand-600" />
                                 <span className="truncate">{formData.email}</span>
                             </div>
-                            <div className="flex items-center gap-3 text-gray-500 dark:text-brand-300 text-sm">
+                            <div className="flex items-center gap-3 text-gray-800 dark:text-brand-300 text-sm">
                                 <FiGlobe className="shrink-0 text-brand-600" />
                                 <span>{formData.website}</span>
                             </div>
@@ -92,7 +92,7 @@ const ArchProfile = () => {
                                 { label: 'Official Website', name: 'website', value: formData.website },
                             ].map((field, i) => (
                                 <div key={i} className="space-y-2">
-                                    <label className="text-[10px] font-black text-gray-400 dark:text-brand-400 uppercase tracking-[0.2em] ml-2">{field.label}</label>
+                                    <label className="text-[10px] font-black text-gray-900 dark:text-brand-400 uppercase tracking-[0.2em] ml-2">{field.label}</label>
                                     <input
                                         type="text"
                                         name={field.name}
@@ -104,7 +104,7 @@ const ArchProfile = () => {
                                 </div>
                             ))}
                             <div className="md:col-span-2 space-y-2">
-                                <label className="text-[10px] font-black text-gray-400 dark:text-brand-400 uppercase tracking-[0.2em] ml-2">Firm Address</label>
+                                <label className="text-[10px] font-black text-gray-900 dark:text-brand-400 uppercase tracking-[0.2em] ml-2">Firm Address</label>
                                 <div className="relative">
                                     <FiMapPin className="absolute left-6 top-5 text-brand-600" />
                                     <textarea
@@ -131,7 +131,7 @@ const ArchProfile = () => {
                                 { label: 'IFSC Code', name: 'ifscCode', value: formData.ifscCode },
                             ].map((field, i) => (
                                 <div key={i} className="space-y-2">
-                                    <label className="text-[10px] font-black text-gray-400 dark:text-brand-400 uppercase tracking-[0.2em] ml-2">{field.label}</label>
+                                    <label className="text-[10px] font-black text-gray-900 dark:text-brand-400 uppercase tracking-[0.2em] ml-2">{field.label}</label>
                                     <input
                                         type="text"
                                         name={field.name}

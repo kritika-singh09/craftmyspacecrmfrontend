@@ -46,7 +46,7 @@ const IntProjectDetails = () => {
                                 ].map((item, i) => (
                                     <div key={i} className="p-6 bg-orange-50/30 dark:bg-brand-800/20 rounded-3xl border border-orange-200 dark:border-brand-800/50">
                                         <div className="text-orange-600 text-xl mb-3">{item.icon}</div>
-                                        <p className="text-[9px] font-black text-gray-700 uppercase tracking-widest">{item.label}</p>
+                                        <p className="text-[9px] font-black text-gray-900 uppercase tracking-widest">{item.label}</p>
                                         <p className="text-xs font-black text-gray-900 dark:text-white mt-1 uppercase tracking-tight">{item.value}</p>
                                     </div>
                                 ))}
@@ -120,7 +120,7 @@ const IntProjectDetails = () => {
                                 <thead>
                                     <tr className="bg-orange-50/50 dark:bg-brand-900/50">
                                         {['Item Description', 'Brand/Spec', 'Qty', 'Unit', 'Price', 'Total'].map(h => (
-                                            <th key={h} className="px-8 py-4 text-[10px] font-black text-gray-400 dark:text-orange-400 uppercase tracking-widest">{h}</th>
+                                            <th key={h} className="px-8 py-4 text-[10px] font-black text-gray-900 dark:text-orange-400 uppercase tracking-widest">{h}</th>
                                         ))}
                                     </tr>
                                 </thead>
@@ -157,7 +157,7 @@ const IntProjectDetails = () => {
                                     <div className="w-16 h-16 rounded-2xl bg-orange-50 dark:bg-brand-800 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition-transform">🏭</div>
                                     <div>
                                         <h4 className="text-lg font-black text-indigo-900 dark:text-white uppercase tracking-tight">{v.name}</h4>
-                                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1">{v.role}</p>
+                                        <p className="text-[10px] font-black text-gray-900 uppercase tracking-widest mt-1">{v.role}</p>
                                     </div>
                                 </div>
                                 <div className="text-right">
@@ -173,7 +173,7 @@ const IntProjectDetails = () => {
                     <div className="flex flex-col items-center justify-center h-full text-center py-20 opacity-30">
                         <span className="text-8xl mb-8">🛠️</span>
                         <h2 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight uppercase tracking-wider">{activeTab} Section</h2>
-                        <p className="max-w-md mx-auto mt-4 text-gray-500 dark:text-orange-300 font-medium">
+                        <p className="max-w-md mx-auto mt-4 text-gray-800 dark:text-orange-300 font-medium">
                             Tailored Interior Design interface for <span className="font-bold text-orange-600 italic">"{activeTab}"</span> is operational.
                         </p>
                     </div>
@@ -198,7 +198,7 @@ const IntProjectDetails = () => {
                             <span className="px-3 py-1 bg-amber-100 text-amber-700 text-[9px] font-black uppercase tracking-widest rounded-lg">Transformation WIP</span>
                         </div>
                         <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tighter mt-1 uppercase tracking-wide">Velvet Villa Penthouse</h1>
-                        <p className="text-xs font-bold text-gray-500 dark:text-orange-300 mt-1 uppercase tracking-widest">Main Client: <span className="text-orange-600 font-black">Khanna Residences</span></p>
+                        <p className="text-xs font-bold text-gray-800 dark:text-orange-300 mt-1 uppercase tracking-widest">Main Client: <span className="text-orange-600 font-black">Khanna Residences</span></p>
                     </div>
                 </div>
                 <div className="flex gap-4">
@@ -219,7 +219,7 @@ const IntProjectDetails = () => {
                         onClick={() => setActiveTab(tab.name)}
                         className={`flex items-center gap-3 px-6 py-4 rounded-[1.5rem] text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === tab.name
                             ? 'bg-orange-600 text-white shadow-brand scale-105'
-                            : 'text-gray-500 dark:text-orange-400 hover:bg-white dark:hover:bg-brand-800/80'
+                            : 'text-gray-800 dark:text-orange-400 hover:bg-white dark:hover:bg-brand-800/80'
                             }`}
                     >
                         <span className="text-xl">{tab.icon}</span>

@@ -34,7 +34,7 @@ const Login = () => {
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <label className="block text-sm font-medium text-gray-900">Email</label>
             <input
               type="email"
               value={email}
@@ -46,7 +46,7 @@ const Login = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <label className="block text-sm font-medium text-gray-900">Password</label>
             <input
               type="password"
               value={password}

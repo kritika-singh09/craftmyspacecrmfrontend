@@ -13,7 +13,7 @@ const IntClients = () => {
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
                 <div>
                     <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight uppercase tracking-tight">Client <span className="text-orange-600">Accounts</span></h1>
-                    <p className="text-gray-500 dark:text-orange-300 mt-2 font-medium tracking-wide">Manage relationships, preferences, and approval authorities for all projects.</p>
+                    <p className="text-gray-800 dark:text-orange-300 mt-2 font-medium tracking-wide">Manage relationships, preferences, and approval authorities for all projects.</p>
                 </div>
                 <button className="flex items-center gap-3 px-8 py-4 bg-orange-600 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-brand hover:scale-105 transition-all">
                     <FiPlus className="text-lg" /> New Client
@@ -45,7 +45,7 @@ const IntClients = () => {
                                             <div className="w-12 h-12 rounded-2xl bg-orange-100 dark:bg-brand-800 flex items-center justify-center text-xl shadow-inner group-hover:scale-110 transition-transform">💎</div>
                                             <div>
                                                 <p className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tight">{client.name}</p>
-                                                <p className="text-[10px] font-bold text-gray-400 group-hover:text-orange-500 transition-colors">{client.email}</p>
+                                                <p className="text-[10px] font-bold text-gray-900 group-hover:text-orange-500 transition-colors">{client.email}</p>
                                             </div>
                                         </div>
                                     </td>

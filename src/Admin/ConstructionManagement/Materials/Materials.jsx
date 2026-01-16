@@ -33,7 +33,7 @@ const Materials = () => {
       <div className="flex justify-between items-end">
         <div>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Inventory</h2>
-          <p className="text-sm font-medium text-gray-500 dark:text-brand-300 mt-1">Resource Management for {currentTenant.name}</p>
+          <p className="text-sm font-medium text-gray-800 dark:text-brand-300 mt-1">Resource Management for {currentTenant.name}</p>
         </div>
         <RoleGuard requiredRole="engineer">
           <button
@@ -52,7 +52,7 @@ const Materials = () => {
             <div className="flex justify-between items-start mb-6">
               <div>
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors leading-tight mb-1">{material.name}</h3>
-                <p className="text-[10px] font-semibold text-gray-400 dark:text-brand-400 uppercase tracking-widest">{material.vendor}</p>
+                <p className="text-[10px] font-semibold text-gray-900 dark:text-brand-400 uppercase tracking-widest">{material.vendor}</p>
               </div>
               <span className={`px-3 py-1 text-[10px] font-semibold uppercase tracking-wider rounded-lg ${material.stock <= material.minStock
                 ? 'bg-red-50 text-red-600 border border-red-100'
@@ -64,7 +64,7 @@ const Materials = () => {
 
             <div className="mb-8 mt-auto">
               <div className="flex justify-between items-end mb-2.5">
-                <span className="text-[10px] font-bold text-gray-400 dark:text-brand-400 uppercase tracking-widest">Available Stock</span>
+                <span className="text-[10px] font-bold text-gray-900 dark:text-brand-400 uppercase tracking-widest">Available Stock</span>
                 <span className={`text-sm font-bold ${material.stock <= material.minStock ? 'text-red-600 dark:text-red-400' : 'text-gray-900 dark:text-white'}`}>
                   {material.stock} {material.unit}
                 </span>
@@ -77,7 +77,7 @@ const Materials = () => {
                   <div className="absolute inset-0 bg-white/10 animate-pulse"></div>
                 </div>
               </div>
-              <p className="text-[10px] font-bold text-gray-400 dark:text-brand-400 mt-2 text-right uppercase tracking-tighter">Min. Required: {material.minStock} {material.unit}</p>
+              <p className="text-[10px] font-bold text-gray-900 dark:text-brand-400 mt-2 text-right uppercase tracking-tighter">Min. Required: {material.minStock} {material.unit}</p>
             </div>
 
             <div className="grid grid-cols-2 gap-3 mt-auto pt-6 border-t border-gray-100">
@@ -87,7 +87,7 @@ const Materials = () => {
               <RoleGuard requiredRole="manager">
                 <button
                   onClick={() => handleEdit(material)}
-                  className="py-2.5 px-4 rounded-xl bg-gray-50 dark:bg-brand-900/30 text-gray-700 dark:text-brand-300 text-[11px] font-bold uppercase tracking-wider hover:bg-gray-100 dark:hover:bg-brand-800 transition-all"
+                  className="py-2.5 px-4 rounded-xl bg-gray-50 dark:bg-brand-900/30 text-gray-900 dark:text-brand-300 text-[11px] font-bold uppercase tracking-wider hover:bg-gray-100 dark:hover:bg-brand-800 transition-all"
                 >
                   Update
                 </button>
@@ -110,7 +110,7 @@ const Materials = () => {
                   setShowForm(false);
                   setEditingMaterial(null);
                 }}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-gray-800 hover:text-gray-900"
               >
                 ✕
               </button>

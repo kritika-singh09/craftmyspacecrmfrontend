@@ -28,7 +28,7 @@ const UserManagement = () => {
                         <span className="bg-brand-600 w-1.5 h-10 rounded-full"></span>
                         Internal Team
                     </h1>
-                    <p className="text-gray-500 dark:text-brand-300 mt-2 font-medium tracking-wide">
+                    <p className="text-gray-800 dark:text-brand-300 mt-2 font-medium tracking-wide">
                         Control access, assign roles, and monitor architect workload.
                     </p>
                 </div>

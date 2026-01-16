@@ -7,7 +7,7 @@ const ArchSettings = () => {
             <div className="flex justify-between items-end">
                 <div>
                     <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight uppercase tracking-tight">Studio <span className="text-brand-600">Settings</span></h1>
-                    <p className="text-gray-500 dark:text-brand-300 mt-2 font-medium">Fine-tune your architectural workflow, permissions, and firm defaults.</p>
+                    <p className="text-gray-800 dark:text-brand-300 mt-2 font-medium">Fine-tune your architectural workflow, permissions, and firm defaults.</p>
                 </div>
             </div>
 
@@ -25,7 +25,7 @@ const ArchSettings = () => {
                         </div>
                         <div className="flex-1 text-indigo-900 dark:text-white">
                             <h3 className="text-lg font-black uppercase tracking-tight">{item.title}</h3>
-                            <p className="text-xs font-medium text-gray-500 dark:text-brand-300 mt-1">{item.desc}</p>
+                            <p className="text-xs font-medium text-gray-800 dark:text-brand-300 mt-1">{item.desc}</p>
                         </div>
                         <button className="px-6 py-2 bg-brand-50 dark:bg-brand-800 text-brand-600 dark:text-brand-300 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-brand-600 hover:text-white transition-all">Configure</button>
                     </div>

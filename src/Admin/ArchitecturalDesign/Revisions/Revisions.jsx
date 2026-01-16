@@ -13,7 +13,7 @@ const Revisions = () => {
             <div className="flex justify-between items-end">
                 <div>
                     <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight uppercase tracking-tight">Revision <span className="text-brand-600">History</span></h1>
-                    <p className="text-gray-500 dark:text-brand-300 mt-2 font-medium">Track changes, versioning, and approval status for all architectural revisions.</p>
+                    <p className="text-gray-800 dark:text-brand-300 mt-2 font-medium">Track changes, versioning, and approval status for all architectural revisions.</p>
                 </div>
                 <button className="flex items-center gap-3 px-8 py-4 bg-brand-600 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-brand hover:scale-105 transition-all">
                     <FiRefreshCw className="text-lg" /> Log New Revision
@@ -32,7 +32,7 @@ const Revisions = () => {
                     <tbody className="divide-y divide-brand-50 dark:divide-brand-800">
                         {revisions.map((rev) => (
                             <tr key={rev.id} className="hover:bg-brand-50/20 dark:hover:bg-brand-800/10 transition-colors">
-                                <td className="px-8 py-6 font-black text-xs text-gray-400 tracking-widest">{rev.id}</td>
+                                <td className="px-8 py-6 font-black text-xs text-gray-900 tracking-widest">{rev.id}</td>
                                 <td className="px-8 py-6">
                                     <div className="flex items-center gap-3">
                                         <div className="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-800 flex items-center justify-center text-brand-600">
@@ -43,9 +43,9 @@ const Revisions = () => {
                                 </td>
                                 <td className="px-8 py-6 text-sm font-black text-brand-600 italic">{rev.revNo}</td>
                                 <td className="px-8 py-6 max-w-xs">
-                                    <p className="text-xs font-bold text-gray-500 dark:text-brand-300 italic">"{rev.reason}"</p>
+                                    <p className="text-xs font-bold text-gray-800 dark:text-brand-300 italic">"{rev.reason}"</p>
                                 </td>
-                                <td className="px-8 py-6 text-xs font-bold text-gray-600 dark:text-brand-200">{rev.author}</td>
+                                <td className="px-8 py-6 text-xs font-bold text-gray-800 dark:text-brand-200">{rev.author}</td>
                                 <td className="px-8 py-6">
                                     <span className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest border ${rev.status === 'Approved' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-amber-50 text-amber-700 border-amber-100'
                                         }`}>

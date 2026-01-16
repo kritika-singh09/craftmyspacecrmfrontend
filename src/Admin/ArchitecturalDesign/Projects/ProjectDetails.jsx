@@ -31,7 +31,7 @@ const ProjectDetails = () => {
                                     <span className="w-1.5 h-8 bg-brand-600 rounded-full"></span>
                                     Project Brief & Details
                                 </h3>
-                                <p className="text-gray-600 dark:text-brand-200 font-medium leading-relaxed">
+                                <p className="text-gray-800 dark:text-brand-200 font-medium leading-relaxed">
                                     A premium residential development focused on sustainable architecture and vertical gardens. The project includes 42 luxury units, a rooftop infinity pool, and a communal sky forest. Designed to achieve LEED Platinum certification.
                                 </p>
                             </div>
@@ -46,7 +46,7 @@ const ProjectDetails = () => {
                                 ].map((item, i) => (
                                     <div key={i} className="p-6 bg-brand-50/30 dark:bg-brand-800/20 rounded-3xl border border-brand-50 dark:border-brand-800/50">
                                         <div className="text-brand-600 text-xl mb-3">{item.icon}</div>
-                                        <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">{item.label}</p>
+                                        <p className="text-[9px] font-black text-gray-900 uppercase tracking-widest">{item.label}</p>
                                         <p className="text-xs font-black text-gray-800 dark:text-white mt-1 uppercase tracking-tight">{item.value}</p>
                                     </div>
                                 ))}
@@ -98,7 +98,7 @@ const ProjectDetails = () => {
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                             <div className="space-y-4">
-                                <h4 className="text-sm font-black text-gray-400 uppercase tracking-[0.2em] ml-2">Contact Information</h4>
+                                <h4 className="text-sm font-black text-gray-900 uppercase tracking-[0.2em] ml-2">Contact Information</h4>
                                 <div className="p-8 bg-white dark:bg-brand-900/50 rounded-[2.5rem] shadow-premium border border-brand-50 dark:border-brand-800 space-y-6">
                                     <div className="flex items-center gap-4 text-sm font-bold opacity-70"><FiUsers className="text-brand-600" /> Director: Mr. K. Ravinder</div>
                                     <div className="flex items-center gap-4 text-sm font-bold opacity-70"><FiFileText className="text-brand-600" /> Email: director@skyline.com</div>
@@ -106,7 +106,7 @@ const ProjectDetails = () => {
                                 </div>
                             </div>
                             <div className="space-y-4">
-                                <h4 className="text-sm font-black text-gray-400 uppercase tracking-[0.2em] ml-2">Special Notes</h4>
+                                <h4 className="text-sm font-black text-gray-900 uppercase tracking-[0.2em] ml-2">Special Notes</h4>
                                 <div className="p-8 bg-white dark:bg-brand-900/50 rounded-[2.5rem] shadow-premium border border-brand-50 dark:border-brand-800 italic text-sm font-medium opacity-80 leading-relaxed">
                                     "Client prefers minimalist aesthetic with heavy emphasis on natural light. High importance on the sky-forest atrium area. Regular Sunday morning site visits are expected."
                                 </div>
@@ -119,7 +119,7 @@ const ProjectDetails = () => {
                     <div className="flex flex-col items-center justify-center h-full text-center py-20 opacity-40">
                         <span className="text-8xl mb-8">🏗️</span>
                         <h2 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight uppercase tracking-wider">{activeTab} Section</h2>
-                        <p className="max-w-md mx-auto mt-4 text-gray-500 dark:text-brand-300 font-medium">
+                        <p className="max-w-md mx-auto mt-4 text-gray-800 dark:text-brand-300 font-medium">
                             The <span className="font-bold text-brand-600 italic">"{activeTab}"</span> data is correctly mapped and ready for production integration.
                         </p>
                     </div>
@@ -144,7 +144,7 @@ const ProjectDetails = () => {
                             <span className="px-3 py-1 bg-emerald-100 text-emerald-700 text-[9px] font-black uppercase tracking-widest rounded-lg">Ongoing</span>
                         </div>
                         <h1 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight mt-1 uppercase tracking-wide">The Zenith Residency</h1>
-                        <p className="text-xs font-bold text-gray-500 dark:text-brand-300 mt-1">Lead Architect: <span className="text-brand-600 font-black">Ar. Rahul Sharma</span></p>
+                        <p className="text-xs font-bold text-gray-800 dark:text-brand-300 mt-1">Lead Architect: <span className="text-brand-600 font-black">Ar. Rahul Sharma</span></p>
                     </div>
                 </div>
                 <div className="flex gap-4">
@@ -165,7 +165,7 @@ const ProjectDetails = () => {
                         onClick={() => setActiveTab(tab.name)}
                         className={`flex items-center gap-3 px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === tab.name
                                 ? 'bg-brand-600 text-white shadow-brand scale-105'
-                                : 'text-gray-500 dark:text-brand-400 hover:bg-white dark:hover:bg-brand-800'
+                                : 'text-gray-800 dark:text-brand-400 hover:bg-white dark:hover:bg-brand-800'
                             }`}
                     >
                         <span className="text-lg">{tab.icon}</span>

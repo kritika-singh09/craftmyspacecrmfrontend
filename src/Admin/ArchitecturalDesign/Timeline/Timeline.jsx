@@ -14,7 +14,7 @@ const DesignProgress = () => {
             <div className="flex justify-between items-end">
                 <div>
                     <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight uppercase tracking-tight">Design <span className="text-brand-600">Progress</span></h1>
-                    <p className="text-gray-500 dark:text-brand-300 mt-2 font-medium tracking-wide">Detailed analytics on time spent, phase completion, and delivery performance.</p>
+                    <p className="text-gray-800 dark:text-brand-300 mt-2 font-medium tracking-wide">Detailed analytics on time spent, phase completion, and delivery performance.</p>
                 </div>
                 <div className="flex items-center gap-3 bg-brand-50 dark:bg-brand-900/40 px-6 py-3 rounded-2xl border border-brand-100 dark:border-brand-800 font-black text-[10px] text-brand-600 uppercase tracking-widest">
                     <FiTrendingUp className="text-lg" /> Overall: 68%
@@ -28,7 +28,7 @@ const DesignProgress = () => {
                             <div className="flex justify-between items-start mb-6">
                                 <div>
                                     <h3 className="text-xl font-black text-gray-900 dark:text-white uppercase tracking-tight">{p.name}</h3>
-                                    <p className={`text-[10px] font-black uppercase tracking-widest mt-1 ${p.status === 'Completed' ? 'text-emerald-500' : p.status === 'Ongoing' ? 'text-brand-500' : 'text-gray-400'}`}>{p.status}</p>
+                                    <p className={`text-[10px] font-black uppercase tracking-widest mt-1 ${p.status === 'Completed' ? 'text-emerald-500' : p.status === 'Ongoing' ? 'text-brand-500' : 'text-gray-900'}`}>{p.status}</p>
                                 </div>
                                 <div className="text-right">
                                     <p className="text-2xl font-black text-brand-600">{p.progress}%</p>
@@ -44,11 +44,11 @@ const DesignProgress = () => {
                                 <div className="flex items-center gap-6">
                                     <div className="flex items-center gap-2">
                                         <FiClock className="text-brand-600 text-sm" />
-                                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Logged: {p.hours}</span>
+                                        <span className="text-[10px] font-bold text-gray-800 uppercase tracking-widest">Logged: {p.hours}</span>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <FiActivity className="text-emerald-600 text-sm" />
-                                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Productivity: High</span>
+                                        <span className="text-[10px] font-bold text-gray-800 uppercase tracking-widest">Productivity: High</span>
                                     </div>
                                 </div>
                                 <FiArrowRight className="text-brand-600 group-hover:translate-x-2 transition-transform" />

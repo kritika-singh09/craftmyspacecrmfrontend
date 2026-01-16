@@ -92,7 +92,7 @@ const GlobalUserForm = ({ initialData, onSubmit, onCancel, companies }) => {
                     ].map(perm => (
                         <label key={perm} className="flex items-center gap-3 p-4 bg-brand-50/20 border border-brand-50 rounded-2xl cursor-pointer hover:bg-brand-50/50 transition-all">
                             <input type="checkbox" className="w-5 h-5 rounded-lg border-brand-200 text-brand-600 focus:ring-brand-500/10" />
-                            <span className="text-sm font-semibold text-gray-700">{perm}</span>
+                            <span className="text-sm font-semibold text-gray-900">{perm}</span>
                         </label>
                     ))}
                 </div>
@@ -102,7 +102,7 @@ const GlobalUserForm = ({ initialData, onSubmit, onCancel, companies }) => {
                 <button
                     type="button"
                     onClick={onCancel}
-                    className="flex-1 px-4 py-4 rounded-2xl bg-gray-50 text-gray-600 text-xs font-black uppercase tracking-widest hover:bg-gray-100 transition-all border border-gray-100"
+                    className="flex-1 px-4 py-4 rounded-2xl bg-gray-50 text-gray-800 text-xs font-black uppercase tracking-widest hover:bg-gray-100 transition-all border border-gray-100"
                 >
                     Discard
                 </button>

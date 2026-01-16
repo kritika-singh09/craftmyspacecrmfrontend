@@ -20,7 +20,7 @@ const IntProfile = () => {
                     <div className="p-10 bg-white dark:bg-brand-900/30 rounded-[3.5rem] shadow-premium border border-orange-50 dark:border-brand-800 flex flex-col items-center text-center">
                         <div className="w-40 h-40 rounded-[3rem] bg-orange-50 dark:bg-brand-800 border-2 border-dashed border-orange-200 dark:border-brand-700 flex flex-col items-center justify-center cursor-pointer group hover:border-orange-500 transition-all">
                             <FiUpload className="text-3xl text-orange-400 group-hover:text-orange-600 mb-2" />
-                            <p className="text-[10px] font-black text-gray-700 uppercase tracking-widest">Upload Logo</p>
+                            <p className="text-[10px] font-black text-gray-900 uppercase tracking-widest">Upload Logo</p>
                         </div>
                         <h3 className="mt-8 text-2xl font-black text-indigo-900 dark:text-white uppercase tracking-tight underline decoration-orange-500 decoration-4">Artisan Interior</h3>
                         <p className="text-[10px] font-black text-orange-500 uppercase tracking-[0.3em] mt-2">Boutique Design Studio</p>
@@ -53,13 +53,13 @@ const IntProfile = () => {
                             { label: 'Address', placeholder: '402, Design District, Satellite Rd.', icon: <FiMapPin /> },
                         ].map((field, i) => (
                             <div key={i} className="space-y-2">
-                                <label className="text-[10px] font-black text-gray-700 uppercase tracking-widest ml-4">{field.label}</label>
+                                <label className="text-[10px] font-black text-gray-900 uppercase tracking-widest ml-4">{field.label}</label>
                                 <div className="relative">
                                     <div className="absolute left-5 top-1/2 -translate-y-1/2 text-orange-600">{field.icon}</div>
                                     <input
                                         type="text"
                                         placeholder={field.placeholder}
-                                        className="w-full bg-orange-50/30 dark:bg-brand-800/30 border border-orange-200 dark:border-brand-700 rounded-3xl py-4 pl-12 pr-6 text-sm font-bold text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
+                                        className="w-full bg-orange-50/30 dark:bg-brand-800/30 border border-orange-200 dark:border-brand-700 rounded-3xl py-4 pl-12 pr-6 text-sm font-bold text-gray-900 dark:text-white placeholder:text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
                                     />
                                 </div>
                             </div>
@@ -76,7 +76,7 @@ const IntProfile = () => {
                                 { label: 'Holder Name', placeholder: 'Artisan Interior Pvt Ltd' },
                             ].map((bank, i) => (
                                 <div key={i} className="space-y-2">
-                                    <label className="text-[10px] font-black text-gray-700 uppercase tracking-widest ml-4">{bank.label}</label>
+                                    <label className="text-[10px] font-black text-gray-900 uppercase tracking-widest ml-4">{bank.label}</label>
                                     <input
                                         type="text"
                                         placeholder={bank.placeholder}

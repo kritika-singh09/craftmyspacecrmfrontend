@@ -32,7 +32,7 @@ const Clients = () => {
       <div className="flex justify-between items-end">
         <div>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Clients</h2>
-          <p className="text-sm font-medium text-gray-400 dark:text-brand-300 mt-1">{currentTenant.name}</p>
+          <p className="text-sm font-medium text-gray-900 dark:text-brand-300 mt-1">{currentTenant.name}</p>
         </div>
         <RoleGuard requiredRole="manager">
           <button
@@ -51,7 +51,7 @@ const Clients = () => {
             <div className="flex justify-between items-start mb-6">
               <div>
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors leading-tight mb-1">{client.name}</h3>
-                <p className="text-[11px] font-semibold text-gray-400 dark:text-brand-400 uppercase tracking-widest">{client.email}</p>
+                <p className="text-[11px] font-semibold text-gray-900 dark:text-brand-400 uppercase tracking-widest">{client.email}</p>
               </div>
               <span className={`px-3 py-1 text-[10px] font-semibold uppercase tracking-wider rounded-lg border ${client.status === 'Active' ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800' :
                 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800'
@@ -64,14 +64,14 @@ const Clients = () => {
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-xl bg-brand-50 dark:bg-brand-900/50 flex items-center justify-center text-brand-600 dark:text-brand-200 text-sm">🏗️</div>
                 <div>
-                  <p className="text-[10px] font-bold text-gray-400 dark:text-brand-400 uppercase tracking-widest">Active Project</p>
+                  <p className="text-[10px] font-bold text-gray-900 dark:text-brand-400 uppercase tracking-widest">Active Project</p>
                   <p className="text-sm font-bold text-gray-800 dark:text-gray-200">{client.project}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-xl bg-brand-50 dark:bg-brand-900/50 flex items-center justify-center text-brand-600 dark:text-brand-200 text-sm">📞</div>
                 <div>
-                  <p className="text-[10px] font-bold text-gray-400 dark:text-brand-400 uppercase tracking-widest">Phone Contact</p>
+                  <p className="text-[10px] font-bold text-gray-900 dark:text-brand-400 uppercase tracking-widest">Phone Contact</p>
                   <p className="text-sm font-bold text-gray-800 dark:text-gray-200">{client.contact}</p>
                 </div>
               </div>
@@ -84,7 +84,7 @@ const Clients = () => {
               <RoleGuard requiredRole="manager">
                 <button
                   onClick={() => handleEdit(client)}
-                  className="py-2.5 px-4 rounded-xl bg-gray-50 dark:bg-brand-900/30 text-gray-700 dark:text-brand-300 text-[11px] font-bold uppercase tracking-wider hover:bg-gray-200 dark:hover:bg-brand-800 transition-all"
+                  className="py-2.5 px-4 rounded-xl bg-gray-50 dark:bg-brand-900/30 text-gray-900 dark:text-brand-300 text-[11px] font-bold uppercase tracking-wider hover:bg-gray-200 dark:hover:bg-brand-800 transition-all"
                 >
                   Edit
                 </button>

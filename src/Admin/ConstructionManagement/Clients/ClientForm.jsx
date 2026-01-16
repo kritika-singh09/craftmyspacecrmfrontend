@@ -27,7 +27,7 @@ const ClientForm = ({ onSubmit, initialData = null }) => {
           name="name"
           value={formData.name}
           onChange={handleChange}
-          className="w-full px-5 py-4 bg-brand-50/30 border border-brand-100 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 outline-none transition-all placeholder:text-gray-400 font-semibold"
+          className="w-full px-5 py-4 bg-brand-50/30 border border-brand-100 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 outline-none transition-all placeholder:text-gray-900 font-semibold"
           placeholder="e.g. Rajesh Enterprises"
           required
         />
@@ -41,7 +41,7 @@ const ClientForm = ({ onSubmit, initialData = null }) => {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-5 py-4 bg-brand-50/30 border border-brand-100 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 outline-none transition-all placeholder:text-gray-400 font-semibold"
+            className="w-full px-5 py-4 bg-brand-50/30 border border-brand-100 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 outline-none transition-all placeholder:text-gray-900 font-semibold"
             placeholder="client@mail.com"
           />
         </div>
@@ -52,7 +52,7 @@ const ClientForm = ({ onSubmit, initialData = null }) => {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            className="w-full px-5 py-4 bg-brand-50/30 border border-brand-100 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 outline-none transition-all placeholder:text-gray-400 font-semibold"
+            className="w-full px-5 py-4 bg-brand-50/30 border border-brand-100 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 outline-none transition-all placeholder:text-gray-900 font-semibold"
             placeholder="+91 00000 00000"
           />
         </div>
@@ -64,7 +64,7 @@ const ClientForm = ({ onSubmit, initialData = null }) => {
           name="address"
           value={formData.address}
           onChange={handleChange}
-          className="w-full px-5 py-4 bg-brand-50/30 border border-brand-100 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 outline-none transition-all placeholder:text-gray-400 font-semibold min-h-[120px] resize-none"
+          className="w-full px-5 py-4 bg-brand-50/30 border border-brand-100 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 outline-none transition-all placeholder:text-gray-900 font-semibold min-h-[120px] resize-none"
           placeholder="Street, City, Zip Code"
         />
       </div>
@@ -76,7 +76,7 @@ const ClientForm = ({ onSubmit, initialData = null }) => {
           name="gst_number"
           value={formData.gst_number}
           onChange={handleChange}
-          className="w-full px-5 py-4 bg-brand-50/30 border border-brand-100 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 outline-none transition-all placeholder:text-gray-400 font-semibold uppercase"
+          className="w-full px-5 py-4 bg-brand-50/30 border border-brand-100 rounded-2xl focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 outline-none transition-all placeholder:text-gray-900 font-semibold uppercase"
           placeholder="22AAAAA0000A1Z5"
         />
       </div>

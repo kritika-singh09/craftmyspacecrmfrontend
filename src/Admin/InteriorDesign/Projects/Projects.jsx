@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiPlus, FiSearch, FiFilter, FiHome, FiMapPin, FiClock, FiActivity, FiBriefcase } from 'react-icons/fi';
+import { MdPalette } from 'react-icons/md';
 
 const IntProjects = () => {
     const navigate = useNavigate();
@@ -49,26 +50,26 @@ const IntProjects = () => {
                                 <h3 className="text-2xl font-black text-black dark:text-white uppercase tracking-tight leading-tight group-hover:text-orange-700 transition-colors uppercase">{project.name}</h3>
                                 <p className="text-xs font-black text-gray-900 mt-1">Client: <span className="text-black dark:text-white underline decoration-orange-500">{project.client}</span></p>
                             </div>
-                            <div className="w-14 h-14 rounded-2xl bg-orange-50 dark:bg-brand-800 flex items-center justify-center text-4xl shadow-inner relative z-10">🎨</div>
+                            <div className="w-14 h-14 rounded-2xl bg-orange-50 dark:bg-brand-800 flex items-center justify-center text-4xl shadow-inner relative z-10"><MdPalette /></div>
                         </div>
 
                         {/* Project Body */}
                         <div className="px-10 py-8 space-y-6 text-indigo-900 dark:text-white">
                             <div className="flex justify-between items-center bg-orange-50/30 dark:bg-brand-800/20 p-4 rounded-2xl border border-orange-50 dark:border-brand-800">
                                 <div className="text-center">
-                                    <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Budget</p>
+                                    <p className="text-[9px] font-black text-gray-900 uppercase tracking-widest">Budget</p>
                                     <p className="text-sm font-black text-orange-600">{project.budget}</p>
                                 </div>
                                 <div className="w-px h-8 bg-orange-100 dark:bg-brand-700"></div>
                                 <div className="text-center">
-                                    <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Type</p>
+                                    <p className="text-[9px] font-black text-gray-900 uppercase tracking-widest">Type</p>
                                     <p className="text-[10px] font-black uppercase tracking-tight">{project.type.split(' ')[0]}</p>
                                 </div>
                             </div>
 
                             <div className="space-y-2">
                                 <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest">
-                                    <span className="text-gray-400">Completion</span>
+                                    <span className="text-gray-900">Completion</span>
                                     <span className="text-orange-600 italic">{project.progress}%</span>
                                 </div>
                                 <div className="h-2 bg-orange-50 dark:bg-brand-800 rounded-full overflow-hidden p-0.5">

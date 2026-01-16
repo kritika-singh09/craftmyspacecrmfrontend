@@ -20,7 +20,7 @@ const ArchDocuments = () => {
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
                 <div>
                     <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight uppercase tracking-tight">Project <span className="text-brand-600">Documents</span></h1>
-                    <p className="text-gray-500 dark:text-brand-300 mt-2 font-medium tracking-wide">Secure repository for legal agreements, letters, and non-drawing project files.</p>
+                    <p className="text-gray-800 dark:text-brand-300 mt-2 font-medium tracking-wide">Secure repository for legal agreements, letters, and non-drawing project files.</p>
                 </div>
                 <button className="flex items-center gap-3 px-8 py-4 bg-brand-600 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-brand hover:scale-105 transition-all">
                     <FiPlus className="text-lg" /> Upload Document
@@ -38,7 +38,7 @@ const ArchDocuments = () => {
                             <FiFolder className="text-brand-200 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </div>
                         <h3 className="text-xl font-black group-hover:text-white uppercase tracking-tight">{cat.name}</h3>
-                        <p className="text-[10px] font-bold text-gray-400 dark:text-brand-400 group-hover:text-white/60 uppercase tracking-widest mt-1">{cat.count} Files</p>
+                        <p className="text-[10px] font-bold text-gray-900 dark:text-brand-400 group-hover:text-white/60 uppercase tracking-widest mt-1">{cat.count} Files</p>
                     </div>
                 ))}
             </div>
@@ -49,7 +49,7 @@ const ArchDocuments = () => {
                     <h4 className="text-lg font-black uppercase tracking-tight">Recent Uploads</h4>
                     <div className="flex gap-2">
                         <FiGrid className="text-brand-600 cursor-pointer" />
-                        <FiList className="text-gray-400 cursor-pointer" />
+                        <FiList className="text-gray-900 cursor-pointer" />
                     </div>
                 </div>
                 <table className="w-full text-left">
@@ -68,15 +68,15 @@ const ArchDocuments = () => {
                                         <div className="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-800 flex items-center justify-center text-brand-600 shadow-sm"><FiFileText /></div>
                                         <div>
                                             <p className="text-sm font-black uppercase tracking-tight">{doc.name}</p>
-                                            <p className="text-[9px] font-bold text-gray-400">{doc.size}</p>
+                                            <p className="text-[9px] font-bold text-gray-900">{doc.size}</p>
                                         </div>
                                     </div>
                                 </td>
                                 <td className="px-8 py-6">
                                     <span className="px-3 py-1 bg-brand-50 dark:bg-brand-900/50 text-brand-600 dark:text-brand-300 text-[9px] font-black uppercase tracking-widest rounded-lg">{doc.type}</span>
                                 </td>
-                                <td className="px-8 py-6 text-xs font-bold text-gray-500">{doc.date}</td>
-                                <td className="px-8 py-6 text-xs font-bold text-gray-500">{doc.author}</td>
+                                <td className="px-8 py-6 text-xs font-bold text-gray-800">{doc.date}</td>
+                                <td className="px-8 py-6 text-xs font-bold text-gray-800">{doc.author}</td>
                                 <td className="px-8 py-6">
                                     <button className="p-3 bg-brand-50 dark:bg-brand-800 text-brand-600 dark:text-brand-200 rounded-xl hover:bg-brand-600 hover:text-white transition-all shadow-sm">
                                         <FiExternalLink />
@@ -95,7 +95,7 @@ const ArchDocuments = () => {
                     </div>
                     <div>
                         <h5 className="font-black text-gray-900 dark:text-white uppercase tracking-tight">Bank-Grade Encryption</h5>
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">All project documents are encrypted and synchronized.</p>
+                        <p className="text-[10px] font-bold text-gray-900 uppercase tracking-widest mt-1">All project documents are encrypted and synchronized.</p>
                     </div>
                 </div>
             </div>

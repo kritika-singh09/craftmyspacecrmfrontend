@@ -18,7 +18,7 @@ const Safety = () => {
       <div className="flex justify-between items-end">
         <div>
           <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">Safety Control</h2>
-          <p className="text-sm font-medium text-gray-500 mt-1">Hazard Mitigation and Compliance</p>
+          <p className="text-sm font-medium text-gray-800 mt-1">Hazard Mitigation and Compliance</p>
         </div>
         <RoleGuard requiredRole="engineer">
           <button
@@ -96,10 +96,10 @@ const Safety = () => {
             <tbody className="divide-y divide-brand-50">
               {incidents.map((incident) => (
                 <tr key={incident.id} className="group hover:bg-brand-50/30 transition-colors">
-                  <td className="px-8 py-6 text-sm font-bold text-gray-600">{incident.date}</td>
+                  <td className="px-8 py-6 text-sm font-bold text-gray-800">{incident.date}</td>
                   <td className="px-8 py-6">
                     <p className="font-bold text-gray-900 group-hover:text-brand-600 transition-colors">{incident.type}</p>
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-tight">Active site hazard</p>
+                    <p className="text-[10px] font-bold text-gray-900 uppercase tracking-tight">Active site hazard</p>
                   </td>
                   <td className="px-8 py-6">
                     <span className={`px-3 py-1 text-[10px] font-black uppercase tracking-widest border rounded-xl ${incident.severity === 'Low' ? 'bg-green-50 text-green-700 border-green-200' :
@@ -110,7 +110,7 @@ const Safety = () => {
                     </span>
                   </td>
                   <td className="px-8 py-6">
-                    <span className="text-sm font-bold text-gray-600">{incident.status}</span>
+                    <span className="text-sm font-bold text-gray-800">{incident.status}</span>
                   </td>
                   <td className="px-8 py-6 text-right font-black text-gray-900">{incident.reporter}</td>
                 </tr>

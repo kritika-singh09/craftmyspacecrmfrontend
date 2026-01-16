@@ -1,17 +1,17 @@
 import { useTenant } from '../hooks/useTenant.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
-import { useTheme } from '../hooks/useTheme.jsx';
-import { FiMenu, FiLayers, FiSun, FiMoon } from 'react-icons/fi';
+import { useTheme } from '../context/ThemeContext.jsx';
+import { FiMenu, FiLayers } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
 const Header = ({ onMenuClick }) => {
   const { currentTenant, tenants, switchTenant } = useTenant();
   const { user, logout } = useAuth();
-  const { isDarkMode, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   const navigate = useNavigate();
 
   return (
-    <header className="bg-brand-600 bg-gradient-to-r from-brand-600 to-brand-800 shadow-premium fixed w-full top-0 z-50 h-16">
+    <header className="shadow-premium fixed w-full top-0 z-50 h-16" style={{ background: theme.gradients.primary }}>
       <div className="flex items-center justify-between px-8 h-full">
         <div className="flex items-center gap-4">
           <button
@@ -22,10 +22,10 @@ const Header = ({ onMenuClick }) => {
           </button>
 
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-10 h-10 bg-white/10 backdrop-blur-md rounded-xl text-white shadow-sm border border-white/20">
+            <div className="flex items-center justify-center w-10 h-10 bg-white/10 backdrop-blur-md rounded-xl shadow-sm border border-white/20" style={{ color: theme.textOnPrimary }}>
               <FiLayers className="w-5 h-5" />
             </div>
-            <h1 className="text-xl font-bold text-white hidden sm:block">
+            <h1 className="text-xl font-bold hidden sm:block" style={{ color: theme.textOnPrimary }}>
               Craft My Space
             </h1>
           </div>
@@ -33,14 +33,6 @@ const Header = ({ onMenuClick }) => {
 
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
-            <button
-              onClick={toggleTheme}
-              className="p-2.5 rounded-xl bg-white/10 text-white border border-white/20 hover:bg-white/20 transition-all shadow-sm"
-              title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
-            >
-              {isDarkMode ? <FiSun className="w-4 h-4" /> : <FiMoon className="w-4 h-4" />}
-            </button>
-
             <div className="hidden md:flex items-center gap-2 bg-white/10 p-1.5 rounded-2xl border border-white/20">
               <select
                 value={currentTenant.id}
@@ -59,11 +51,14 @@ const Header = ({ onMenuClick }) => {
             className="flex items-center gap-3 pl-4 border-l border-white/20 hover:bg-white/5 transition-all p-1.5 rounded-2xl group"
           >
             <div className="text-right hidden sm:block">
-              <div className="text-sm font-semibold text-white group-hover:text-blue-200">{user?.name}</div>
-              <div className="text-[10px] font-black uppercase tracking-wider text-blue-100 group-hover:text-white opacity-80">{user?.role}</div>
+              <div className="text-sm font-semibold group-hover:text-white/90" style={{ color: theme.textOnPrimary }}>{user?.name}</div>
+              <div className="text-[10px] font-black uppercase tracking-wider opacity-80 group-hover:opacity-100" style={{ color: theme.textOnPrimary }}>{user?.role}</div>
             </div>
 
-            <div className="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-soft border border-white/30 group-hover:scale-105 group-hover:bg-white/30 transition-all">
+            <div
+              className="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold shadow-soft border border-white/30 group-hover:scale-105 transition-all"
+              style={{ background: 'rgba(255,255,255,0.2)', color: theme.textOnPrimary }}
+            >
               {user?.name?.charAt(0)}
             </div>
           </button>
