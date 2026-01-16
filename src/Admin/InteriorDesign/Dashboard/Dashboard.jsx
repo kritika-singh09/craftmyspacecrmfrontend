@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../../context/ThemeContext';
 import { FiCalendar, FiPackage, FiImage } from 'react-icons/fi';
 import { MdChair, MdLightbulb, MdPalette, MdWindow, MdBed, MdLocalFlorist } from 'react-icons/md';
@@ -15,6 +16,7 @@ import {
 
 const IntDashboard = () => {
     const { theme } = useTheme();
+    const navigate = useNavigate();
 
     // Interior Design specific transactions
     const transactions = [
@@ -136,6 +138,7 @@ const IntDashboard = () => {
                     buttonText="Upgrade to Premium"
                     emoji={<GiSparkles />}
                     bgGradient={theme.gradients?.sidebar || 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)'}
+                    onClick={() => navigate('/profile')}
                 />
             </div>
         </div>

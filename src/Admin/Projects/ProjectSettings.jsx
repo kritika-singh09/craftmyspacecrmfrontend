@@ -1,9 +1,11 @@
 import React from 'react';
 import { useSubscription } from '../../hooks/useSubscription';
+import { useTheme } from '../../context/ThemeContext';
 import { FiCheckCircle, FiLock, FiInfo } from 'react-icons/fi';
 
 const ProjectSettings = ({ project }) => {
     const { subscription, toggleModule, isModuleLocked } = useSubscription();
+    const { theme } = useTheme();
 
     const moduleConfigs = [
         { id: 'Interior', name: 'Interior Design', desc: 'Manage 3D renders, BOQ, and site execution.' },
@@ -20,9 +22,9 @@ const ProjectSettings = ({ project }) => {
 
     return (
         <div className="space-y-8 animate-in fade-in duration-500">
-            <div className="flex items-center gap-4 bg-blue-50 dark:bg-blue-900/20 p-6 rounded-2xl border border-blue-100 dark:border-blue-800/50">
-                <FiInfo className="text-blue-600 text-xl shrink-0" />
-                <p className="text-sm font-medium text-blue-800 dark:text-blue-200">
+            <div className="flex items-center gap-4 p-6 rounded-2xl border transition-colors" style={{ backgroundColor: `${theme.primary}10`, borderColor: `${theme.primary}30` }}>
+                <FiInfo className="text-xl shrink-0" style={{ color: theme.primary }} />
+                <p className="text-sm font-medium" style={{ color: theme.textSecondary }}>
                     Select which modules are active for <span className="font-bold underline">{project?.name || 'this project'}</span>.
                     Available modules depend on your current <span className="font-bold">{subscription.plan}</span> plan.
                 </p>
@@ -36,30 +38,40 @@ const ProjectSettings = ({ project }) => {
                     return (
                         <div
                             key={mod.id}
-                            className={`relative card-premium p-6 flex flex-col border-none ring-1 transition-all ${isEnabled ? 'ring-emerald-500/50 bg-emerald-50/5 dark:bg-emerald-900/5' : 'ring-slate-200 dark:ring-slate-800'
-                                } ${isLocked ? 'opacity-60 grayscale' : ''}`}
+                            className={`relative card-premium p-6 flex flex-col border-none ring-1 transition-all ${isLocked ? 'opacity-60 grayscale' : ''}`}
+                            style={{
+                                backgroundColor: isEnabled ? `${theme.primary}05` : theme.cardBg,
+                                ringColor: isEnabled ? theme.primary : theme.cardBorder,
+                                boxShadow: isEnabled ? `0 4px 20px ${theme.primary}15` : 'none'
+                            }}
                         >
                             <div className="flex justify-between items-start mb-4">
-                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl border ${isEnabled ? 'bg-emerald-100 text-emerald-600 border-emerald-200' : 'bg-slate-100 text-slate-400 border-slate-200'
-                                    }`}>
+                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl border`}
+                                    style={{
+                                        backgroundColor: isEnabled ? `${theme.primary}20` : `${theme.iconBg}10`,
+                                        color: isEnabled ? theme.primary : theme.textMuted,
+                                        borderColor: isEnabled ? `${theme.primary}30` : theme.cardBorder
+                                    }}>
                                     {isEnabled ? <FiCheckCircle /> : mod.id === 'Interior' ? '🏠' : mod.id === 'Architecture' ? '📐' : '🏗️'}
                                 </div>
                                 {isLocked && (
-                                    <div className="flex items-center gap-1.5 px-3 py-1 bg-slate-900 text-white rounded-full text-[9px] font-black uppercase tracking-widest shadow-lg">
+                                    <div className="flex items-center gap-1.5 px-3 py-1 bg-gray-900 text-white rounded-full text-[9px] font-black uppercase tracking-widest shadow-lg">
                                         <FiLock size={10} /> LOCK
                                     </div>
                                 )}
                             </div>
 
-                            <h4 className="text-lg font-black text-slate-900 dark:text-white tracking-tight">{mod.name}</h4>
-                            <p className="text-xs font-medium text-slate-500 mt-2 mb-8 flex-1">{mod.desc}</p>
+                            <h4 className="text-lg font-black tracking-tight" style={{ color: theme.textPrimary }}>{mod.name}</h4>
+                            <p className="text-xs font-medium mt-2 mb-8 flex-1" style={{ color: theme.textSecondary }}>{mod.desc}</p>
 
                             <button
                                 onClick={() => handleToggle(mod.id)}
-                                className={`w-full py-3 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] transition-all ${isEnabled
-                                        ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/20'
-                                        : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200'
-                                    } ${isLocked ? 'cursor-not-allowed' : 'active:scale-95'}`}
+                                className={`w-full py-3 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] transition-all ${isLocked ? 'cursor-not-allowed' : 'active:scale-95'}`}
+                                style={{
+                                    background: isEnabled ? theme.gradients.button : `${theme.iconBg}20`,
+                                    color: isEnabled ? 'white' : theme.textSecondary,
+                                    boxShadow: isEnabled ? '0 4px 15px rgba(0,0,0,0.1)' : 'none'
+                                }}
                             >
                                 {isEnabled ? 'ACTIVE' : isLocked ? 'UPGRADE TO ENABLE' : 'ENABLE MODULE'}
                             </button>

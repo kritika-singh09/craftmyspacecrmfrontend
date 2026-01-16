@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useTheme } from '../../context/ThemeContext.jsx';
 import {
   FiGrid, FiLayers, FiUserCheck, FiTool, FiShoppingCart, FiUsers,
   FiPackage, FiDollarSign, FiClipboard, FiCheckCircle, FiShield,
@@ -9,6 +9,7 @@ import {
 const Sidebar = ({ isOpen, onNavigate }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { theme } = useTheme();
   const [activeMenu, setActiveMenu] = useState(location.pathname.split('/')[1] || 'dashboard');
 
   const categories = [
@@ -45,14 +46,14 @@ const Sidebar = ({ isOpen, onNavigate }) => {
   };
 
   return (
-    <aside className={`fixed left-0 top-16 h-[calc(100vh-4rem)] w-72 bg-slate-900 transform transition-all duration-500 ease-in-out z-40 border-r border-white/5 ${isOpen ? 'translate-x-0 shadow-xl' : '-translate-x-full'
-      } lg:translate-x-0`}>
+    <aside className={`fixed left-0 top-16 h-[calc(100vh-4rem)] w-72 transform transition-all duration-500 ease-in-out z-40 border-r ${isOpen ? 'translate-x-0 shadow-xl' : '-translate-x-full'
+      } lg:translate-x-0`} style={{ background: theme.gradients.sidebar, borderColor: theme.cardBorder }}>
       <nav className="p-6 h-full overflow-y-auto no-scrollbar pb-24">
         <ul className="space-y-8">
           {categories.map((category) => (
             <li key={category.title} className="space-y-3">
               <div className="px-4">
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-300">
+                <p className="text-[10px] font-black uppercase tracking-[0.2em]" style={{ color: theme.textSecondary }}>
                   {category.title}
                 </p>
               </div>
@@ -62,13 +63,18 @@ const Sidebar = ({ isOpen, onNavigate }) => {
                     <button
                       onClick={() => handleMenuClick(item.id, item.path)}
                       className={`w-full flex items-center px-4 py-3 text-left rounded-2xl transition-all duration-300 group ${activeMenu === item.id
-                        ? 'bg-brand-600 text-white shadow-lg shadow-brand-600/20'
-                        : 'text-slate-300 hover:bg-white/5 hover:text-white'
+                        ? 'shadow-lg'
+                        : ''
                         }`}
+                      style={{
+                        background: activeMenu === item.id ? theme.gradients.button : 'transparent',
+                        color: activeMenu === item.id ? theme.textOnPrimary : theme.textSecondary
+                      }}
+                      onMouseOver={(e) => { if (activeMenu !== item.id) e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'; }}
+                      onMouseOut={(e) => { if (activeMenu !== item.id) e.currentTarget.style.backgroundColor = 'transparent'; }}
                     >
-                      <div className={`mr-3 p-2 rounded-xl transition-all duration-300 ${activeMenu === item.id
-                        ? 'bg-white/20'
-                        : 'bg-white/5 group-hover:bg-white/10'}`}>
+                      <div className={`mr-3 p-2 rounded-xl transition-all duration-300`}
+                        style={{ backgroundColor: activeMenu === item.id ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.05)' }}>
                         {item.icon}
                       </div>
                       <span className={`font-bold transition-all duration-300 ${activeMenu === item.id ? 'translate-x-1' : ''}`}>

@@ -10,8 +10,8 @@ export const SubscriptionProvider = ({ children }) => {
             plan: 'Trial', // Trial, Basic, Pro
             status: 'ACTIVE', // ACTIVE, INACTIVE, PENDING
             activatedAt: new Date().toISOString(),
-            expiresAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
-            enabledModules: ['Interior'], // 'Interior', 'Architecture', 'Construction'
+            expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+            enabledModules: ['Interior'],
             paymentHistory: []
         };
     });
@@ -30,9 +30,16 @@ export const SubscriptionProvider = ({ children }) => {
 
     const processPayment = (success) => {
         if (success) {
+            const planLimits = {
+                'Trial': ['Interior'],
+                'Basic': ['Interior', 'Architecture'],
+                'Pro': ['Interior', 'Architecture', 'Construction']
+            };
+
             setSubscription(prev => ({
                 ...prev,
                 status: 'ACTIVE',
+                enabledModules: planLimits[prev.plan] || prev.enabledModules,
                 activatedAt: new Date().toISOString(),
                 expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days
                 paymentHistory: [

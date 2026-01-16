@@ -39,7 +39,8 @@ const GlobalDashboard = () => {
             accent: 'text-blue-600'
         },
         {
-            title: 'Architectural',
+            id: 'architecture',
+            title: 'Architecture',
             subtitle: 'Design & Planning',
             icon: <FiLayers />,
             path: '/arch-dashboard',
@@ -99,7 +100,8 @@ const GlobalDashboard = () => {
                         <div className="relative z-10">
                             <div className="flex items-start justify-between mb-10">
                                 <div className="flex items-center gap-4">
-                                    <div className={`w-14 h-14 rounded-[1.25rem] bg-${module.color}-500 dark:bg-${module.color}-600 flex items-center justify-center text-white text-2xl shadow-lg shadow-${module.color}-500/20 group-hover:scale-110 transition-transform duration-500`}>
+                                    <div className={`w-14 h-14 rounded-[1.25rem] flex items-center justify-center text-white text-2xl shadow-lg group-hover:scale-110 transition-transform duration-500`}
+                                        style={{ backgroundColor: module.id === 'construction' ? '#3b82f6' : module.id === 'architecture' ? '#10b981' : '#f59e0b' }}>
                                         {module.icon}
                                     </div>
                                     <div>
@@ -125,8 +127,8 @@ const GlobalDashboard = () => {
                                 onClick={() => navigate(module.path)}
                                 disabled={isModuleLocked(module.title)}
                                 className={`w-full py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 hover:gap-3 ${isModuleLocked(module.title)
-                                        ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed'
-                                        : `bg-${module.color}-600 dark:bg-${module.color}-700 text-white shadow-lg shadow-${module.color}-600/20 dark:shadow-none`
+                                    ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed'
+                                    : `bg-${module.color}-600 dark:bg-${module.color}-700 text-white shadow-lg shadow-${module.color}-600/20 dark:shadow-none`
                                     }`}
                             >
                                 {isModuleLocked(module.title) ? 'Upgrade to Unlock' : 'Enter Module'} <FiChevronRight className="text-lg" />
@@ -140,9 +142,10 @@ const GlobalDashboard = () => {
                                     <p className="text-xs font-black uppercase tracking-widest text-slate-600 dark:text-slate-300 mb-4">Upgrade Required</p>
                                     <button
                                         onClick={() => navigate('/subscription')}
-                                        className="px-4 py-2 bg-brand-600 text-white rounded-lg text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-brand-600/20"
+                                        className={`px-8 py-3 text-white rounded-xl text-[10px] font-black uppercase tracking-[0.2em] shadow-xl hover:scale-105 active:scale-95 transition-all`}
+                                        style={{ backgroundColor: module.id === 'construction' ? '#3b82f6' : module.id === 'architecture' ? '#10b981' : '#f59e0b' }}
                                     >
-                                        View Plans
+                                        Unlock {module.title}
                                     </button>
                                 </div>
                             )}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../../context/ThemeContext';
 import {
     UpdateCard,
@@ -12,6 +13,7 @@ import {
 
 const ArchDashboard = () => {
     const { theme } = useTheme();
+    const navigate = useNavigate();
 
     // Architecture specific transactions
     const transactions = [
@@ -133,6 +135,7 @@ const ArchDashboard = () => {
                     buttonText="Upgrade to Enterprise"
                     emoji="🏗️"
                     bgGradient={theme.gradients?.sidebar || 'linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)'}
+                    onClick={() => navigate('/profile')}
                 />
             </div>
         </div>

@@ -346,26 +346,31 @@ export const SalesReport = ({ title, items }) => {
 };
 
 // Promotional Card
-export const PromotionalCard = ({ title, subtitle, description, buttonText, bgGradient, emoji }) => {
+export const PromotionalCard = ({ title, subtitle, description, buttonText, bgGradient, emoji, onClick }) => {
     const { theme } = useTheme();
 
     return (
         <div
             className="relative overflow-hidden rounded-2xl p-8 shadow-lg group cursor-pointer transition-transform hover:scale-[1.02]"
             style={{ background: bgGradient || 'linear-gradient(135deg, #A8D08D 0%, #F5F5DC 100%)' }}
+            onClick={onClick}
         >
             <div className="absolute top-0 right-0 text-9xl opacity-10 transform rotate-12">
                 {emoji || <FiChart />}
             </div>
 
             <div className="relative z-10">
-                <h3 className="text-2xl font-bold text-white mb-2 leading-tight">{title}</h3>
+                <h3 className="text-2xl font-bold text-white mb-2 leading-tight" style={{ color: 'white' }}>{title}</h3>
                 {subtitle && <p className="text-sm font-semibold text-white opacity-90 mb-3">{subtitle}</p>}
                 {description && <p className="text-sm text-white opacity-80 mb-6 leading-relaxed">{description}</p>}
 
                 <button
                     className="px-6 py-3 rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition-all active:scale-95"
                     style={{ background: 'white', color: theme.textPrimary }}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        if (onClick) onClick();
+                    }}
                 >
                     {buttonText || 'Learn More'}
                 </button>

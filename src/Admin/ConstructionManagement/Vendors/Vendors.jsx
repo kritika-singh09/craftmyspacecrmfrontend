@@ -1,48 +1,168 @@
-import { vendors } from '../../../data/mockData';
+import { useState } from 'react';
+import { commonVendors as initialVendors } from '../../../data/tenantData';
+import { useTheme } from '../../../context/ThemeContext.jsx';
+import VendorForm from './VendorForm';
+import POForm from './POForm';
+import VendorDetails from './VendorDetails';
+import RoleGuard from '../../../common/RoleGuard';
+import { FiPlus, FiEdit2, FiTrash2, FiPackage, FiInfo, FiX, FiCheckCircle } from 'react-icons/fi';
 
 const Vendors = () => {
+  const { theme } = useTheme();
+  const [vendorList, setVendorList] = useState(initialVendors);
+  const [showForm, setShowForm] = useState(false);
+  const [editingVendor, setEditingVendor] = useState(null);
+
+  const [showPOForm, setShowPOForm] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
+  const [selectedVendor, setSelectedVendor] = useState(null);
+
+  const [poOrders, setPOOrders] = useState([
+    { id: 1, poNumber: "PO-001", vendorName: "Shree Cement Ltd", material: "Cement", amount: 76000, status: "Pending", details: "200 Bags Cement" },
+    { id: 2, poNumber: "PO-002", vendorName: "Steel India", material: "Steel", amount: 225000, status: "Delivered", details: "5 Tons Steel" }
+  ]);
+
+  const handleCreatePO = (vendor) => {
+    setSelectedVendor(vendor);
+    setShowPOForm(true);
+  };
+
+  const handlePOSubmit = (poData) => {
+    const newOrder = {
+      id: poOrders.length + 1,
+      poNumber: poData.poNumber,
+      vendorName: poData.vendorName,
+      material: poData.material,
+      amount: poData.totalAmount,
+      status: "Pending",
+      details: `${poData.quantity} Units ${poData.material}`
+    };
+    setPOOrders([newOrder, ...poOrders]);
+    setShowPOForm(false);
+  };
+
+  const handleViewDetails = (vendor) => {
+    setSelectedVendor(vendor);
+    setShowDetails(true);
+  };
+
+  const handleAdd = () => {
+    setEditingVendor(null);
+    setShowForm(true);
+  };
+
+  const handleEdit = (vendor) => {
+    setEditingVendor(vendor);
+    setShowForm(true);
+  };
+
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to remove this vendor?")) {
+      setVendorList(vendorList.filter(v => v.id !== id));
+    }
+  };
+
+  const handleFormSubmit = (formData) => {
+    if (editingVendor) {
+      setVendorList(vendorList.map(v =>
+        v.id === editingVendor.id ? { ...v, ...formData } : v
+      ));
+    } else {
+      const newVendor = {
+        ...formData,
+        id: Math.max(0, ...vendorList.map(v => v.id)) + 1
+      };
+      setVendorList([...vendorList, newVendor]);
+    }
+    setShowForm(false);
+  };
+
+  if (showDetails && selectedVendor) {
+    return (
+      <VendorDetails
+        vendor={selectedVendor}
+        onBack={() => setShowDetails(false)}
+      />
+    );
+  }
+
   return (
-    <div className="space-y-8 pb-8">
+    <div className="space-y-8 pb-8 animate-in fade-in duration-500">
       <div className="flex justify-between items-end">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Vendors</h2>
-          <p className="text-sm font-medium text-gray-900 dark:text-brand-300 mt-1">Sourcing and Procurement Hub</p>
+          <h2 className="text-3xl font-extrabold tracking-tight" style={{ color: theme.textPrimary }}>Vendors</h2>
+          <p className="text-sm font-medium mt-1" style={{ color: theme.textSecondary }}>Sourcing and Procurement Hub</p>
         </div>
-        <button className="group flex items-center gap-2 bg-brand-600 text-white px-6 py-3 rounded-2xl font-bold text-sm shadow-premium hover:bg-brand-700 transition-all hover:-translate-y-0.5">
-          <span className="text-xl leading-none group-hover:rotate-90 transition-transform">+</span>
+        <button
+          onClick={handleAdd}
+          className="group flex items-center gap-2 text-white px-6 py-3 rounded-2xl font-black uppercase tracking-[0.15em] text-[11px] shadow-premium transition-all hover:-translate-y-0.5"
+          style={{ background: theme.gradients.button }}
+        >
+          <FiPlus className="text-sm group-hover:rotate-90 transition-transform" />
           Add Vendor
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {vendors.map((vendor) => (
-          <div key={vendor.id} className="card-premium p-8 group">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {vendorList.map((vendor) => (
+          <div key={vendor.id} className="card-premium p-6 group flex flex-col" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
             <div className="flex justify-between items-start mb-6">
               <div>
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors leading-tight mb-1">{vendor.name}</h3>
-                <p className="text-[10px] font-semibold text-gray-900 dark:text-brand-400 uppercase tracking-widest">Certified Supplier</p>
+                <h3 className="text-lg font-black transition-colors leading-tight mb-1" style={{ color: theme.textPrimary }}>{vendor.name}</h3>
+                <div className="flex items-center gap-1.5">
+                  <FiCheckCircle className="text-[10px] text-green-500" />
+                  <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: theme.textMuted }}>Certified Supplier</p>
+                </div>
               </div>
-              <span className="px-3 py-1 text-[10px] font-semibold uppercase tracking-wider bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-100 dark:border-green-800 rounded-lg">
-                Active
-              </span>
+              <div className="flex gap-1">
+                <RoleGuard requiredRole="manager">
+                  <button
+                    onClick={() => handleEdit(vendor)}
+                    className="w-8 h-8 flex items-center justify-center rounded-lg border transition-all hover:text-white"
+                    style={{ borderColor: theme.cardBorder, color: theme.textSecondary }}
+                    onMouseOver={(e) => { e.currentTarget.style.backgroundColor = theme.primary; e.currentTarget.style.borderColor = theme.primary; }}
+                    onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.borderColor = theme.cardBorder; }}
+                  >
+                    <FiEdit2 size={14} />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(vendor.id)}
+                    className="w-8 h-8 flex items-center justify-center rounded-lg border border-red-100 text-red-400 hover:bg-red-500 hover:text-white transition-all"
+                  >
+                    <FiTrash2 size={14} />
+                  </button>
+                </RoleGuard>
+              </div>
             </div>
 
-            <div className="space-y-4 mb-8">
-              <div className="flex justify-between items-center py-2 border-b border-brand-50/50 dark:border-brand-800/50">
-                <span className="text-[11px] font-bold text-gray-900 dark:text-brand-400 uppercase tracking-tight">Primary Material</span>
-                <span className="text-sm font-bold text-gray-800 dark:text-gray-200">{vendor.material}</span>
+            <div className="space-y-3 mb-6 flex-grow">
+              <div className="flex justify-between items-center py-2.5 border-b" style={{ borderColor: theme.cardBorder }}>
+                <span className="text-[10px] font-black uppercase tracking-widest opacity-60" style={{ color: theme.textMuted }}>Primary Material</span>
+                <span className="text-xs font-black uppercase tracking-tight" style={{ color: theme.textPrimary }}>{vendor.material}</span>
               </div>
-              <div className="flex justify-between items-center py-2 border-b border-gray-50 dark:border-brand-800/50">
-                <span className="text-[11px] font-semibold text-gray-900 dark:text-brand-400 uppercase tracking-tight">Current Rate</span>
-                <span className="text-sm font-bold text-brand-600 dark:text-brand-300 font-display">₹{vendor.rate}</span>
+              <div className="flex justify-between items-center py-2.5 border-b" style={{ borderColor: theme.cardBorder }}>
+                <span className="text-[10px] font-black uppercase tracking-widest opacity-60" style={{ color: theme.textMuted }}>Current Rate</span>
+                <span className="text-sm font-black" style={{ color: theme.textSecondary }}>₹{vendor.rate}</span>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-3 mt-auto">
-              <button className="py-2.5 px-4 rounded-xl bg-brand-600 text-white text-[11px] font-bold uppercase tracking-wider hover:bg-brand-700 shadow-sm transition-all">
+              <button
+                onClick={() => handleCreatePO(vendor)}
+                className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-white text-[11px] font-black uppercase tracking-[0.15em] shadow-premium-sm transition-all hover:-translate-y-0.5"
+                style={{ background: theme.gradients.button }}
+              >
+                <FiPackage className="text-sm" />
                 Create PO
               </button>
-              <button className="py-2.5 px-4 rounded-xl bg-gray-50 dark:bg-brand-900/30 text-gray-900 dark:text-brand-300 text-[11px] font-bold uppercase tracking-wider hover:bg-gray-100 dark:hover:bg-brand-800 transition-all">
+              <button
+                onClick={() => handleViewDetails(vendor)}
+                className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-[11px] font-black uppercase tracking-[0.15em] transition-all border-2"
+                style={{ backgroundColor: theme.background, color: theme.textPrimary, borderColor: theme.cardBorder }}
+                onMouseOver={(e) => { e.currentTarget.style.borderColor = theme.primary; e.currentTarget.style.color = theme.primary; }}
+                onMouseOut={(e) => { e.currentTarget.style.borderColor = theme.cardBorder; e.currentTarget.style.color = theme.textPrimary; }}
+              >
+                <FiInfo className="text-sm" />
                 Details
               </button>
             </div>
@@ -50,41 +170,99 @@ const Vendors = () => {
         ))}
       </div>
 
+      {showForm && (
+        <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-[100] p-4" style={{ backgroundColor: `${theme.textPrimary}40` }}>
+          <div className="bg-white rounded-[2.5rem] shadow-premium w-full max-w-2xl overflow-hidden animate-in fade-in zoom-in duration-300" style={{ backgroundColor: theme.cardBg }}>
+            <div className="table-header-premium p-6 text-white relative" style={{ background: theme.gradients.primary }}>
+              <div className="pr-12">
+                <h3 className="text-xl font-black">
+                  {editingVendor ? 'Edit Vendor' : 'Register New Vendor'}
+                </h3>
+                <p className="text-blue-100 text-[10px] font-bold uppercase tracking-widest mt-1">Certified Supply Partner</p>
+              </div>
+              <button
+                onClick={() => setShowForm(false)}
+                className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 transition-all text-white"
+              >
+                <FiX />
+              </button>
+            </div>
+            <div className="p-8">
+              <VendorForm
+                onSubmit={handleFormSubmit}
+                initialData={editingVendor}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showPOForm && selectedVendor && (
+        <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-[100] p-4" style={{ backgroundColor: `${theme.textPrimary}40` }}>
+          <div className="bg-white rounded-[2.5rem] shadow-premium w-full max-w-xl overflow-hidden animate-in fade-in zoom-in duration-300" style={{ backgroundColor: theme.cardBg }}>
+            <div className="table-header-premium p-6 text-white relative" style={{ background: theme.gradients.primary }}>
+              <div className="pr-12">
+                <h3 className="text-xl font-black">Create Purchase Order</h3>
+                <p className="text-blue-100 text-[10px] font-bold uppercase tracking-widest mt-1">Inventory Replenishment</p>
+              </div>
+              <button
+                onClick={() => setShowPOForm(false)}
+                className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 transition-all text-white"
+              >
+                <FiX />
+              </button>
+            </div>
+            <div className="p-8">
+              <POForm
+                vendor={selectedVendor}
+                onSubmit={handlePOSubmit}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Purchase Orders Section */}
-      <div className="card-premium p-8">
+      <div className="card-premium p-8" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
         <div className="flex justify-between items-center mb-8">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white">Recent Purchase Orders</h3>
-          <button className="text-xs font-semibold text-brand-600 dark:text-brand-300 hover:text-brand-800 dark:hover:text-white transition-colors uppercase tracking-wider">View All Orders</button>
+          <h3 className="text-lg font-bold" style={{ color: theme.textPrimary }}>Recent Purchase Orders</h3>
+          <button className="text-xs font-semibold hover:text-opacity-80 transition-colors uppercase tracking-wider" style={{ color: theme.textSecondary }}>View All Orders</button>
         </div>
         <div className="space-y-4">
-          <div className="group flex justify-between items-center p-4 bg-blue-50/30 dark:bg-blue-900/40 rounded-2xl border border-blue-100/50 dark:border-blue-800/50 hover:bg-blue-50 dark:hover:bg-blue-900/60 transition-all cursor-pointer">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-white dark:bg-brand-800 rounded-xl flex items-center justify-center text-lg shadow-sm border border-brand-100 dark:border-brand-700 group-hover:scale-110 transition-transform text-brand-600 dark:text-brand-200">📄</div>
-              <div>
-                <p className="font-bold text-gray-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">PO-001 - Shree Cement Ltd</p>
-                <p className="text-[11px] font-bold text-gray-900 dark:text-brand-400 uppercase tracking-widest">200 Bags Cement • ₹76,000</p>
+          {poOrders.map((order) => (
+            <div
+              key={order.id}
+              className="group flex justify-between items-center p-4 rounded-2xl border transition-all cursor-pointer"
+              style={{
+                backgroundColor: `${theme.iconBg}10`,
+                borderColor: theme.cardBorder
+              }}
+            >
+              <div className="flex items-center gap-4">
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center text-lg shadow-sm border group-hover:scale-110 transition-transform"
+                  style={{
+                    backgroundColor: theme.cardBg,
+                    borderColor: theme.cardBorder,
+                    color: theme.textSecondary
+                  }}
+                >📄</div>
+                <div>
+                  <p className="font-bold transition-colors" style={{ color: theme.textPrimary }}>{order.poNumber} - {order.vendorName}</p>
+                  <p className="text-[11px] font-bold uppercase tracking-widest" style={{ color: theme.textMuted }}>{order.details} • ₹{order.amount.toLocaleString()}</p>
+                </div>
               </div>
+              <span
+                className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-xl border ${order.status === 'Delivered' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-yellow-50 text-yellow-700 border-yellow-200'
+                  }`}
+              >
+                {order.status}
+              </span>
             </div>
-            <span className="px-4 py-1.5 text-[10px] font-black uppercase tracking-widest bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800 rounded-xl">
-              Pending
-            </span>
-          </div>
-          <div className="group flex justify-between items-center p-4 bg-blue-50/30 dark:bg-blue-900/40 rounded-2xl border border-blue-100/50 dark:border-blue-800/50 hover:bg-blue-50 dark:hover:bg-blue-900/60 transition-all cursor-pointer">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-white dark:bg-brand-800 rounded-xl flex items-center justify-center text-lg shadow-sm border border-brand-100 dark:border-brand-700 group-hover:scale-110 transition-transform text-brand-600 dark:text-brand-200">📄</div>
-              <div>
-                <p className="font-bold text-gray-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">PO-002 - Steel India</p>
-                <p className="text-[11px] font-bold text-gray-900 dark:text-brand-400 uppercase tracking-widest">5 Tons Steel • ₹2,25,000</p>
-              </div>
-            </div>
-            <span className="px-4 py-1.5 text-[10px] font-black uppercase tracking-widest bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800 rounded-xl">
-              Delivered
-            </span>
-          </div>
+          ))}
         </div>
       </div>
     </div>
-
   );
 };
 

@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { financeTypes, paymentStatuses } from '../../../data/databaseDummyData';
+import { useTheme } from '../../../context/ThemeContext.jsx';
 
 const FinanceForm = ({ onSubmit, initialData = null, projects = [], vendors = [], contractors = [], clients = [] }) => {
+  const { theme } = useTheme();
   const [formData, setFormData] = useState({
     project_id: initialData?.project_id || '',
     type: initialData?.type || 'Expense',
@@ -23,16 +25,23 @@ const FinanceForm = ({ onSubmit, initialData = null, projects = [], vendors = []
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const inputStyle = {
+    backgroundColor: `${theme.iconBg}10`,
+    borderColor: theme.cardBorder,
+    color: theme.textPrimary
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 form-container">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-900">Project *</label>
+          <label className="block text-sm font-medium mb-1" style={{ color: theme.textSecondary }}>Project *</label>
           <select
             name="project_id"
             value={formData.project_id}
             onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border-2 border-brand-600 rounded-md"
+            className="block w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all"
+            style={inputStyle}
             required
           >
             <option value="">Select Project</option>
@@ -44,12 +53,13 @@ const FinanceForm = ({ onSubmit, initialData = null, projects = [], vendors = []
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-900">Type *</label>
+          <label className="block text-sm font-medium mb-1" style={{ color: theme.textSecondary }}>Type *</label>
           <select
             name="type"
             value={formData.type}
             onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border-2 border-brand-600 rounded-md"
+            className="block w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all"
+            style={inputStyle}
             required
           >
             {financeTypes.map(type => (
@@ -60,12 +70,13 @@ const FinanceForm = ({ onSubmit, initialData = null, projects = [], vendors = []
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-900">Description *</label>
+        <label className="block text-sm font-medium mb-1" style={{ color: theme.textSecondary }}>Description *</label>
         <textarea
           name="description"
           value={formData.description}
           onChange={handleChange}
-          className="mt-1 block w-full px-3 py-2 border-2 border-brand-600 rounded-md"
+          className="block w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all"
+          style={inputStyle}
           rows="2"
           placeholder="Cement purchase for foundation"
           required
@@ -73,13 +84,14 @@ const FinanceForm = ({ onSubmit, initialData = null, projects = [], vendors = []
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-900">Amount (₹) *</label>
+        <label className="block text-sm font-medium mb-1" style={{ color: theme.textSecondary }}>Amount (₹) *</label>
         <input
           type="number"
           name="amount"
           value={formData.amount}
           onChange={handleChange}
-          className="mt-1 block w-full px-3 py-2 border-2 border-brand-600 rounded-md"
+          className="block w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all"
+          style={inputStyle}
           placeholder="76000"
           required
         />
@@ -89,12 +101,13 @@ const FinanceForm = ({ onSubmit, initialData = null, projects = [], vendors = []
       {formData.type === 'Expense' && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-900">Vendor</label>
+            <label className="block text-sm font-medium mb-1" style={{ color: theme.textSecondary }}>Vendor</label>
             <select
               name="vendor_id"
               value={formData.vendor_id}
               onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border-2 border-brand-600 rounded-md"
+              className="block w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all"
+              style={inputStyle}
             >
               <option value="">Select Vendor</option>
               {vendors.map(vendor => (
@@ -105,12 +118,13 @@ const FinanceForm = ({ onSubmit, initialData = null, projects = [], vendors = []
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-900">Contractor</label>
+            <label className="block text-sm font-medium mb-1" style={{ color: theme.textSecondary }}>Contractor</label>
             <select
               name="contractor_id"
               value={formData.contractor_id}
               onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border-2 border-brand-600 rounded-md"
+              className="block w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all"
+              style={inputStyle}
             >
               <option value="">Select Contractor</option>
               {contractors.map(contractor => (
@@ -125,12 +139,13 @@ const FinanceForm = ({ onSubmit, initialData = null, projects = [], vendors = []
 
       {formData.type === 'Revenue' && (
         <div>
-          <label className="block text-sm font-medium text-gray-900">Client</label>
+          <label className="block text-sm font-medium mb-1" style={{ color: theme.textSecondary }}>Client</label>
           <select
             name="client_id"
             value={formData.client_id}
             onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border-2 border-brand-600 rounded-md"
+            className="block w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all"
+            style={inputStyle}
           >
             <option value="">Select Client</option>
             {clients.map(client => (
@@ -144,12 +159,13 @@ const FinanceForm = ({ onSubmit, initialData = null, projects = [], vendors = []
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-900">Status</label>
+          <label className="block text-sm font-medium mb-1" style={{ color: theme.textSecondary }}>Status</label>
           <select
             name="status"
             value={formData.status}
             onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border-2 border-brand-600 rounded-md"
+            className="block w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all"
+            style={inputStyle}
           >
             {paymentStatuses.map(status => (
               <option key={status} value={status}>{status}</option>
@@ -157,20 +173,22 @@ const FinanceForm = ({ onSubmit, initialData = null, projects = [], vendors = []
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-900">Payment Date</label>
+          <label className="block text-sm font-medium mb-1" style={{ color: theme.textSecondary }}>Payment Date</label>
           <input
             type="date"
             name="payment_date"
             value={formData.payment_date}
             onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border-2 border-brand-600 rounded-md"
+            className="block w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all"
+            style={inputStyle}
           />
         </div>
       </div>
 
       <button
         type="submit"
-        className="w-full bg-brand-600 text-white py-2 px-4 rounded-md hover:bg-brand-700"
+        className="w-full text-white py-2 px-4 rounded-md shadow-md hover:opacity-90 transition-opacity"
+        style={{ background: theme.gradients.button }}
       >
         {initialData ? 'Update Finance Record' : 'Add Finance Record'}
       </button>

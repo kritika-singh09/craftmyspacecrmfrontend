@@ -4,31 +4,31 @@ import { ThemeProvider } from './context/ThemeContext.jsx';
 import { SubscriptionProvider } from './hooks/useSubscription.jsx';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth.jsx';
+import GlobalProjects from './Admin/GlobalModules/GlobalProjects';
+import GlobalWorkforce from './Admin/GlobalModules/GlobalWorkforce';
+import GlobalPayroll from './Admin/GlobalModules/GlobalPayroll';
+import { GlobalFinance, GlobalSafety, GlobalReports } from './Admin/GlobalModules/GlobalBI';
+import UnifiedProjectDetail from './Admin/GlobalModules/UnifiedProjectDetail';
+
+// Construction Management Imports
 import Layout from './Admin/layouts/AdminLayout';
-import Dashboard from './Admin/ConstructionManagement/Dashboard/Dashboard';
-import Projects from './Admin/ConstructionManagement/Projects/Projects';
-import ProjectForm from './Admin/ConstructionManagement/Projects/ProjectForm';
+import ProjectForm from './Admin/Projects/ProjectForm';
+import ProjectDashboard from './Admin/Projects/ProjectDashboard';
 import Contractors from './Admin/ConstructionManagement/Contractors/Contractors';
 import Vendors from './Admin/ConstructionManagement/Vendors/Vendors';
 import Materials from './Admin/ConstructionManagement/Materials/Materials';
 import MaterialForm from './Admin/ConstructionManagement/Materials/MaterialForm';
-import Workforce from './Admin/ConstructionManagement/Workforce/Workforce';
-import Finance from './Admin/ConstructionManagement/Finance/Finance';
-import FinanceForm from './Admin/ConstructionManagement/Finance/FinanceForm';
 import Clients from './Admin/ConstructionManagement/Clients/Clients';
 import ClientForm from './Admin/ConstructionManagement/Clients/ClientForm';
-import Reports from './Admin/ConstructionManagement/Reports/Reports';
 import DailySite from './Admin/ConstructionManagement/DailySite/DailySite';
 import Quality from './Admin/ConstructionManagement/Quality/Quality';
-import Safety from './Admin/ConstructionManagement/Safety/Safety';
 import Documents from './Admin/ConstructionManagement/Documents/Documents';
 import TaskForm from './Admin/ConstructionManagement/Forms/TaskForm';
 import TenantForm from './Admin/ConstructionManagement/Forms/TenantForm';
 import UserForm from './Admin/ConstructionManagement/Forms/UserForm';
+import RiskManagement from './Admin/ConstructionManagement/Compliance/RiskManagement';
 
 // Architectural Design Imports
-import ArchDashboard from './Admin/ArchitecturalDesign/Dashboard/Dashboard';
-import ArchProjects from './Admin/ArchitecturalDesign/Projects/Projects';
 import ArchClients from './Admin/ArchitecturalDesign/Clients/Clients';
 import DesignTeam from './Admin/ArchitecturalDesign/DesignTeam/DesignTeam';
 import DesignPhases from './Admin/ArchitecturalDesign/DesignPhases/DesignPhases';
@@ -38,22 +38,18 @@ import Approvals from './Admin/ArchitecturalDesign/Approvals/Approvals';
 import Timeline from './Admin/ArchitecturalDesign/Timeline/Timeline';
 import Billing from './Admin/ArchitecturalDesign/Billing/Billing';
 import ArchDocuments from './Admin/ArchitecturalDesign/Documents/Documents';
-import ArchReports from './Admin/ArchitecturalDesign/Reports/Reports';
 import ArchProfile from './Admin/ArchitecturalDesign/CompanyProfile/CompanyProfile';
 import ArchUsers from './Admin/ArchitecturalDesign/UserManagement/UserManagement';
 import ArchSettings from './Admin/ArchitecturalDesign/Settings/Settings';
 import ProjectDetails from './Admin/ArchitecturalDesign/Projects/ProjectDetails';
 
 // Interior Design Imports
-import IntDashboard from './Admin/InteriorDesign/Dashboard/Dashboard';
 import IntProfile from './Admin/InteriorDesign/CompanyProfile/CompanyProfile';
 import IntUsers from './Admin/InteriorDesign/Users/Users';
-import IntProjects from './Admin/InteriorDesign/Projects/Projects';
 import IntProjectDetails from './Admin/InteriorDesign/Projects/ProjectDetails';
 import IntClients from './Admin/InteriorDesign/Clients/Clients';
 import IntVendors from './Admin/InteriorDesign/Vendors/Vendors';
 import IntMaterials from './Admin/InteriorDesign/Materials/Materials';
-import IntReports from './Admin/InteriorDesign/Reports/Reports';
 import IntPhases from './Admin/InteriorDesign/Phases/Phases';
 import IntDesign3D from './Admin/InteriorDesign/Design3D/Design3D';
 import IntSiteExecution from './Admin/InteriorDesign/SiteExecution/SiteExecution';
@@ -139,13 +135,14 @@ function AppContent() {
           <Route path="/universal-dashboard" element={<GlobalDashboard />} />
           <Route path="/subscription" element={<Subscription />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<GlobalDashboard />} />
 
           {/* Projects Routes */}
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/projects/add" element={<ProjectForm onSubmit={(data) => console.log(data)} clients={clients} />} />
-          <Route path="/projects/edit/:id" element={<ProjectForm onSubmit={(data) => console.log(data)} clients={clients} />} />
+          <Route path="/projects" element={<GlobalProjects />} />
+          <Route path="/projects/add" element={<ProjectForm />} />
+          <Route path="/projects/edit/:id" element={<ProjectForm />} />
           <Route path="/projects/settings" element={<ProjectSettings />} />
+          <Route path="/projects/:id" element={<UnifiedProjectDetail />} />
 
           {/* Clients Routes */}
           <Route path="/clients" element={<Clients />} />
@@ -158,25 +155,25 @@ function AppContent() {
           <Route path="/materials/edit/:id" element={<MaterialForm onSubmit={(data) => console.log(data)} projects={projects} vendors={vendors} />} />
 
           {/* Finance Routes */}
-          <Route path="/finance" element={<Finance />} />
-          <Route path="/finance/add" element={<FinanceForm onSubmit={(data) => console.log(data)} projects={projects} vendors={vendors} contractors={contractors} clients={clients} />} />
-          <Route path="/finance/edit/:id" element={<FinanceForm onSubmit={(data) => console.log(data)} projects={projects} vendors={vendors} contractors={contractors} clients={clients} />} />
+          <Route path="/finance" element={<GlobalFinance />} />
 
           {/* Other Routes */}
           <Route path="/contractors" element={<Contractors />} />
           <Route path="/vendors" element={<Vendors />} />
-          <Route path="/workforce" element={<Workforce />} />
+          <Route path="/workforce" element={<GlobalWorkforce />} />
           <Route path="/workforce/add" element={<UserForm onSubmit={(data) => console.log(data)} tenants={[]} />} />
           <Route path="/dailysite" element={<DailySite />} />
           <Route path="/tasks/add" element={<TaskForm onSubmit={(data) => console.log(data)} projects={projects} contractors={contractors} sites={[]} />} />
           <Route path="/quality" element={<Quality />} />
-          <Route path="/safety" element={<Safety />} />
+          <Route path="/safety" element={<GlobalSafety />} />
+          <Route path="/risk" element={<RiskManagement />} />
           <Route path="/documents" element={<Documents />} />
-          <Route path="/reports" element={<Reports />} />
+          <Route path="/payroll" element={<GlobalPayroll />} />
+          <Route path="/reports" element={<GlobalReports />} />
 
           {/* Architectural Design Routes */}
-          <Route path="/arch-dashboard" element={<ArchDashboard />} />
-          <Route path="/arch-projects" element={<ArchProjects />} />
+          <Route path="/arch-dashboard" element={<GlobalDashboard />} />
+          <Route path="/arch-projects" element={<GlobalProjects contextType="architecture" />} />
           <Route path="/arch-clients" element={<ArchClients />} />
           <Route path="/design-team" element={<DesignTeam />} />
           <Route path="/design-phases" element={<DesignPhases />} />
@@ -186,22 +183,26 @@ function AppContent() {
           <Route path="/timeline" element={<Timeline />} />
           <Route path="/billing" element={<Billing />} />
           <Route path="/arch-documents" element={<ArchDocuments />} />
-          <Route path="/arch-reports" element={<ArchReports />} />
+          <Route path="/arch-reports" element={<GlobalReports />} />
+          <Route path="/arch-safety" element={<GlobalSafety />} />
+          <Route path="/arch-finance" element={<GlobalFinance />} />
           <Route path="/arch-profile" element={<ArchProfile />} />
           <Route path="/arch-users" element={<ArchUsers />} />
           <Route path="/arch-settings" element={<ArchSettings />} />
-          <Route path="/arch-projects/:id" element={<ProjectDetails />} />
+          <Route path="/arch-projects/:id" element={<UnifiedProjectDetail />} />
 
           {/* Interior Design Routes */}
-          <Route path="/int-dashboard" element={<IntDashboard />} />
+          <Route path="/int-dashboard" element={<GlobalDashboard />} />
           <Route path="/int-profile" element={<IntProfile />} />
           <Route path="/int-users" element={<IntUsers />} />
-          <Route path="/int-projects" element={<IntProjects />} />
-          <Route path="/int-projects/:id" element={<IntProjectDetails />} />
+          <Route path="/int-projects" element={<GlobalProjects contextType="interior" />} />
+          <Route path="/int-projects/:id" element={<UnifiedProjectDetail />} />
           <Route path="/int-clients" element={<IntClients />} />
           <Route path="/int-vendors" element={<IntVendors />} />
           <Route path="/int-materials" element={<IntMaterials />} />
-          <Route path="/int-reports" element={<IntReports />} />
+          <Route path="/int-reports" element={<GlobalReports />} />
+          <Route path="/int-safety" element={<GlobalSafety />} />
+          <Route path="/int-finance" element={<GlobalFinance />} />
           <Route path="/int-phases" element={<IntPhases />} />
           <Route path="/int-design-3d" element={<IntDesign3D />} />
           <Route path="/int-site-execution" element={<IntSiteExecution />} />
