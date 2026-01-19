@@ -16,24 +16,30 @@ const Projects = () => {
   const { projects, loading, error, refetch } = useProjects();
   const [showProjectForm, setShowProjectForm] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
+  const [isViewOnly, setIsViewOnly] = useState(false);
 
-  const handleViewDetails = (projectId) => {
-    navigate(`/projects/${projectId}`);
+  const handleViewDetails = (project) => {
+    setEditingProject(project);
+    setIsViewOnly(true);
+    setShowProjectForm(true);
   };
 
   const handleCreateProject = () => {
     setEditingProject(null);
+    setIsViewOnly(false);
     setShowProjectForm(true);
   };
 
   const handleEdit = (project) => {
     setEditingProject(project);
+    setIsViewOnly(false);
     setShowProjectForm(true);
   };
 
   const handleFormClose = () => {
     setShowProjectForm(false);
     setEditingProject(null);
+    setIsViewOnly(false);
     refetch(); // Refresh list after create/update
   };
 
@@ -171,13 +177,15 @@ const Projects = () => {
                 <div className="flex items-center justify-between py-4 border-y mb-6" style={{ borderColor: theme.borderColor }}>
                   <span className="text-[11px] font-semibold uppercase tracking-tight" style={{ color: theme.textMuted }}>Budget</span>
                   <span className="text-sm font-bold" style={{ color: theme.textPrimary }}>
-                    ₹{(project.budget / 100000).toFixed(1)}L
+                    {project.budget >= 100000
+                      ? `₹${(project.budget / 100000).toFixed(1)}L`
+                      : `₹${Number(project.budget || 0).toLocaleString('en-IN')}`}
                   </span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 mt-auto">
                   <button
-                    onClick={() => handleViewDetails(project._id)}
+                    onClick={() => handleViewDetails(project)}
                     className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-[11px] font-black uppercase tracking-[0.15em] transition-all text-white shadow-sm hover:shadow-lg hover:-translate-y-0.5"
                     style={{
                       background: theme.gradients.button,
@@ -241,6 +249,7 @@ const Projects = () => {
               <div className="max-h-[90vh] overflow-y-auto">
                 <ProjectForm
                   existingProject={editingProject}
+                  isReadOnly={isViewOnly}
                   onClose={handleFormClose}
                 />
               </div>

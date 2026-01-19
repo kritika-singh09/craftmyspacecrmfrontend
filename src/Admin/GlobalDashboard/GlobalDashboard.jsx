@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTenant } from '../../hooks/useTenant.jsx';
 import { tenantData } from '../../data/tenantData';
 import { useNavigate } from 'react-router-dom';
+import Loader from '../../common/Loader';
 import {
     FiGrid, FiBriefcase, FiTool, FiUsers,
     FiLayers, FiHome, FiActivity, FiCheckCircle,
@@ -13,6 +14,14 @@ const GlobalDashboard = () => {
     const { currentTenant } = useTenant();
     const { isModuleLocked } = useSubscription();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setLoading(false), 1500);
+        return () => clearTimeout(timer);
+    }, []);
+
+    if (loading) return <Loader fullScreen message="Syncing Portfolio..." />;
     const data = tenantData[currentTenant.id];
 
     const constStats = {
@@ -26,6 +35,7 @@ const GlobalDashboard = () => {
 
     const modules = [
         {
+            id: 'construction',
             title: 'Construction',
             subtitle: 'Management & Operations',
             icon: <FiHome />,
@@ -53,6 +63,7 @@ const GlobalDashboard = () => {
             accent: 'text-emerald-600'
         },
         {
+            id: 'interior',
             title: 'Interior',
             subtitle: 'Curation & Execution',
             icon: <FiStar />,

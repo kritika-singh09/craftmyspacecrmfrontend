@@ -8,6 +8,8 @@ import { MdArchitecture, MdHome } from 'react-icons/md';
 import { GiHammerNails } from 'react-icons/gi';
 import ProjectForm from '../Projects/ProjectForm';
 import { useSubscription } from '../../hooks/useSubscription';
+import Loader from '../../common/Loader';
+import CheckoutUI from '../Subscription/CheckoutUI';
 
 const GlobalProjects = ({ contextType }) => {
     const { theme } = useTheme();
@@ -19,9 +21,10 @@ const GlobalProjects = ({ contextType }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [showProjectForm, setShowProjectForm] = useState(false);
     const [editingProject, setEditingProject] = useState(null);
+    const [isViewOnly, setIsViewOnly] = useState(false);
     const [preSelectedModule, setPreSelectedModule] = useState(null);
     const [filterStatus, setFilterStatus] = useState('All');
-    const [showLanding, setShowLanding] = useState(true);
+    const [showLanding, setShowLanding] = useState(false);
     const [showPaymentModal, setShowPaymentModal] = useState(false);
     const [pendingModule, setPendingModule] = useState(null);
 
@@ -35,8 +38,8 @@ const GlobalProjects = ({ contextType }) => {
 
     const config = {
         universal: {
-            title: 'Universal Projects',
-            subtitle: 'Consolidated Cross-Unit Project Intelligence',
+            title: 'Global Portfolio',
+            subtitle: 'Managed Enterprise Assets & Performance',
             icon: '🌐',
             primaryColor: theme.primary,
             themeGradient: 'linear-gradient(135deg, #0f172a 0%, #334155 100%)'
@@ -80,9 +83,8 @@ const GlobalProjects = ({ contextType }) => {
 
     const handleSimulatedPayment = () => {
         if (!pendingModule) return;
-        const targetPlan = pendingModule.id === 'construction' ? 'Pro' : 'Basic';
-        updatePlan(targetPlan);
-        processPayment(true);
+        // Purchase the individual module
+        processPayment(true, pendingModule.title);
         setShowPaymentModal(false);
         setPendingModule(null);
     };
@@ -97,9 +99,10 @@ const GlobalProjects = ({ contextType }) => {
         'Completed': { bg: 'bg-indigo-50', text: 'text-indigo-600', border: 'border-indigo-100', dot: 'bg-indigo-500' }
     };
 
-    const handleViewDetails = (id) => {
-        const routePrefix = activeContext === 'architecture' ? '/arch-projects' : activeContext === 'interior' ? '/int-projects' : '/projects';
-        navigate(`${routePrefix}/${id}`);
+    const handleViewDetails = (project) => {
+        setEditingProject(project);
+        setIsViewOnly(true);
+        setShowProjectForm(true);
     };
 
     const filteredProjects = projects.filter(p => {
@@ -138,12 +141,7 @@ const GlobalProjects = ({ contextType }) => {
         return matchesSearch && matchesStatus && matchesModule;
     });
 
-    if (loading) return (
-        <div className="flex h-[60vh] flex-col items-center justify-center space-y-4">
-            <div className="w-16 h-16 border-4 border-slate-200 border-t-brand-600 rounded-full animate-spin"></div>
-            <p className="text-sm font-black uppercase tracking-widest text-slate-400 animate-pulse">Syncing Portfolio...</p>
-        </div>
-    );
+    if (loading) return <Loader fullScreen message="Syncing Enterprise Portfolio..." />;
 
     return (
         <div className="space-y-10 pb-12 animate-in fade-in duration-700">
@@ -166,10 +164,10 @@ const GlobalProjects = ({ contextType }) => {
                         {modules.map((mod, midx) => {
                             const isLocked = isModuleLocked(mod.title);
                             return (
-                                <div key={mod.id} className="group relative card-premium p-10 overflow-hidden hover:-translate-y-3 transition-all duration-500 border-none ring-1 ring-slate-200/50 dark:ring-slate-800/50">
-                                    <div className={`absolute -right-16 -top-16 w-48 h-48 bg-${mod.color}-50 dark:bg-${mod.color}-900/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700`}></div>
+                                <div key={mod.id} className="group relative card-premium p-10 overflow-hidden border-none ring-1 ring-slate-200/50 dark:ring-slate-800/50 h-full flex flex-col justify-between">
+                                    <div className={`absolute -right-16 -top-16 w-48 h-48 bg-${mod.color}-50 dark:bg-${mod.color}-900/10 rounded-full blur-3xl opacity-50`}></div>
 
-                                    <div className="relative z-10 space-y-10">
+                                    <div className={`relative z-10 space-y-10 transition-all duration-500 ${isLocked ? 'blur-sm select-none opacity-60 pointer-events-none' : ''}`}>
                                         <div className="flex items-center gap-5">
                                             <div className={`w-16 h-16 rounded-3xl flex items-center justify-center text-white text-3xl shadow-2xl transition-transform duration-500 group-hover:scale-110`}
                                                 style={{ backgroundColor: mod.id === 'construction' ? '#3b82f6' : mod.id === 'architecture' ? '#10b981' : '#f59e0b' }}>
@@ -182,40 +180,37 @@ const GlobalProjects = ({ contextType }) => {
                                         </div>
 
                                         <div className="flex flex-col gap-4 pt-4">
-                                            {isLocked ? (
-                                                <button
-                                                    onClick={() => handleUnlock(mod)}
-                                                    className={`w-full py-5 text-white rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] shadow-xl hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3`}
-                                                    style={{ backgroundColor: mod.id === 'construction' ? '#3b82f6' : mod.id === 'architecture' ? '#10b981' : '#f59e0b' }}
-                                                >
-                                                    <FiLock size={18} /> Unlock Module
-                                                </button>
-                                            ) : (
-                                                <>
-                                                    <button
-                                                        onClick={() => { setViewModule(mod.id); setShowLanding(false); }}
-                                                        className={`w-full py-5 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] border border-slate-100 dark:border-slate-700 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-3`}
-                                                    >
-                                                        <FiBriefcase size={18} style={{ color: mod.id === 'construction' ? '#3b82f6' : mod.id === 'architecture' ? '#10b981' : '#f59e0b' }} /> Explore Portfolio
-                                                    </button>
-                                                    <button
-                                                        onClick={() => { setShowProjectForm(true); setEditingProject(null); setPreSelectedModule(mod.id); }}
-                                                        className={`w-full py-5 text-white rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] shadow-xl hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3`}
-                                                        style={{ backgroundColor: mod.id === 'construction' ? '#3b82f6' : mod.id === 'architecture' ? '#10b981' : '#f59e0b' }}
-                                                    >
-                                                        <FiZap size={18} /> Add Project
-                                                    </button>
-                                                </>
-                                            )}
+                                            <button
+                                                onClick={() => { setViewModule(mod.id); setShowLanding(false); }}
+                                                className={`w-full py-5 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] border border-slate-100 dark:border-slate-700 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-3`}
+                                            >
+                                                <FiBriefcase size={18} style={{ color: mod.id === 'construction' ? '#3b82f6' : mod.id === 'architecture' ? '#10b981' : '#f59e0b' }} /> Explore Portfolio
+                                            </button>
+                                            <button
+                                                onClick={() => { setShowProjectForm(true); setEditingProject(null); setIsViewOnly(false); setPreSelectedModule(mod.id); }}
+                                                className={`w-full py-5 text-white rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] shadow-xl hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3`}
+                                                style={{ backgroundColor: mod.id === 'construction' ? '#3b82f6' : mod.id === 'architecture' ? '#10b981' : '#f59e0b' }}
+                                            >
+                                                <FiZap size={18} /> Add Project
+                                            </button>
                                         </div>
                                     </div>
 
                                     {isLocked && (
-                                        <div className="absolute inset-0 bg-white/40 dark:bg-slate-900/40 backdrop-blur-[1px] z-20 flex flex-col items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <div className="w-12 h-12 bg-white dark:bg-slate-800 rounded-2xl flex items-center justify-center text-slate-400 shadow-lg mb-2">
-                                                <FiLock size={20} />
+                                        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-8 text-center bg-white/20 dark:bg-slate-900/20 backdrop-blur-[2px] rounded-[2.5rem]">
+                                            <div className="w-14 h-14 bg-white dark:bg-slate-800 rounded-2xl flex items-center justify-center text-slate-400 shadow-2xl mb-4 border border-slate-100 dark:border-slate-700">
+                                                <FiLock size={24} />
                                             </div>
-                                            <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Upgrade to Activate</span>
+                                            <h4 className="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight mb-1">Module Locked</h4>
+                                            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-6">Upgrade to {mod.id === 'construction' ? 'Pro' : 'Basic'} Plan</p>
+
+                                            <button
+                                                onClick={() => handleUnlock(mod)}
+                                                className={`w-full py-4 text-white rounded-xl font-black text-[10px] uppercase tracking-[0.2em] shadow-2xl hover:scale-105 transition-all flex items-center justify-center gap-2`}
+                                                style={{ backgroundColor: mod.id === 'construction' ? '#3b82f6' : mod.id === 'architecture' ? '#10b981' : '#f59e0b' }}
+                                            >
+                                                Unlock {mod.title}
+                                            </button>
                                         </div>
                                     )}
                                 </div>
@@ -238,18 +233,10 @@ const GlobalProjects = ({ contextType }) => {
                                 </h1>
                                 <p className="text-sm font-bold mt-1 text-slate-500 uppercase tracking-widest dark:text-slate-400">{viewModule ? config[viewModule].subtitle : active.subtitle}</p>
                             </div>
-                            {activeContext === 'universal' && !showLanding && (
-                                <button
-                                    onClick={() => setShowLanding(true)}
-                                    className="ml-6 px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-brand-600 transition-all"
-                                >
-                                    ← Back to Hub
-                                </button>
-                            )}
                         </div>
                         <RoleGuard requiredRole="manager">
                             <button
-                                onClick={() => { setEditingProject(null); setShowProjectForm(true); }}
+                                onClick={() => { setEditingProject(null); setIsViewOnly(false); setShowProjectForm(true); }}
                                 className="group flex items-center gap-4 px-10 py-5 rounded-2xl text-white font-black text-xs uppercase tracking-[0.2em] shadow-2xl transition-all hover:-translate-y-1 hover:shadow-brand-600/40 active:scale-95"
                                 style={{ background: viewModule ? config[viewModule].themeGradient : active.themeGradient }}
                             >
@@ -284,8 +271,8 @@ const GlobalProjects = ({ contextType }) => {
                         </div>
                     </div>
 
-                    {/* Normal Card Grid Layout */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {/* Project Cards - Mobile/Tablet View */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:hidden gap-8">
                         {finalProjects.map((prj) => {
                             const status = statusColors[prj.status] || statusColors['Ongoing'];
                             const themeColor = prj.type === 'architecture' ? '#8b5cf6' : prj.type === 'interior' ? '#f59e0b' : theme.primary;
@@ -368,14 +355,14 @@ const GlobalProjects = ({ contextType }) => {
                                             </div>
                                             <div className="flex gap-2">
                                                 <button
-                                                    onClick={() => handleViewDetails(prj._id)}
+                                                    onClick={() => handleViewDetails(prj)}
                                                     className="w-10 h-10 rounded-xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 shadow-sm hover:bg-slate-50 transition-all hover:text-brand-600 active:scale-90"
                                                 >
                                                     <FiEye size={18} />
                                                 </button>
                                                 <RoleGuard requiredRole="manager">
                                                     <button
-                                                        onClick={() => { setEditingProject(prj); setShowProjectForm(true); }}
+                                                        onClick={() => { setEditingProject(prj); setIsViewOnly(false); setShowProjectForm(true); }}
                                                         className="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center shadow-lg transition-all hover:-translate-y-1 active:scale-90"
                                                         style={{ background: prjGradient }}
                                                     >
@@ -388,6 +375,114 @@ const GlobalProjects = ({ contextType }) => {
                                 </div>
                             );
                         })}
+                    </div>
+
+                    {/* Project Table - Desktop View */}
+                    <div className="hidden lg:block bg-white dark:bg-slate-900/50 rounded-[3rem] border border-slate-100 dark:border-slate-800 shadow-premium overflow-hidden">
+                        <div className="overflow-x-auto">
+                            <table className="w-full">
+                                <thead>
+                                    <tr className="border-b border-slate-200 dark:border-slate-800">
+                                        <th className="text-left px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Project</th>
+                                        <th className="text-left px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Owner & Location</th>
+                                        <th className="text-center px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Health</th>
+                                        <th className="text-right px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Value</th>
+                                        <th className="text-center px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Progress</th>
+                                        <th className="text-center px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Status</th>
+                                        <th className="text-center px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Date</th>
+                                        <th className="text-center px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {finalProjects.map((prj) => {
+                                        const status = statusColors[prj.status] || statusColors['Ongoing'];
+                                        const themeColor = prj.type === 'architecture' ? '#8b5cf6' : prj.type === 'interior' ? '#f59e0b' : theme.primary;
+                                        const prjGradient = prj.type === 'architecture' ? 'linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)' :
+                                            prj.type === 'interior' ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' :
+                                                theme.gradients?.primary || 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)';
+
+                                        return (
+                                            <tr key={prj._id} className="border-b border-slate-100 dark:border-slate-800/50 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-all group">
+                                                <td className="px-6 py-5">
+                                                    <div className="space-y-1.5">
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="text-[9px] font-black uppercase tracking-wider text-slate-400">{prj.projectCode || 'GLOBAL-ENT'}</span>
+                                                            <span className="px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-widest text-white"
+                                                                style={{ backgroundColor: themeColor }}>
+                                                                {prj.type || 'construction'}
+                                                            </span>
+                                                        </div>
+                                                        <p className="text-sm font-black text-slate-900 dark:text-white tracking-tight">{prj.name}</p>
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-5">
+                                                    <div className="space-y-1">
+                                                        <p className="text-sm font-bold text-slate-700 dark:text-slate-300">{prj.client?.name || 'Kritika Singh'}</p>
+                                                        <p className="flex items-center gap-1.5 text-xs font-bold text-slate-500">
+                                                            <FiMapPin size={12} className="text-brand-600" /> {prj.location}
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-5 text-center">
+                                                    <span className="inline-flex px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 text-xs font-black uppercase tracking-wider">
+                                                        Optimum
+                                                    </span>
+                                                </td>
+                                                <td className="px-6 py-5 text-right">
+                                                    <p className="text-sm font-black text-slate-900 dark:text-white">
+                                                        {prj.budget >= 100000
+                                                            ? `₹${(prj.budget / 100000).toFixed(1)}L`
+                                                            : `₹${Number(prj.budget || 0).toLocaleString('en-IN')}`}
+                                                    </p>
+                                                </td>
+                                                <td className="px-6 py-5">
+                                                    <div className="space-y-2">
+                                                        <div className="flex items-center justify-between gap-3">
+                                                            <div className="flex-1 h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                                                <div
+                                                                    className="h-full rounded-full transition-all"
+                                                                    style={{ width: `${prj.progress}%`, background: prjGradient }}
+                                                                ></div>
+                                                            </div>
+                                                            <span className="text-xs font-black text-slate-900 dark:text-white min-w-[40px] text-right">{prj.progress}%</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-5 text-center">
+                                                    <span className={`inline-flex px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-wider ${status.bg} ${status.text}`}>
+                                                        {prj.status}
+                                                    </span>
+                                                </td>
+                                                <td className="px-6 py-5 text-center">
+                                                    <span className="text-xs font-bold text-slate-500">Dec 20, 2024</span>
+                                                </td>
+                                                <td className="px-6 py-5">
+                                                    <div className="flex items-center justify-center gap-2">
+                                                        <button
+                                                            onClick={() => handleViewDetails(prj)}
+                                                            className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-brand-600 transition-all"
+                                                            title="View Details"
+                                                        >
+                                                            <FiEye size={18} />
+                                                        </button>
+                                                        <RoleGuard requiredRole="manager">
+                                                            <button
+                                                                onClick={() => { setEditingProject(prj); setIsViewOnly(false); setShowProjectForm(true); }}
+                                                                className="p-2.5 rounded-xl text-white shadow-lg hover:-translate-y-1 transition-all"
+                                                                style={{ background: prjGradient }}
+                                                                title="Edit Project"
+                                                            >
+                                                                <FiEdit2 size={18} />
+                                                            </button>
+                                                        </RoleGuard>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                     {/* Zero State */}
@@ -407,80 +502,42 @@ const GlobalProjects = ({ contextType }) => {
                         </div>
                     )}
                 </>
-            )}
+            )
+            }
 
-            {/* Simulated Payment Modal */}
-            {showPaymentModal && pendingModule && (
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-[100] p-4 animate-in fade-in duration-300">
-                    <div className="card-premium w-full max-w-lg overflow-hidden border-none shadow-2xl scale-100 animate-in zoom-in-95 duration-300"
-                        style={{ backgroundColor: 'white' }}>
-
-                        {/* Modal Header */}
-                        <div className="p-8 text-center bg-gradient-to-br from-slate-900 to-slate-800 text-white relative">
-                            <div className="absolute top-4 right-4 text-white/50 hover:text-white cursor-pointer" onClick={() => setShowPaymentModal(false)}>
-                                <FiX size={24} />
-                            </div>
-                            <div className={`w-20 h-20 mx-auto rounded-3xl flex items-center justify-center text-4xl mb-6 shadow-2xl shadow-black/50 bg-${pendingModule.color}-600`}>
-                                <FiLock />
-                            </div>
-                            <h3 className="text-2xl font-black uppercase tracking-tight">Unlock {pendingModule.title}</h3>
-                            <p className="text-sm font-medium text-white/60 mt-2">Activate enterprise features for your team</p>
-                        </div>
-
-                        {/* Modal Content */}
-                        <div className="p-10 space-y-8 dark:bg-slate-900">
-                            <div className="space-y-4">
-                                <div className="flex justify-between items-center pb-4 border-b border-slate-100 dark:border-slate-800">
-                                    <span className="text-xs font-black uppercase tracking-widest text-slate-400">Selected Module</span>
-                                    <span className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-widest">{pendingModule.title}</span>
-                                </div>
-                                <div className="flex justify-between items-center pb-4 border-b border-slate-100 dark:border-slate-800">
-                                    <span className="text-xs font-black uppercase tracking-widest text-slate-400">Upgrade Path</span>
-                                    <span className={`text-sm font-black uppercase tracking-widest text-${pendingModule.color}-600`}>
-                                        {pendingModule.id === 'construction' ? 'Pro Plan' : 'Basic Plan'}
-                                    </span>
-                                </div>
-                                <div className="flex justify-between items-center pt-2">
-                                    <span className="text-sm font-black uppercase tracking-widest text-slate-900 dark:text-white">Amount Due</span>
-                                    <span className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">
-                                        ₹{pendingModule.id === 'construction' ? '25,000' : '15,000'}
-                                        <span className="text-xs font-bold text-slate-400 ml-1">/yr</span>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div className="space-y-4">
-                                <button
-                                    onClick={handleSimulatedPayment}
-                                    className={`w-full py-5 text-white rounded-[2rem] font-black text-xs uppercase tracking-[0.3em] shadow-2xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3 bg-${pendingModule.color}-600`}
-                                >
-                                    <FiCheckCircle /> Confirm Payment
-                                </button>
-                                <p className="text-[10px] text-center font-bold text-slate-400 uppercase tracking-widest">
-                                    Instant Activation • Professional Billing • 24/7 Support
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Global Project Form Modal */}
-            {showProjectForm && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 animate-in fade-in duration-300">
-                    <div className="absolute inset-0 bg-slate-950/60 backdrop-blur-md" onClick={() => setShowProjectForm(false)}></div>
-                    <div className="relative w-full max-w-5xl max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 rounded-[3rem] shadow-2xl border border-slate-200/50 dark:border-slate-800 overflow-hidden">
-                        <div className="p-1">
-                            <ProjectForm
-                                existingProject={editingProject}
-                                initialModule={preSelectedModule}
-                                onClose={() => { setShowProjectForm(false); setEditingProject(null); setPreSelectedModule(null); refetch(); }}
+            {/* Checkout Modal */}
+            {
+                showPaymentModal && pendingModule && (
+                    <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-[100] p-4 animate-in fade-in duration-300">
+                        <div className="card-premium w-full max-w-xl bg-white dark:bg-slate-900 border-none shadow-premium-2xl relative overflow-hidden" onClick={(e) => e.stopPropagation()}>
+                            <CheckoutUI
+                                plan={pendingModule.title}
+                                onCancel={() => { setShowPaymentModal(false); setPendingModule(null); }}
                             />
                         </div>
                     </div>
-                </div>
-            )}
-        </div>
+                )
+            }
+
+            {/* Global Project Form Modal */}
+            {
+                showProjectForm && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 animate-in fade-in duration-300">
+                        <div className="absolute inset-0 bg-slate-950/60 backdrop-blur-md" onClick={() => setShowProjectForm(false)}></div>
+                        <div className="relative w-full max-w-5xl max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 rounded-[3rem] shadow-2xl border border-slate-200/50 dark:border-slate-800 overflow-hidden">
+                            <div className="p-1">
+                                <ProjectForm
+                                    existingProject={editingProject}
+                                    initialModule={preSelectedModule}
+                                    isReadOnly={isViewOnly}
+                                    onClose={() => { setShowProjectForm(false); setEditingProject(null); setPreSelectedModule(null); setIsViewOnly(false); refetch(); }}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+        </div >
     );
 };
 

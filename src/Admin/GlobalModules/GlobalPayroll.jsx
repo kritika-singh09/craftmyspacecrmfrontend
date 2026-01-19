@@ -5,9 +5,18 @@ import {
     FiPlus, FiMoreVertical, FiCheckCircle, FiTrash2,
     FiDownload, FiArrowRight, FiInfo, FiEdit3, FiSave
 } from 'react-icons/fi';
+import Loader from '../../common/Loader';
 
 const GlobalPayroll = () => {
     const { theme } = useTheme();
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setLoading(false), 1300);
+        return () => clearTimeout(timer);
+    }, []);
+
+    if (loading) return <Loader fullScreen message="Syncing Global Payroll Data..." />;
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedMonth, setSelectedMonth] = useState('January 2026');
 

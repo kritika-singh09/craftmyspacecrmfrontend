@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { projectStatuses } from '../../../data/databaseDummyData';
 import { FiX, FiCheck, FiSave, FiLock } from 'react-icons/fi';
@@ -11,6 +11,7 @@ const ProjectForm = ({ onSubmit, initialData = null, clients = [] }) => {
   const navigate = useNavigate();
   const { theme } = useTheme();
   const { isModuleLocked } = useSubscription();
+  const [users, setUsers] = useState([]);
   const [formData, setFormData] = useState({
     name: initialData?.name || '',
     location: initialData?.location || '',
@@ -19,12 +20,29 @@ const ProjectForm = ({ onSubmit, initialData = null, clients = [] }) => {
     start_date: initialData?.start_date || '',
     end_date: initialData?.end_date || '',
     status: initialData?.status || 'Planning',
-    modules: initialData?.modules || {
-      architecture: { enabled: false, status: 'LOCKED' },
-      interior: { enabled: false, status: 'LOCKED' },
-      construction: { enabled: false, status: 'LOCKED' }
-    }
+    projectLead: initialData?.projectLead?._id || '',
+    // modules: initialData?.modules || {
+    //   architecture: { enabled: false, status: 'LOCKED' },
+    //   interior: { enabled: false, status: 'LOCKED' },
+    //   construction: { enabled: false, status: 'LOCKED' }
+    // }
   });
+
+  // Fetch users for project lead selection
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/auth/users`);
+        if (response.ok) {
+          const data = await response.json();
+          setUsers(data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch users:', err);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   const moduleConfigs = [
     { id: 'architecture', name: 'Architecture', subscriptionKey: 'Architecture', icon: <MdArchitecture className="text-2xl" />, color: 'emerald' },
@@ -34,7 +52,13 @@ const ProjectForm = ({ onSubmit, initialData = null, clients = [] }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    const payload = { ...formData };
+    if (payload.projectLead === '') {
+      delete payload.projectLead;
+    }
+    // Remove modules from payload as it's been removed from backend
+    delete payload.modules;
+    onSubmit(payload);
   };
 
   const handleChange = (e) => {
@@ -247,6 +271,27 @@ const ProjectForm = ({ onSubmit, initialData = null, clients = [] }) => {
                     </select>
                   </div>
 
+                  {/* Project Lead */}
+                  <div>
+                    <label className="block text-sm font-bold mb-2" style={{ color: theme.textSecondary }}>
+                      Project Lead
+                    </label>
+                    <select
+                      name="projectLead"
+                      value={formData.projectLead}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-xl border focus:outline-none theme-focus"
+                      style={inputStyle}
+                    >
+                      <option value="">Select Project Lead</option>
+                      {users.map(u => (
+                        <option key={u._id} value={u._id}>
+                          {u.name} ({u.role})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
                   {/* Description */}
                   <div className="md:col-span-2">
                     <label className="block text-sm font-bold mb-2" style={{ color: theme.textSecondary }}>
@@ -266,7 +311,7 @@ const ProjectForm = ({ onSubmit, initialData = null, clients = [] }) => {
               </div>
 
               {/* Module Selection */}
-              <div className="mb-10">
+              {/* <div className="mb-10">
                 <h3 className="text-xl font-black mb-4" style={{ color: theme.textPrimary }}>Project Modules</h3>
                 <p className="text-sm font-medium mb-6" style={{ color: theme.textMuted }}>
                   Select which modules to enable for this project. <span className="opacity-70">(Modules may be locked based on your subscription plan)</span>
@@ -282,8 +327,8 @@ const ProjectForm = ({ onSubmit, initialData = null, clients = [] }) => {
                         key={module.id}
                         onClick={() => !isLocked && toggleModule(module.id)}
                         className={`p-6 rounded-2xl border-2 transition-all relative overflow-hidden group ${isLocked
-                            ? 'cursor-not-allowed opacity-60 grayscale'
-                            : 'cursor-pointer hover:-translate-y-1'
+                          ? 'cursor-not-allowed opacity-60 grayscale'
+                          : 'cursor-pointer hover:-translate-y-1'
                           }`}
                         style={{
                           borderColor: isEnabled
@@ -318,7 +363,7 @@ const ProjectForm = ({ onSubmit, initialData = null, clients = [] }) => {
                     );
                   })}
                 </div>
-              </div>
+              </div> */}
 
               {/* Action Buttons */}
               <div className="flex justify-end gap-4 pt-6" style={{ borderTop: `1px solid ${theme.borderColor || theme.cardBorder}` }}>

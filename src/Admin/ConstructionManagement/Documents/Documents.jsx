@@ -1,14 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTenant } from '../../../hooks/useTenant.jsx';
 import { useAuth } from '../../../hooks/useAuth.jsx';
 import RoleGuard from '../../../common/RoleGuard';
+import Loader from '../../../common/Loader';
 import { useTheme } from '../../../context/ThemeContext.jsx';
 
 const Documents = () => {
   const { currentTenant } = useTenant();
   const { user } = useAuth();
   const { theme } = useTheme();
+  const [loading, setLoading] = useState(true);
+
+  const [activeTab, setActiveTab] = useState('drawings');
   const [showUploadForm, setShowUploadForm] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 900);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) return <Loader fullScreen message="Syncing Secured Vault..." />;
 
   const documents = [
     { id: 1, name: 'Project Blueprint.pdf', type: 'Drawing', size: '2.5 MB', uploadedBy: 'Project Manager', date: '2024-01-15' },

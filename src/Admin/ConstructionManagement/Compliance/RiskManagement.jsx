@@ -1,15 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTheme } from '../../../context/ThemeContext';
+import Loader from '../../../common/Loader';
 import { FiAlertTriangle, FiShield, FiTrendingUp, FiCheckCircle, FiInfo } from 'react-icons/fi';
 
 const RiskManagement = () => {
     const { theme } = useTheme();
+    const [loading, setLoading] = useState(true);
 
     const [risks, setRisks] = useState([
         { id: 'RSK-001', category: 'Operational', impact: 'High', probability: 'Medium', status: 'Mitigated', title: 'Delayed material delivery due to monsoon', owner: 'Project Manager', mitigation: 'Buffer stock maintained for critical items' },
         { id: 'RSK-002', category: 'Safety', impact: 'Critical', probability: 'Low', status: 'Active', title: 'Working at height hazards - Tower Crane', owner: 'Safety Officer', mitigation: 'Double-harness enforcement & daily inspection' },
         { id: 'RSK-003', category: 'Financial', impact: 'Medium', probability: 'High', status: 'Active', title: 'Fluctuation in steel prices', owner: 'Procurement', mitigation: 'Fixed price contract with vendor for 6 months' }
     ]);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setLoading(false), 1000);
+        return () => clearTimeout(timer);
+    }, []);
+
+    if (loading) return <Loader fullScreen message="Calculating Risk Vectors..." />;
 
     const getStatusStyle = (status) => {
         switch (status) {

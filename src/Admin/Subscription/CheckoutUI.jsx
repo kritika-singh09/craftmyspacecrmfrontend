@@ -5,12 +5,15 @@ import { useSubscription } from '../../hooks/useSubscription';
 const CheckoutUI = ({ plan, onCancel }) => {
     const { processPayment } = useSubscription();
     const [step, setStep] = useState('review'); // review, processing, success
-    const price = plan === 'Pro' ? '25,000' : '15,000';
+
+    // All modules are ₹999/month
+    const price = '999';
+    const moduleName = plan; // plan parameter now contains module name
 
     const handlePayment = () => {
         setStep('processing');
         setTimeout(() => {
-            processPayment(true);
+            processPayment(true, moduleName); // Pass module name to processPayment
             setStep('success');
         }, 2000);
     };
@@ -22,7 +25,7 @@ const CheckoutUI = ({ plan, onCancel }) => {
                     <FiCheckCircle size={40} />
                 </div>
                 <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-2">Payment Successful!</h3>
-                <p className="text-slate-500 dark:text-slate-400 mb-8">Your {plan} plan is now active. All modules are unlocked.</p>
+                <p className="text-slate-500 dark:text-slate-400 mb-8">Your {moduleName} module is now active and unlocked.</p>
                 <button
                     onClick={() => { onCancel(); window.location.href = '/profile'; }}
                     className="px-8 py-3 bg-brand-600 text-white rounded-xl font-bold uppercase text-xs tracking-widest shadow-lg shadow-brand-600/20"
@@ -44,7 +47,7 @@ const CheckoutUI = ({ plan, onCancel }) => {
 
             <div className="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-6 mb-8 border border-slate-100 dark:border-slate-700">
                 <div className="flex justify-between items-center mb-4">
-                    <span className="text-sm font-bold text-slate-600 dark:text-slate-400">{plan} Plan Subscription</span>
+                    <span className="text-sm font-bold text-slate-600 dark:text-slate-400">{moduleName} Module Subscription</span>
                     <span className="text-lg font-black text-slate-900 dark:text-white">₹{price}</span>
                 </div>
                 <div className="flex justify-between items-center pt-4 border-t border-slate-200 dark:border-slate-700">

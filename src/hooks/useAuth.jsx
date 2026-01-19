@@ -13,14 +13,16 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem('token'));
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
-    const token = localStorage.getItem('token');
-    if (savedUser && token) {
+    const savedToken = localStorage.getItem('token');
+    if (savedUser && savedToken) {
       setUser(JSON.parse(savedUser));
+      setToken(savedToken);
       setIsAuthenticated(true);
     }
     setLoading(false);
@@ -38,6 +40,7 @@ export const AuthProvider = ({ children }) => {
 
       if (response.ok) {
         setUser(data);
+        setToken(data.token);
         setIsAuthenticated(true);
         localStorage.setItem('user', JSON.stringify(data));
         localStorage.setItem('token', data.token);
@@ -108,6 +111,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setUser(null);
+    setToken(null);
     setIsAuthenticated(false);
     localStorage.removeItem('user');
     localStorage.removeItem('token');
@@ -126,6 +130,10 @@ export const AuthProvider = ({ children }) => {
       manager: 3,
       ENGINEER: 2,
       engineer: 2,
+      ACCOUNTANT: 2,
+      accountant: 2,
+      SUPERVISOR: 2,
+      supervisor: 2,
       CONTRACTOR: 1,
       contractor: 1
     };
@@ -136,6 +144,7 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider value={{
       user,
+      token,
       isAuthenticated,
       loading,
       login,

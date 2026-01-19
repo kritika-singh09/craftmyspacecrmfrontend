@@ -1,226 +1,123 @@
-import { useState } from 'react';
-import { useTenant } from '../../../hooks/useTenant.jsx';
-import { useAuth } from '../../../hooks/useAuth.jsx';
-import { useTheme } from '../../../context/ThemeContext.jsx';
-import RoleGuard from '../../../common/RoleGuard';
-import MaterialForm from './MaterialForm';
-import IssueMaterialForm from './IssueMaterialForm';
-import { FiPlus, FiArrowUpRight, FiRefreshCcw, FiX, FiCheck } from 'react-icons/fi';
-import { projects, vendors } from '../../../data/databaseDummyData';
+import { useState, useEffect } from 'react';
+import { useTheme } from '../../../context/ThemeContext';
+import { useMaterials } from '../../../hooks/useMaterials.jsx';
+import { useProcurement } from '../../../hooks/useProcurement.jsx';
+import Loader from '../../../common/Loader';
+import MaterialDashStats from './MaterialDashStats';
+import MaterialMasterList from './MaterialMasterList';
+import InventoryView from './InventoryView';
+import IndentManager from './IndentManager';
+import ProcurementManager from './ProcurementManager';
+import QualityControl from './QualityControl';
+import { FiGrid, FiBox, FiFileText, FiShoppingCart, FiShield, FiDatabase } from 'react-icons/fi';
+import { useAuth } from '../../../hooks/useAuth';
 
 const Materials = () => {
-  const { currentTenant } = useTenant();
-  const { user } = useAuth();
   const { theme } = useTheme();
+  const { getInventory, getIndents } = useMaterials();
+  const { getPurchaseOrders } = useProcurement();
 
-  const [materialsList, setMaterialsList] = useState([
-    { id: 1, name: "Cement", unit: "Bags", stock: 500, minStock: 50, vendor: "Shree Cement Ltd" },
-    { id: 2, name: "Steel", unit: "Tons", stock: 25, minStock: 5, vendor: "Steel India" },
-    { id: 3, name: "Sand", unit: "Trucks", stock: 15, minStock: 3, vendor: "Sand Suppliers" }
-  ]);
+  const [loading, setLoading] = useState(true);
 
-  const [showForm, setShowForm] = useState(false);
-  const [showIssueForm, setShowIssueForm] = useState(false);
-  const [editingMaterial, setEditingMaterial] = useState(null);
-  const [selectedMaterial, setSelectedMaterial] = useState(null);
+  const [statsData, setStatsData] = useState({ inventory: [], indents: [], orders: [] });
+  const [activeTab, setActiveTab] = useState('dashboard');
 
-  const handleMaterialSubmit = (formData) => {
-    if (editingMaterial) {
-      setMaterialsList(materialsList.map(m =>
-        m.id === editingMaterial.id ? { ...m, ...formData } : m
-      ));
-    } else {
-      const newMat = {
-        ...formData,
-        id: Math.max(0, ...materialsList.map(m => m.id)) + 1,
-        stock: parseFloat(formData.quantity) || 0 // Initial stock from form
-      };
-      setMaterialsList([...materialsList, newMat]);
-    }
-    setShowForm(false);
-    setEditingMaterial(null);
-  };
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
 
-  const handleIssue = (material) => {
-    setSelectedMaterial(material);
-    setShowIssueForm(true);
-  };
+  useEffect(() => {
+    const fetchGlobals = async () => {
+      try {
+        const [inv, ind, pos] = await Promise.all([
+          getInventory(),
+          getIndents(),
+          getPurchaseOrders()
+        ]);
+        // Handle different return types (fetch promise returns response object for hooks wrappers if not stripped, but our hook implementation returns json data directly for getInventory but Response for getQC? No, standardizing to data.)
+        // Checking hooks implementation: 
+        // getInventory returns data.
+        // getIndents returns data.
+        // getPurchaseOrders returns RESPONSE object (need await res.json()).
 
-  const handleIssueSubmit = (issueData) => {
-    setMaterialsList(materialsList.map(m =>
-      m.id === issueData.materialId
-        ? { ...m, stock: m.stock - issueData.quantity }
-        : m
-    ));
-    setShowIssueForm(false);
-    setSelectedMaterial(null);
-  };
+        setStatsData({
+          inventory: inv,
+          indents: ind,
+          orders: pos
+        });
+      } catch (error) {
+        console.error("Dashboard fetch error:", error);
+      }
+    };
+    fetchGlobals();
+  }, []);
 
-  const handleEdit = (material) => {
-    setEditingMaterial(material);
-    setShowForm(true);
-  };
+
+  const tabs = [
+    { id: 'dashboard', label: 'Overview', icon: <FiGrid /> },
+    { id: 'master', label: 'Master Registry', icon: <FiDatabase /> },
+    { id: 'inventory', label: 'Live Inventory', icon: <FiBox /> },
+    { id: 'indents', label: 'Indents', icon: <FiFileText /> },
+    { id: 'procurement', label: 'Procurement', icon: <FiShoppingCart /> },
+    { id: 'quality', label: 'Quality Control', icon: <FiShield /> },
+  ];
 
   return (
-    <div className="space-y-8 pb-8">
-      <div className="flex justify-between items-end">
+    <div className="space-y-8 pb-8 animate-in fade-in duration-500">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row justify-between items-end gap-4">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight" style={{ color: theme.textPrimary }}>Inventory</h2>
-          <p className="text-sm font-medium mt-1" style={{ color: theme.textSecondary }}>Resource Management for {currentTenant.name}</p>
+          <h2 className="text-3xl font-black uppercase tracking-tight" style={{ color: theme.textPrimary }}>Material Hub</h2>
+          <p className="text-[11px] font-bold mt-1 opacity-60 uppercase tracking-widest" style={{ color: theme.textSecondary }}>Unified Supply Chain Management</p>
         </div>
-        <RoleGuard requiredRole="engineer">
-          <button
-            onClick={() => setShowForm(true)}
-            className="group flex items-center gap-2 text-white px-6 py-3 rounded-2xl font-bold text-sm shadow-premium transition-all hover:-translate-y-0.5"
-            style={{ background: theme.gradients.button }}
-          >
-            <span className="text-xl leading-none group-hover:rotate-90 transition-transform">+</span>
-            Add Material
-          </button>
-        </RoleGuard>
+
+        {/* Tabs */}
+        <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl overflow-x-auto max-w-full">
+          {tabs.map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === tab.id ? 'bg-white dark:bg-slate-700 shadow-sm text-blue-600' : 'text-slate-400 hover:text-slate-600'}`}
+            >
+              <span className="text-sm">{tab.icon}</span>
+              {tab.label}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {materialsList.map((material) => (
-          <div key={material.id} className="card-premium p-8 group flex flex-col" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
-            <div className="flex justify-between items-start mb-6">
-              <div>
-                <h3 className="text-lg font-black transition-colors leading-tight mb-1" style={{ color: theme.textPrimary }}>{material.name}</h3>
-                <p className="text-[11px] font-bold uppercase tracking-widest" style={{ color: theme.textMuted }}>{material.vendor}</p>
-              </div>
-              <span className={`px-3 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg border ${material.stock <= material.minStock
-                ? 'bg-red-50 text-red-600 border-red-100'
-                : 'bg-green-50 text-green-600 border-green-100'
-                }`}>
-                {material.stock <= material.minStock ? 'Critical' : 'Healthy'}
-              </span>
-            </div>
-
-            <div className="mb-8 mt-auto">
-              <div className="flex justify-between items-end mb-2.5">
-                <span className="text-[10px] font-black uppercase tracking-widest opacity-60" style={{ color: theme.textMuted }}>Available Stock</span>
-                <span className={`text-sm font-black ${material.stock <= material.minStock ? 'text-red-500' : ''}`} style={{ color: material.stock > material.minStock ? theme.textPrimary : undefined }}>
-                  {material.stock} {material.unit}
-                </span>
-              </div>
-              <div className="w-full rounded-full h-3 p-0.5 border" style={{ backgroundColor: `${theme.iconBg}20`, borderColor: `${theme.iconBg}30` }}>
-                <div
-                  className={`h-full rounded-full shadow-sm relative overflow-hidden transition-all duration-500`}
-                  style={{
-                    width: `${Math.min((material.stock / (material.minStock * 3)) * 100, 100)}%`,
-                    background: material.stock <= material.minStock ? 'linear-gradient(to right, #ef4444, #dc2626)' : theme.gradients.progress
-                  }}
-                >
-                  <div className="absolute inset-0 bg-white/10 animate-pulse"></div>
+      {/* Content Area */}
+      <div>
+        {loading ? (
+          <div className="p-20 text-center font-bold opacity-50 uppercase tracking-widest">
+            Syncing Material Hub...
+          </div>
+        ) : (
+          <>
+            {activeTab === 'dashboard' && (
+              <div className="animate-in slide-in-from-bottom-4 duration-500">
+                <MaterialDashStats inventory={statsData.inventory} indents={statsData.indents} orders={statsData.orders} />
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  {/* Shortcuts or Widgets could go here */}
+                  <div className="p-6 rounded-2xl border flex items-center justify-center min-h-[300px] opacity-50 border-dashed" style={{ borderColor: theme.cardBorder }}>
+                    <span className="text-xs font-bold">Additional Activity Charts Placeholder</span>
+                  </div>
+                  <div className="p-6 rounded-2xl border flex items-center justify-center min-h-[300px] opacity-50 border-dashed" style={{ borderColor: theme.cardBorder }}>
+                    <span className="text-xs font-bold">Recent Notifications Placeholder</span>
+                  </div>
                 </div>
               </div>
-              <div className="flex justify-between items-center mt-3">
-                <p className="text-[10px] font-black uppercase tracking-widest opacity-40" style={{ color: theme.textMuted }}>Unit: {material.unit}</p>
-                <p className="text-[10px] font-black uppercase tracking-tighter" style={{ color: theme.textMuted }}>Min: {material.minStock}</p>
-              </div>
-            </div>
+            )}
 
-            <div className="grid grid-cols-2 gap-3 mt-auto pt-6 border-t" style={{ borderColor: theme.cardBorder }}>
-              <button
-                onClick={() => handleIssue(material)}
-                className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-white text-[11px] font-black uppercase tracking-[0.15em] transition-all shadow-premium hover:shadow-lg hover:-translate-y-0.5"
-                style={{ background: theme.gradients.button }}
-              >
-                Issue
-                <FiArrowUpRight className="text-sm" />
-              </button>
-              <RoleGuard requiredRole="manager">
-                <button
-                  onClick={() => handleEdit(material)}
-                  className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-[11px] font-black uppercase tracking-[0.15em] transition-all border-2"
-                  style={{
-                    backgroundColor: theme.background,
-                    color: theme.textPrimary,
-                    borderColor: theme.cardBorder
-                  }}
-                  onMouseOver={(e) => {
-                    e.currentTarget.style.borderColor = theme.primary;
-                    e.currentTarget.style.color = theme.primary;
-                  }}
-                  onMouseOut={(e) => {
-                    e.currentTarget.style.borderColor = theme.cardBorder;
-                    e.currentTarget.style.color = theme.textPrimary;
-                  }}
-                >
-                  <FiRefreshCcw className="text-xs" />
-                  Update
-                </button>
-              </RoleGuard>
-            </div>
-          </div>
-        ))}
+            {activeTab === 'master' && <MaterialMasterList />}
+            {activeTab === 'inventory' && <InventoryView />}
+            {activeTab === 'indents' && <IndentManager />}
+            {activeTab === 'procurement' && <ProcurementManager />}
+            {activeTab === 'quality' && <QualityControl />}
+          </>
+        )}
       </div>
-
-
-      {showForm && (
-        <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-[100] p-4" style={{ backgroundColor: `${theme.textPrimary}40` }}>
-          <div className="bg-white rounded-[2.5rem] shadow-premium w-full max-w-4xl max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in duration-300" style={{ backgroundColor: theme.cardBg }}>
-            <div className="table-header-premium p-6 text-white relative" style={{ background: theme.gradients.primary }}>
-              <div className="pr-12">
-                <h3 className="text-xl font-black">
-                  {editingMaterial ? 'Update Inventory' : 'Add New Material'}
-                </h3>
-                <p className="text-blue-100 text-[10px] font-bold uppercase tracking-widest mt-1">Resource & Stock Management</p>
-              </div>
-              <button
-                onClick={() => {
-                  setShowForm(false);
-                  setEditingMaterial(null);
-                }}
-                className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 transition-all text-white"
-              >
-                <FiX />
-              </button>
-            </div>
-            <div className="p-8">
-              <MaterialForm
-                onSubmit={handleMaterialSubmit}
-                initialData={editingMaterial}
-                projects={projects}
-                vendors={vendors}
-                onClose={() => {
-                  setShowForm(false);
-                  setEditingMaterial(null);
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      )}
-
-      {showIssueForm && selectedMaterial && (
-        <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-[100] p-4" style={{ backgroundColor: `${theme.textPrimary}40` }}>
-          <div className="bg-white rounded-[2.5rem] shadow-premium w-full max-w-xl overflow-hidden animate-in fade-in zoom-in duration-300" style={{ backgroundColor: theme.cardBg }}>
-            <div className="table-header-premium p-6 text-white relative" style={{ background: theme.gradients.primary }}>
-              <div className="pr-12">
-                <h3 className="text-xl font-black">Issue Material</h3>
-                <p className="text-blue-100 text-[10px] font-bold uppercase tracking-widest mt-1">Direct Stock Release to Site</p>
-              </div>
-              <button
-                onClick={() => {
-                  setShowIssueForm(false);
-                  setSelectedMaterial(null);
-                }}
-                className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 transition-all text-white"
-              >
-                <FiX />
-              </button>
-            </div>
-            <div className="p-8">
-              <IssueMaterialForm
-                material={selectedMaterial}
-                projects={projects}
-                onSubmit={handleIssueSubmit}
-              />
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

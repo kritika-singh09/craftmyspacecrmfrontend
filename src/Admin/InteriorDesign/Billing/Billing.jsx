@@ -1,16 +1,45 @@
 import React, { useState } from 'react';
-import { FiDollarSign, FiPlus, FiArrowUpRight, FiClock, FiFileText, FiCreditCard, FiZap, FiShield, FiInfo } from 'react-icons/fi';
+import { FiDollarSign, FiPlus, FiArrowUpRight, FiClock, FiFileText, FiCreditCard, FiZap, FiShield, FiInfo, FiX, FiCheck, FiMoreVertical } from 'react-icons/fi';
 import { useTheme } from '../../../context/ThemeContext';
 
 const IntBilling = () => {
     const { theme } = useTheme();
     const [activeTab, setActiveTab] = useState('invoices');
 
-    const invoices = [
+    const [invoices, setInvoices] = useState([
         { id: 'INV-ID-01', client: 'Khanna Residences', amount: '₹12,00,000', type: 'Design & Procurement Advance', status: 'Paid', date: 'Jan 10' },
         { id: 'INV-ID-04', client: 'TechNova', amount: '₹15,00,000', type: '3D Approval Milestone', status: 'Partially Paid', date: 'Jan 12' },
         { id: 'INV-ID-07', client: 'Alaya Spa', amount: '₹4,50,000', type: 'Initial Consultancy Fee', status: 'Pending', date: 'Jan 14' },
-    ];
+    ]);
+
+    const [showModal, setShowModal] = useState(false);
+    const [newInvoice, setNewInvoice] = useState({ client: '', amount: '', type: '', status: 'Pending' });
+
+    // Gateway Config State
+    const [gatewayConfig, setGatewayConfig] = useState({
+        provider: 'Razorpay',
+        email: 'billing@interiorstudio.com',
+        keyId: 'rzp_live_interior_445',
+        keySecret: '************************'
+    });
+
+    const handleCreateInvoice = (e) => {
+        e.preventDefault();
+        const invoice = {
+            id: `INV-ID-${invoices.length + 10}`.toUpperCase(),
+            ...newInvoice,
+            date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' })
+        };
+        setInvoices([invoice, ...invoices]);
+        setShowModal(false);
+        setNewInvoice({ client: '', amount: '', type: '', status: 'Pending' });
+    };
+
+    const handleStatusUpdate = (id) => {
+        setInvoices(invoices.map(inv =>
+            inv.id === id ? { ...inv, status: 'Paid' } : inv
+        ));
+    };
 
     return (
         <div className="space-y-10 pb-12 animate-in slide-in-from-left-8 duration-700">
@@ -37,7 +66,11 @@ const IntBilling = () => {
                         ))}
                     </div>
                     {activeTab === 'invoices' && (
-                        <button className="flex items-center gap-3 px-8 py-4 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-brand hover:scale-105 transition-all" style={{ background: theme.gradients.button }}>
+                        <button
+                            onClick={() => setShowModal(true)}
+                            className="flex items-center gap-3 px-8 py-4 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-brand hover:scale-105 transition-all"
+                            style={{ background: theme.gradients.button }}
+                        >
                             <FiPlus className="text-lg" /> Create Billing Unit
                         </button>
                     )}
@@ -78,7 +111,7 @@ const IntBilling = () => {
                                 </thead>
                                 <tbody className="divide-y" style={{ divideColor: theme.cardBorder }}>
                                     {invoices.map((inv, i) => (
-                                        <tr key={i} className="hover:bg-slate-50/50 transition-colors cursor-pointer group">
+                                        <tr key={i} className="hover:bg-slate-50/50 transition-colors cursor-pointer group" onClick={() => handleStatusUpdate(inv.id)}>
                                             <td className="px-10 py-8 text-xs font-black tracking-widest uppercase" style={{ color: theme.textPrimary }}>{inv.id}</td>
                                             <td className="px-10 py-8">
                                                 <p className="text-sm font-black uppercase tracking-tight" style={{ color: theme.textPrimary }}>{inv.client}</p>
@@ -88,7 +121,7 @@ const IntBilling = () => {
                                             <td className="px-10 py-8 text-sm font-black" style={{ color: theme.primary }}>{inv.amount}</td>
                                             <td className="px-10 py-8">
                                                 <span className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest border ${inv.status === 'Paid' ? 'bg-green-50 text-green-700 border-green-200' :
-                                                        inv.status === 'Partially Paid' ? 'bg-yellow-50 text-yellow-700 border-yellow-200' : 'bg-red-50 text-red-700 border-red-200'
+                                                    inv.status === 'Partially Paid' ? 'bg-yellow-50 text-yellow-700 border-yellow-200' : 'bg-red-50 text-red-700 border-red-200'
                                                     }`}>
                                                     {inv.status}
                                                 </span>
@@ -117,7 +150,12 @@ const IntBilling = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
                                     <label className="text-[10px] font-black uppercase tracking-widest opacity-60" style={{ color: theme.textSecondary }}>Gateway Provider</label>
-                                    <select className="w-full p-4 rounded-xl border font-bold text-sm focus:ring-0" style={{ backgroundColor: theme.background, borderColor: theme.cardBorder, color: theme.textPrimary }}>
+                                    <select
+                                        value={gatewayConfig.provider}
+                                        onChange={(e) => setGatewayConfig({ ...gatewayConfig, provider: e.target.value })}
+                                        className="w-full p-4 rounded-xl border font-bold text-sm focus:ring-0"
+                                        style={{ backgroundColor: theme.background, borderColor: theme.cardBorder, color: theme.textPrimary }}
+                                    >
                                         <option>Razorpay</option>
                                         <option>Stripe</option>
                                         <option>Instamojo</option>
@@ -125,15 +163,32 @@ const IntBilling = () => {
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-[10px] font-black uppercase tracking-widest opacity-60" style={{ color: theme.textSecondary }}>Business Email</label>
-                                    <input placeholder="billing@interiorstudio.com" className="w-full p-4 rounded-xl border font-bold text-sm" style={{ backgroundColor: theme.background, borderColor: theme.cardBorder, color: theme.textPrimary }} />
+                                    <input
+                                        value={gatewayConfig.email}
+                                        onChange={(e) => setGatewayConfig({ ...gatewayConfig, email: e.target.value })}
+                                        className="w-full p-4 rounded-xl border font-bold text-sm"
+                                        style={{ backgroundColor: theme.background, borderColor: theme.cardBorder, color: theme.textPrimary }}
+                                    />
                                 </div>
                                 <div className="space-y-2 md:col-span-2">
                                     <label className="text-[10px] font-black uppercase tracking-widest opacity-60" style={{ color: theme.textSecondary }}>Razorpay Key ID</label>
-                                    <input type="password" value="rzp_live_interior_445" className="w-full p-4 rounded-xl border font-bold text-sm font-mono" style={{ backgroundColor: theme.background, borderColor: theme.cardBorder, color: theme.textPrimary }} />
+                                    <input
+                                        type="password"
+                                        value={gatewayConfig.keyId}
+                                        onChange={(e) => setGatewayConfig({ ...gatewayConfig, keyId: e.target.value })}
+                                        className="w-full p-4 rounded-xl border font-bold text-sm font-mono"
+                                        style={{ backgroundColor: theme.background, borderColor: theme.cardBorder, color: theme.textPrimary }}
+                                    />
                                 </div>
                                 <div className="space-y-2 md:col-span-2">
                                     <label className="text-[10px] font-black uppercase tracking-widest opacity-60" style={{ color: theme.textSecondary }}>Razorpay Key Secret</label>
-                                    <input type="password" value="************************" className="w-full p-4 rounded-xl border font-bold text-sm font-mono" style={{ backgroundColor: theme.background, borderColor: theme.cardBorder, color: theme.textPrimary }} />
+                                    <input
+                                        type="password"
+                                        value={gatewayConfig.keySecret}
+                                        onChange={(e) => setGatewayConfig({ ...gatewayConfig, keySecret: e.target.value })}
+                                        className="w-full p-4 rounded-xl border font-bold text-sm font-mono"
+                                        style={{ backgroundColor: theme.background, borderColor: theme.cardBorder, color: theme.textPrimary }}
+                                    />
                                 </div>
                             </div>
 
@@ -175,6 +230,60 @@ const IntBilling = () => {
                                 </p>
                             </div>
                         </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Create Invoice Modal */}
+            {showModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/40 backdrop-blur-sm animate-in fade-in">
+                    <div className="w-full max-w-lg bg-white rounded-[2rem] shadow-2xl animate-in slide-in-from-bottom-8 overflow-hidden"
+                        style={{ backgroundColor: theme.cardBg }}
+                    >
+                        <div className="p-6 text-white relative flex justify-between items-center" style={{ background: theme.gradients.primary }}>
+                            <div>
+                                <h3 className="text-xl font-black">Generate Invoice</h3>
+                                <p className="text-white/80 text-[10px] font-bold uppercase tracking-widest mt-1">Client Billing</p>
+                            </div>
+                            <button onClick={() => setShowModal(false)} className="p-2 bg-white/10 hover:bg-white/20 rounded-xl transition-colors text-white">
+                                <FiX />
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleCreateInvoice} className="p-8 space-y-6">
+                            <div className="space-y-2">
+                                <label className="text-[10px] font-black uppercase tracking-widest opacity-60" style={{ color: theme.textPrimary }}>Client Name</label>
+                                <input type="text" required value={newInvoice.client} onChange={e => setNewInvoice({ ...newInvoice, client: e.target.value })}
+                                    className="w-full p-3 rounded-xl border font-bold text-sm focus:outline-none focus:ring-2"
+                                    style={{ borderColor: theme.cardBorder, color: theme.textPrimary, backgroundColor: `${theme.primary}05` }}
+                                    placeholder="e.g. Kumar Villa"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-[10px] font-black uppercase tracking-widest opacity-60" style={{ color: theme.textPrimary }}>Description / Milestone</label>
+                                <input type="text" required value={newInvoice.type} onChange={e => setNewInvoice({ ...newInvoice, type: e.target.value })}
+                                    className="w-full p-3 rounded-xl border font-bold text-sm focus:outline-none focus:ring-2"
+                                    style={{ borderColor: theme.cardBorder, color: theme.textPrimary, backgroundColor: `${theme.primary}05` }}
+                                    placeholder="e.g. Phase 2 Completion"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-[10px] font-black uppercase tracking-widest opacity-60" style={{ color: theme.textPrimary }}>Amount (₹)</label>
+                                <input type="text" required value={newInvoice.amount} onChange={e => setNewInvoice({ ...newInvoice, amount: e.target.value })}
+                                    className="w-full p-3 rounded-xl border font-bold text-sm focus:outline-none focus:ring-2"
+                                    style={{ borderColor: theme.cardBorder, color: theme.textPrimary, backgroundColor: `${theme.primary}05` }}
+                                    placeholder="e.g. ₹5,00,000"
+                                />
+                            </div>
+
+                            <button type="submit" className="w-full py-4 rounded-xl text-white font-black uppercase tracking-widest shadow-lg hover:shadow-xl transition-all"
+                                style={{ background: theme.gradients.button }}
+                            >
+                                <div className="flex items-center justify-center gap-2">
+                                    <FiCheck /> Generate & Send
+                                </div>
+                            </button>
+                        </form>
                     </div>
                 </div>
             )}

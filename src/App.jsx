@@ -2,12 +2,19 @@ import { AuthProvider } from './hooks/useAuth.jsx';
 import { TenantProvider } from './hooks/useTenant.jsx';
 import { ThemeProvider } from './context/ThemeContext.jsx';
 import { SubscriptionProvider } from './hooks/useSubscription.jsx';
+import { SocketProvider } from './context/SocketContext.jsx';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth.jsx';
 import GlobalProjects from './Admin/GlobalModules/GlobalProjects';
 import GlobalWorkforce from './Admin/GlobalModules/GlobalWorkforce';
 import GlobalPayroll from './Admin/GlobalModules/GlobalPayroll';
-import { GlobalFinance, GlobalSafety, GlobalReports } from './Admin/GlobalModules/GlobalBI';
+
+// GlobalFinance is now a default export from its own file, so we need to adjust imports
+// However, the previous line import { GlobalFinance ... } from GlobalBI is what we are replacing.
+// Let's import GlobalFinance from its new file and keep GlobalSafety/GlobalReports from GlobalBI
+import GlobalFinance from './Admin/GlobalModules/GlobalFinance';
+import GlobalSafety from './Admin/GlobalModules/GlobalSafety';
+import { GlobalReports } from './Admin/GlobalModules/GlobalBI';
 import UnifiedProjectDetail from './Admin/GlobalModules/UnifiedProjectDetail';
 
 // Construction Management Imports
@@ -15,7 +22,7 @@ import Layout from './Admin/layouts/AdminLayout';
 import ProjectForm from './Admin/Projects/ProjectForm';
 import ProjectDashboard from './Admin/Projects/ProjectDashboard';
 import Contractors from './Admin/ConstructionManagement/Contractors/Contractors';
-import Vendors from './Admin/ConstructionManagement/Vendors/Vendors';
+import Vendors from './Admin/GlobalModules/Vendors/Vendors';
 import Materials from './Admin/ConstructionManagement/Materials/Materials';
 import MaterialForm from './Admin/ConstructionManagement/Materials/MaterialForm';
 import Clients from './Admin/ConstructionManagement/Clients/Clients';
@@ -155,7 +162,7 @@ function AppContent() {
           <Route path="/materials/edit/:id" element={<MaterialForm onSubmit={(data) => console.log(data)} projects={projects} vendors={vendors} />} />
 
           {/* Finance Routes */}
-          <Route path="/finance" element={<GlobalFinance />} />
+          <Route path="/finance" element={<GlobalFinance contextType="construction" />} />
 
           {/* Other Routes */}
           <Route path="/contractors" element={<Contractors />} />
@@ -185,7 +192,7 @@ function AppContent() {
           <Route path="/arch-documents" element={<ArchDocuments />} />
           <Route path="/arch-reports" element={<GlobalReports />} />
           <Route path="/arch-safety" element={<GlobalSafety />} />
-          <Route path="/arch-finance" element={<GlobalFinance />} />
+          <Route path="/arch-finance" element={<GlobalFinance contextType="architecture" />} />
           <Route path="/arch-profile" element={<ArchProfile />} />
           <Route path="/arch-users" element={<ArchUsers />} />
           <Route path="/arch-settings" element={<ArchSettings />} />
@@ -202,7 +209,7 @@ function AppContent() {
           <Route path="/int-materials" element={<IntMaterials />} />
           <Route path="/int-reports" element={<GlobalReports />} />
           <Route path="/int-safety" element={<GlobalSafety />} />
-          <Route path="/int-finance" element={<GlobalFinance />} />
+          <Route path="/int-finance" element={<GlobalFinance contextType="interior" />} />
           <Route path="/int-phases" element={<IntPhases />} />
           <Route path="/int-design-3d" element={<IntDesign3D />} />
           <Route path="/int-site-execution" element={<IntSiteExecution />} />
@@ -223,9 +230,11 @@ function App() {
     <ThemeProvider>
       <AuthProvider>
         <SubscriptionProvider>
-          <Router>
-            <AppContent />
-          </Router>
+          <SocketProvider>
+            <Router>
+              <AppContent />
+            </Router>
+          </SocketProvider>
         </SubscriptionProvider>
       </AuthProvider>
     </ThemeProvider>

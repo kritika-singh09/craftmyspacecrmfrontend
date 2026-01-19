@@ -1,17 +1,57 @@
 import { useTenant } from '../hooks/useTenant.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { useTheme } from '../context/ThemeContext.jsx';
-import { FiMenu, FiLayers } from 'react-icons/fi';
+import { useSocket } from '../context/SocketContext.jsx';
+import { FiMenu, FiLayers, FiBell } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 const Header = ({ onMenuClick }) => {
   const { currentTenant, tenants, switchTenant } = useTenant();
   const { user, logout } = useAuth();
   const { theme } = useTheme();
+  const { socket } = useSocket();
   const navigate = useNavigate();
+  const [notification, setNotification] = useState(null);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('REPORT_CREATED', (data) => {
+        setNotification({ type: 'INFO', ...data });
+        setTimeout(() => setNotification(null), 5000);
+      });
+
+      socket.on('SAFETY_ALERT', (data) => {
+        setNotification({ type: 'EMERGENCY', ...data });
+        // Emergency alerts stay longer
+        setTimeout(() => setNotification(null), 10000);
+      });
+
+      return () => {
+        socket.off('REPORT_CREATED');
+        socket.off('SAFETY_ALERT');
+      };
+    }
+  }, [socket]);
 
   return (
     <header className="shadow-premium fixed w-full top-0 z-50 h-16" style={{ background: theme.gradients.primary }}>
+      {/* Real-time Notification Toast */}
+      {notification && (
+        <div className={`fixed top-20 right-8 p-4 rounded-2xl shadow-2xl border backdrop-blur-md animate-in slide-in-from-right-8 z-[60] flex items-center gap-4 max-w-sm ${notification.type === 'EMERGENCY' ? 'bg-red-600 border-red-400 text-white' : 'bg-white/90 border-white/20 text-slate-800'
+          }`}>
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0 ${notification.type === 'EMERGENCY' ? 'bg-white/20' : 'bg-blue-600 text-white'
+            }`}>
+            {notification.type === 'EMERGENCY' ? <FiAlertTriangle /> : <FiBell />}
+          </div>
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-widest opacity-60">Real-Time Alert</p>
+            <p className="text-sm font-black leading-tight">{notification.message}</p>
+          </div>
+          <button onClick={() => setNotification(null)} className="text-xl opacity-40 hover:opacity-100 px-2">✕</button>
+        </div>
+      )}
+
       <div className="flex items-center justify-between px-8 h-full">
         <div className="flex items-center gap-4">
           <button

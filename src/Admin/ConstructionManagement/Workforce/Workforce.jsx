@@ -1,21 +1,46 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTenant } from '../../../hooks/useTenant.jsx';
 import { useTheme } from '../../../context/ThemeContext.jsx';
-import { tenantData } from '../../../data/tenantData';
+import { useProjects } from '../../../hooks/useProjects.jsx';
 import WorkforceForm from './WorkforceForm';
 import AttendanceForm from './AttendanceForm';
 import WorkerProfile from './WorkerProfile';
+import AddStaffModal from './AddStaffModal';
 import RoleGuard from '../../../common/RoleGuard';
 import { FiPlus, FiEdit2, FiTrash2, FiUser, FiBriefcase, FiX, FiCheckCircle, FiClock, FiAlertCircle } from 'react-icons/fi';
 
 const Workforce = () => {
   const { currentTenant } = useTenant();
   const { theme } = useTheme();
-  const data = tenantData[currentTenant.id];
+  const { projects } = useProjects(); // Fetch real projects
 
-  const [workerList, setWorkerList] = useState(data.workforce);
+  const [workerList, setWorkerList] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingWorker, setEditingWorker] = useState(null);
+
+  useEffect(() => {
+    const fetchWorkers = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/workers');
+        const result = await res.json();
+        if (result.success) {
+          const mappedWorkers = result.data.map(w => ({
+            id: w._id,
+            name: w.personalDetails?.name,
+            role: w.category,
+            project: w.personalDetails?.project || 'Unassigned',
+            wage: w.dailyWage || 0,
+            status: 'Present', // Default status for now
+            ...w
+          }));
+          setWorkerList(mappedWorkers);
+        }
+      } catch (err) {
+        console.error("Failed to fetch workers", err);
+      }
+    };
+    fetchWorkers();
+  }, [currentTenant.id]);
 
   const [showAttendance, setShowAttendance] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
@@ -69,8 +94,8 @@ const Workforce = () => {
   };
 
   const stats = {
-    present: workerList.length - 1, // Mock logic
-    absent: 1,
+    present: workerList.length,
+    absent: 0,
     late: 0
   };
 
@@ -239,13 +264,32 @@ const Workforce = () => {
         </div>
       </div>
 
-      {showForm && (
+      {showForm && !editingWorker && (
+        <AddStaffModal
+          projects={projects}
+          onClose={() => setShowForm(false)}
+          onSuccess={(newWorker) => {
+            const mapped = {
+              id: newWorker._id,
+              name: newWorker.personalDetails?.name,
+              role: newWorker.category,
+              project: 'Unassigned',
+              wage: newWorker.dailyWage || 0,
+              ...newWorker
+            };
+            setWorkerList(prev => [mapped, ...prev]);
+            setShowForm(false);
+          }}
+        />
+      )}
+
+      {showForm && editingWorker && (
         <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-[100] p-4" style={{ backgroundColor: `${theme.textPrimary}40` }}>
           <div className="bg-white rounded-[2.5rem] shadow-premium w-full max-w-2xl overflow-hidden animate-in fade-in zoom-in duration-300" style={{ backgroundColor: theme.cardBg }}>
             <div className="table-header-premium p-6 text-white relative" style={{ background: theme.gradients.primary }}>
               <div className="pr-12">
                 <h3 className="text-xl font-black">
-                  {editingWorker ? 'Edit Worker' : 'Register New Worker'}
+                  Edit Worker
                 </h3>
                 <p className="text-blue-100 text-[10px] font-bold uppercase tracking-widest mt-1">Personnel & Resource Management</p>
               </div>
@@ -260,7 +304,7 @@ const Workforce = () => {
               <WorkforceForm
                 onSubmit={handleFormSubmit}
                 initialData={editingWorker}
-                projects={data.projects}
+                projects={projects}
               />
             </div>
           </div>

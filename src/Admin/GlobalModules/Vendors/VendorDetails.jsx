@@ -49,6 +49,15 @@ const VendorDetails = ({ vendor, onBack }) => {
                 </div>
             </div>
 
+            {/* 🌍 UNIVERSAL DOMAINS BADGES */}
+            <div className="flex flex-wrap gap-2 mb-6">
+                {vendor.domains?.map(domain => (
+                    <div key={domain} className="flex items-center gap-2 px-4 py-2 rounded-xl border border-blue-100 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-800">
+                        <span className="text-blue-600 dark:text-blue-400 font-black text-[10px] uppercase tracking-widest">{domain}</span>
+                    </div>
+                ))}
+            </div>
+
             {activeTab === 'info' && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in duration-500">
                     <div className="card-premium p-6" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
@@ -94,15 +103,29 @@ const VendorDetails = ({ vendor, onBack }) => {
                             <div className="p-5 rounded-2xl border" style={{ borderColor: theme.cardBorder, backgroundColor: `${theme.iconBg}03` }}>
                                 <p className="text-[10px] font-bold uppercase tracking-tight opacity-50" style={{ color: theme.textSecondary }}>GST Registration</p>
                                 <div className="flex items-center justify-between mt-1">
-                                    <p className="text-sm font-black" style={{ color: theme.textPrimary }}>03AAACH1234Z1Z5</p>
+                                    <p className="text-sm font-black" style={{ color: theme.textPrimary }}>{vendor.gstNumber || 'N/A'}</p>
                                     <span className="text-[9px] font-black uppercase bg-green-50 text-green-700 px-2 py-1 rounded-md border border-green-100">Verified</span>
                                 </div>
                             </div>
                             <div className="p-5 rounded-2xl border" style={{ borderColor: theme.cardBorder, backgroundColor: `${theme.iconBg}03` }}>
                                 <p className="text-[10px] font-bold uppercase tracking-tight opacity-50" style={{ color: theme.textSecondary }}>Banking Details</p>
-                                <p className="text-sm font-black mt-1" style={{ color: theme.textPrimary }}>HDFC BANK - **** 9876</p>
-                                <p className="text-[10px] font-bold tracking-widest mt-0.5" style={{ color: theme.textMuted }}>IFSC: HDFC0001234</p>
+                                <p className="text-sm font-black mt-1" style={{ color: theme.textPrimary }}>{vendor.bankDetails?.bankName || 'N/A'} - {vendor.bankDetails?.accountNumber}</p>
+                                <p className="text-[10px] font-bold tracking-widest mt-0.5" style={{ color: theme.textMuted }}>IFSC: {vendor.bankDetails?.ifscCode}</p>
                             </div>
+                        </div>
+                    </div>
+
+                    <div className="col-span-1 md:col-span-2 card-premium p-6" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
+                        <h4 className="text-xs font-black uppercase tracking-widest mb-6 flex items-center gap-2" style={{ color: theme.textSecondary }}>
+                            <FiAward className="text-primary" style={{ color: theme.primary }} /> Scope of Work & Specializations
+                        </h4>
+                        <div className="flex flex-wrap gap-2">
+                            {vendor.specializations?.map((spec, i) => (
+                                <span key={i} className="px-3 py-1.5 rounded-lg border text-[11px] font-bold uppercase tracking-wide" style={{ borderColor: theme.cardBorder, color: theme.textPrimary, backgroundColor: `${theme.iconBg}05` }}>
+                                    {spec}
+                                </span>
+                            ))}
+                            {(!vendor.specializations || vendor.specializations.length === 0) && <span className="opacity-50 text-sm italic">No specific specializations listed.</span>}
                         </div>
                     </div>
                 </div>

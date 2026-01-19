@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { FiSave, FiUpload, FiMapPin, FiMail, FiPhone, FiGlobe, FiClock, FiCreditCard } from 'react-icons/fi';
+import { FiSave, FiUpload, FiMapPin, FiMail, FiPhone, FiGlobe, FiClock, FiCreditCard, FiEdit3 } from 'react-icons/fi';
+import { useTheme } from '../../../context/ThemeContext';
 
 const ArchProfile = () => {
+    const { theme } = useTheme();
+    const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({
         companyName: 'Studio Arch-Design',
         companyType: 'ARCHITECT_DESIGN_COMPANY',
@@ -26,44 +29,60 @@ const ArchProfile = () => {
             {/* Header */}
             <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight">Firm <span className="text-brand-600">Profile</span></h1>
-                    <p className="text-gray-800 dark:text-brand-300 mt-2 font-medium">Manage your architectural firm's identity and professional details.</p>
+                    <h1 className="text-4xl font-black tracking-tight" style={{ color: theme.textPrimary }}>
+                        Firm <span style={{ color: theme.secondary }}>Profile</span>
+                    </h1>
+                    <p className="mt-2 font-medium" style={{ color: theme.textSecondary }}>
+                        Manage your architectural firm's identity and professional details.
+                    </p>
                 </div>
-                <button className="flex items-center gap-2 px-8 py-4 bg-brand-600 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-brand hover:bg-brand-700 transition-all active:scale-95">
-                    <FiSave className="text-lg" /> Save Changes
+                <button
+                    onClick={() => setIsEditing(!isEditing)}
+                    className="flex items-center gap-2 px-8 py-4 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-lg transition-all active:scale-95"
+                    style={{ background: theme.gradients.button }}
+                >
+                    {isEditing ? <><FiSave className="text-lg" /> Save Changes</> : <><FiEdit3 className="text-lg" /> Edit Profile</>}
                 </button>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
                 {/* Branding & Logo */}
                 <div className="lg:col-span-1 space-y-8">
-                    <div className="bg-white dark:bg-brand-900/30 p-10 rounded-[3rem] shadow-premium border border-brand-50/50 dark:border-brand-800/50 flex flex-col items-center text-center">
+                    <div className="p-10 rounded-[3rem] shadow-premium border flex flex-col items-center text-center"
+                        style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}
+                    >
                         <div className="relative group">
-                            <div className="w-40 h-40 rounded-[2.5rem] bg-brand-50 dark:bg-brand-900 border-4 border-brand-100 dark:border-brand-800 overflow-hidden flex items-center justify-center shadow-inner">
-                                <span className="text-6xl text-brand-200">📐</span>
+                            <div className="w-40 h-40 rounded-[2.5rem] border-4 overflow-hidden flex items-center justify-center shadow-inner"
+                                style={{ backgroundColor: theme.background, borderColor: `${theme.primary}20` }}
+                            >
+                                <span className="text-6xl" style={{ filter: 'grayscale(100%)' }}>📐</span>
                             </div>
-                            <button className="absolute -bottom-2 -right-2 w-12 h-12 bg-brand-600 text-white rounded-2xl flex items-center justify-center shadow-brand transform hover:scale-110 transition-transform">
-                                <FiUpload />
-                            </button>
+                            {isEditing && (
+                                <button className="absolute -bottom-2 -right-2 w-12 h-12 text-white rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform"
+                                    style={{ background: theme.primary }}
+                                >
+                                    <FiUpload />
+                                </button>
+                            )}
                         </div>
-                        <h2 className="mt-6 text-2xl font-black text-gray-900 dark:text-white">{formData.companyName}</h2>
-                        <p className="text-[10px] font-black text-brand-600 uppercase tracking-widest mt-1">Professional Architect Firm</p>
+                        <h2 className="mt-6 text-2xl font-black" style={{ color: theme.textPrimary }}>{formData.companyName}</h2>
+                        <p className="text-[10px] font-black uppercase tracking-widest mt-1" style={{ color: theme.primary }}>Professional Architect Firm</p>
 
-                        <div className="mt-8 pt-8 border-t border-brand-50 dark:border-brand-800 w-full space-y-4">
-                            <div className="flex items-center gap-3 text-gray-800 dark:text-brand-300 text-sm">
-                                <FiMail className="shrink-0 text-brand-600" />
+                        <div className="mt-8 pt-8 border-t w-full space-y-4" style={{ borderColor: theme.cardBorder }}>
+                            <div className="flex items-center gap-3 text-sm" style={{ color: theme.textSecondary }}>
+                                <FiMail className="shrink-0" style={{ color: theme.primary }} />
                                 <span className="truncate">{formData.email}</span>
                             </div>
-                            <div className="flex items-center gap-3 text-gray-800 dark:text-brand-300 text-sm">
-                                <FiGlobe className="shrink-0 text-brand-600" />
+                            <div className="flex items-center gap-3 text-sm" style={{ color: theme.textSecondary }}>
+                                <FiGlobe className="shrink-0" style={{ color: theme.primary }} />
                                 <span>{formData.website}</span>
                             </div>
                         </div>
                     </div>
 
-                    <div className="bg-gradient-to-br from-indigo-600 to-brand-700 p-10 rounded-[3rem] shadow-brand text-white">
+                    <div className="p-10 rounded-[3rem] shadow-lg text-white" style={{ background: theme.gradients.primary }}>
                         <h4 className="flex items-center gap-2 text-lg font-black tracking-tight mb-4">
-                            <FiClock className="text-brand-200" /> Working Hours
+                            <FiClock className="text-white/80" /> Working Hours
                         </h4>
                         <p className="text-sm font-medium opacity-90">{formData.workingHours}</p>
                         <div className="mt-8 pt-6 border-t border-white/10">
@@ -78,9 +97,11 @@ const ArchProfile = () => {
 
                 {/* Main Details Form */}
                 <div className="lg:col-span-2 space-y-10">
-                    <div className="bg-white dark:bg-brand-900/30 p-10 lg:p-12 rounded-[3.5rem] shadow-premium border border-brand-50/50 dark:border-brand-800/50">
-                        <h3 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight mb-10 flex items-center gap-3">
-                            <span className="w-1.5 h-8 bg-brand-600 rounded-full"></span> General Information
+                    <div className="p-10 lg:p-12 rounded-[3.5rem] shadow-premium border"
+                        style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}
+                    >
+                        <h3 className="text-2xl font-black tracking-tight mb-10 flex items-center gap-3" style={{ color: theme.textPrimary }}>
+                            <span className="w-1.5 h-8 rounded-full" style={{ backgroundColor: theme.primary }}></span> General Information
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
                             {[
@@ -92,37 +113,52 @@ const ArchProfile = () => {
                                 { label: 'Official Website', name: 'website', value: formData.website },
                             ].map((field, i) => (
                                 <div key={i} className="space-y-2">
-                                    <label className="text-[10px] font-black text-gray-900 dark:text-brand-400 uppercase tracking-[0.2em] ml-2">{field.label}</label>
+                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] ml-2" style={{ color: theme.textSecondary }}>{field.label}</label>
                                     <input
                                         type="text"
                                         name={field.name}
                                         value={field.value}
                                         onChange={handleChange}
-                                        disabled={field.disabled}
-                                        className="w-full bg-brand-50/30 dark:bg-brand-800/30 border-2 border-brand-50 dark:border-brand-800/50 rounded-2xl px-6 py-4 text-sm font-bold text-gray-800 dark:text-white focus:border-brand-600/50 focus:ring-4 focus:ring-brand-500/5 outline-none transition-all"
+                                        disabled={!isEditing || field.disabled}
+                                        className={`w-full border-2 rounded-2xl px-6 py-4 text-sm font-bold outline-none transition-all ${isEditing ? 'focus:ring-4' : 'opacity-70 cursor-not-allowed'}`}
+                                        style={{
+                                            backgroundColor: theme.background,
+                                            borderColor: theme.cardBorder,
+                                            color: theme.textPrimary,
+                                            boxShadow: isEditing ? `0 0 0 4px ${theme.primary}10` : 'none'
+                                        }}
                                     />
                                 </div>
                             ))}
                             <div className="md:col-span-2 space-y-2">
-                                <label className="text-[10px] font-black text-gray-900 dark:text-brand-400 uppercase tracking-[0.2em] ml-2">Firm Address</label>
+                                <label className="text-[10px] font-black uppercase tracking-[0.2em] ml-2" style={{ color: theme.textSecondary }}>Firm Address</label>
                                 <div className="relative">
-                                    <FiMapPin className="absolute left-6 top-5 text-brand-600" />
+                                    <FiMapPin className="absolute left-6 top-5" style={{ color: theme.primary }} />
                                     <textarea
                                         name="address"
                                         value={formData.address}
                                         onChange={handleChange}
+                                        disabled={!isEditing}
                                         rows="3"
-                                        className="w-full bg-brand-50/30 dark:bg-brand-800/30 border-2 border-brand-50 dark:border-brand-800/50 rounded-[2rem] px-14 py-4 text-sm font-bold text-gray-800 dark:text-white focus:border-brand-600/50 outline-none transition-all resize-none"
+                                        className={`w-full border-2 rounded-[2rem] px-14 py-4 text-sm font-bold outline-none transition-all resize-none ${isEditing ? 'focus:ring-4' : 'opacity-70 cursor-not-allowed'}`}
+                                        style={{
+                                            backgroundColor: theme.background,
+                                            borderColor: theme.cardBorder,
+                                            color: theme.textPrimary,
+                                            boxShadow: isEditing ? `0 0 0 4px ${theme.primary}10` : 'none'
+                                        }}
                                     ></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div className="bg-white dark:bg-brand-900/40 p-10 lg:p-12 rounded-[3.5rem] shadow-premium border border-brand-50/50 dark:border-brand-800/50 relative overflow-hidden">
-                        <div className="absolute top-0 right-0 p-8 opacity-5 text-6xl"><FiCreditCard /></div>
-                        <h3 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight mb-10 flex items-center gap-3">
-                            <span className="w-1.5 h-8 bg-brand-600 rounded-full"></span> Bank Details (for Billing)
+                    <div className="p-10 lg:p-12 rounded-[3.5rem] shadow-premium border relative overflow-hidden"
+                        style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}
+                    >
+                        <div className="absolute top-0 right-0 p-8 opacity-5 text-6xl" style={{ color: theme.textPrimary }}><FiCreditCard /></div>
+                        <h3 className="text-2xl font-black tracking-tight mb-10 flex items-center gap-3" style={{ color: theme.textPrimary }}>
+                            <span className="w-1.5 h-8 rounded-full" style={{ backgroundColor: theme.primary }}></span> Bank Details (for Billing)
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
                             {[
@@ -131,13 +167,20 @@ const ArchProfile = () => {
                                 { label: 'IFSC Code', name: 'ifscCode', value: formData.ifscCode },
                             ].map((field, i) => (
                                 <div key={i} className="space-y-2">
-                                    <label className="text-[10px] font-black text-gray-900 dark:text-brand-400 uppercase tracking-[0.2em] ml-2">{field.label}</label>
+                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] ml-2" style={{ color: theme.textSecondary }}>{field.label}</label>
                                     <input
                                         type="text"
                                         name={field.name}
                                         value={field.value}
                                         onChange={handleChange}
-                                        className="w-full bg-brand-50/30 dark:bg-brand-800/30 border-2 border-brand-50 dark:border-brand-800/50 rounded-2xl px-6 py-4 text-sm font-bold text-gray-800 dark:text-white focus:border-brand-600/50 focus:ring-4 focus:ring-brand-500/5 outline-none transition-all"
+                                        disabled={!isEditing}
+                                        className={`w-full border-2 rounded-2xl px-6 py-4 text-sm font-bold outline-none transition-all ${isEditing ? 'focus:ring-4' : 'opacity-70 cursor-not-allowed'}`}
+                                        style={{
+                                            backgroundColor: theme.background,
+                                            borderColor: theme.cardBorder,
+                                            color: theme.textPrimary,
+                                            boxShadow: isEditing ? `0 0 0 4px ${theme.primary}10` : 'none'
+                                        }}
                                     />
                                 </div>
                             ))}

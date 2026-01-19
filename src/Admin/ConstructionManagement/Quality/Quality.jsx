@@ -1,15 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTenant } from '../../../hooks/useTenant.jsx';
 import { useAuth } from '../../../hooks/useAuth.jsx';
 import RoleGuard from '../../../common/RoleGuard';
 import { useTheme } from '../../../context/ThemeContext.jsx';
+import Loader from '../../../common/Loader';
 
 const Quality = () => {
   const { currentTenant } = useTenant();
   const { user } = useAuth();
   const { theme } = useTheme();
+  const [loading, setLoading] = useState(true);
+
   const [activeTab, setActiveTab] = useState('inspections');
   const [showInspectionForm, setShowInspectionForm] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 900);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) return <Loader fullScreen message="Syncing Quality Standards..." />;
 
   const inspections = [
     { id: 1, date: '2024-01-15', type: 'Foundation', status: 'Passed', inspector: 'Site Engineer', issues: 0 },

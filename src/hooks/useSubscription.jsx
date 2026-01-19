@@ -3,15 +3,15 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const SubscriptionContext = createContext();
 
 export const SubscriptionProvider = ({ children }) => {
-    // Mock initial state: Trial plan, Interior enabled by default
+    // Initial state: Free plan with no modules enabled
     const [subscription, setSubscription] = useState(() => {
         const saved = localStorage.getItem('subscription_data');
         return saved ? JSON.parse(saved) : {
-            plan: 'Trial', // Trial, Basic, Pro
-            status: 'ACTIVE', // ACTIVE, INACTIVE, PENDING
+            plan: 'Free', // Free or Custom (when modules are purchased individually)
+            status: 'ACTIVE',
             activatedAt: new Date().toISOString(),
             expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-            enabledModules: ['Interior'],
+            enabledModules: [], // Array of purchased modules
             paymentHistory: []
         };
     });
@@ -19,6 +19,13 @@ export const SubscriptionProvider = ({ children }) => {
     useEffect(() => {
         localStorage.setItem('subscription_data', JSON.stringify(subscription));
     }, [subscription]);
+
+    // Module pricing (per month)
+    const modulePricing = {
+        'Construction': 999,
+        'Architecture': 999,
+        'Interior': 999
+    };
 
     const updatePlan = (newPlan) => {
         setSubscription(prev => ({
@@ -28,45 +35,50 @@ export const SubscriptionProvider = ({ children }) => {
         }));
     };
 
-    const processPayment = (success) => {
-        if (success) {
-            const planLimits = {
-                'Trial': ['Interior'],
-                'Basic': ['Interior', 'Architecture'],
-                'Pro': ['Interior', 'Architecture', 'Construction']
-            };
+    const purchaseModule = (moduleName) => {
+        setSubscription(prev => ({
+            ...prev,
+            status: 'PENDING',
+            plan: 'Custom' // Switch to custom plan when purchasing individual modules
+        }));
+    };
 
-            setSubscription(prev => ({
-                ...prev,
-                status: 'ACTIVE',
-                enabledModules: planLimits[prev.plan] || prev.enabledModules,
-                activatedAt: new Date().toISOString(),
-                expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days
-                paymentHistory: [
-                    { date: new Date().toISOString(), amount: prev.plan === 'Pro' ? 25000 : 15000, plan: prev.plan },
-                    ...prev.paymentHistory
-                ]
-            }));
+    const processPayment = (success, moduleName = null) => {
+        if (success) {
+            setSubscription(prev => {
+                const newEnabledModules = moduleName
+                    ? [...new Set([...prev.enabledModules, moduleName])] // Add module if specified
+                    : prev.enabledModules;
+
+                return {
+                    ...prev,
+                    status: 'ACTIVE',
+                    enabledModules: newEnabledModules,
+                    activatedAt: new Date().toISOString(),
+                    expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+                    paymentHistory: [
+                        {
+                            date: new Date().toISOString(),
+                            amount: moduleName ? modulePricing[moduleName] : 0,
+                            module: moduleName || 'Plan',
+                            plan: prev.plan
+                        },
+                        ...prev.paymentHistory
+                    ]
+                };
+            });
             return true;
         }
         return false;
     };
 
     const toggleModule = (moduleName) => {
-        // Rule: Plan must be ACTIVE
         if (subscription.status !== 'ACTIVE') {
             return { success: false, message: "Please activate your plan to enable modules." };
         }
 
-        // Logic: Can only toggle if plan permits
-        const planLimits = {
-            'Trial': ['Interior'],
-            'Basic': ['Interior', 'Architecture'],
-            'Pro': ['Interior', 'Architecture', 'Construction']
-        };
-
-        if (!planLimits[subscription.plan].includes(moduleName)) {
-            return { success: false, message: `Upgrade to ${moduleName === 'Construction' ? 'Pro' : 'Basic'} to unlock this module.` };
+        if (!subscription.enabledModules.includes(moduleName)) {
+            return { success: false, message: `Purchase the ${moduleName} module to unlock it.` };
         }
 
         setSubscription(prev => {
@@ -82,24 +94,19 @@ export const SubscriptionProvider = ({ children }) => {
     };
 
     const isModuleLocked = (moduleName) => {
-        // Rule: Plan must be ACTIVE
         if (subscription.status !== 'ACTIVE') return true;
-
-        const planLimits = {
-            'Trial': ['Interior'],
-            'Basic': ['Interior', 'Architecture'],
-            'Pro': ['Interior', 'Architecture', 'Construction']
-        };
-        return !planLimits[subscription.plan].includes(moduleName);
+        return !subscription.enabledModules.includes(moduleName);
     };
 
     return (
         <SubscriptionContext.Provider value={{
             subscription,
             updatePlan,
+            purchaseModule,
             processPayment,
             toggleModule,
-            isModuleLocked
+            isModuleLocked,
+            modulePricing
         }}>
             {children}
         </SubscriptionContext.Provider>

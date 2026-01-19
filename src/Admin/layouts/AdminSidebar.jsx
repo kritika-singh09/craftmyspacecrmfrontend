@@ -50,6 +50,7 @@ const Sidebar = ({ isOpen, onNavigate }) => {
         { id: 'workforce', name: 'Staff & Attendance', icon: <FiUserCheck /> },
         // { id: 'payroll', name: 'Global Payroll & HR', icon: <FiDollarSign /> },
         { id: 'finance', name: 'Financial Ledger', icon: <FiPieChart /> },
+        { id: 'vendors', name: 'Vendors', icon: <FiShoppingCart /> },
         { id: 'safety', name: 'Safety Protocols', icon: <FiShield /> },
         { id: 'reports', name: 'Analytics Reports', icon: <FiBarChart2 /> }
       ]
@@ -57,10 +58,10 @@ const Sidebar = ({ isOpen, onNavigate }) => {
     {
       title: 'Construction Management',
       items: [
-        { id: 'dashboard', name: 'Unit Dashboard', icon: <FiGrid /> },
+        // { id: 'dashboard', name: 'Unit Dashboard', icon: <FiGrid /> },
         { id: 'clients', name: 'Clients', icon: <FiUsers /> },
         { id: 'contractors', name: 'Contractors', icon: <FiUsers /> },
-        { id: 'vendors', name: 'Vendors', icon: <FiShoppingCart /> },
+        // Vendors moved to Universal Core
         { id: 'materials', name: 'Materials', icon: <FiBox /> },
         { id: 'dailysite', name: 'Daily Site', icon: <FiFileText /> },
         { id: 'quality', name: 'Quality Control', icon: <FiCheckCircle /> },
@@ -71,7 +72,7 @@ const Sidebar = ({ isOpen, onNavigate }) => {
     {
       title: 'Architectural Design',
       items: [
-        { id: 'arch-dashboard', name: 'Unit Dashboard', icon: <FiGrid /> },
+        // { id: 'arch-dashboard', name: 'Unit Dashboard', icon: <FiGrid /> },
         { id: 'arch-profile', name: 'Company Profile', icon: <FiInfo /> },
         { id: 'arch-users', name: 'User Management', icon: <FiUser /> },
         { id: 'arch-clients', name: 'Clients', icon: <FiUsers /> },
@@ -87,7 +88,7 @@ const Sidebar = ({ isOpen, onNavigate }) => {
     {
       title: 'Interior Design',
       items: [
-        { id: 'int-dashboard', name: 'Unit Dashboard', icon: <FiGrid /> },
+        // { id: 'int-dashboard', name: 'Unit Dashboard', icon: <FiGrid /> },
         { id: 'int-profile', name: 'Company Profile', icon: <FiInfo /> },
         { id: 'int-users', name: 'User Management', icon: <FiUser /> },
         { id: 'int-clients', name: 'Clients', icon: <FiUsers /> },
@@ -142,33 +143,14 @@ const Sidebar = ({ isOpen, onNavigate }) => {
             </button>
           </li>
 
-          <li>
-            <button
-              onClick={() => handleMenuClick('subscription')}
-              style={activeMenu === 'subscription' ? { background: theme.gradients.button } : {}}
-              className={`w-full flex items-center px-4 py-3 text-left rounded-xl transition-all ${activeMenu === 'subscription'
-                ? 'text-white shadow-brand-sm font-semibold'
-                : 'text-white/80 hover:bg-white/5 hover:text-white font-medium border border-white/5'
-                }`}
-            >
-              <span className={`mr-3 text-lg transition-colors ${activeMenu === 'subscription' ? 'text-white' : 'text-slate-400 group-hover:text-blue-200'}`}>
-                <FiCreditCard />
-              </span>
-              <div className="flex flex-col">
-                <span className="text-sm tracking-tight" style={{ color: activeMenu === 'subscription' ? theme.textOnPrimary : 'rgba(255,255,255,0.8)' }}>Subscription</span>
-                <span className="text-[8px] font-black uppercase tracking-[0.1em] opacity-60" style={{ color: activeMenu === 'subscription' ? theme.textOnPrimary : 'rgba(255,255,255,0.6)' }}>Plans & Billing</span>
-              </div>
-            </button>
-          </li>
-
           <div className="h-px bg-white/5 my-4 mx-2"></div>
 
           {categories.map((category) => (
             <li key={category.title} className="space-y-1">
               <button
-                disabled={category.title !== 'UNIVERSAL CORE' && isModuleLocked(category.title.split(' ')[0])}
+                disabled={category.title !== 'UNIVERSAL CORE' && isModuleLocked(category.title.split(' ')[0].replace('Architectural', 'Architecture'))}
                 onClick={() => toggleSection(category.title)}
-                className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl transition-all group border ${(category.title !== 'UNIVERSAL CORE' && isModuleLocked(category.title.split(' ')[0]))
+                className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl transition-all group border ${(category.title !== 'UNIVERSAL CORE' && isModuleLocked(category.title.split(' ')[0].replace('Architectural', 'Architecture')))
                   ? 'bg-slate-800/50 opacity-40 cursor-not-allowed border-transparent'
                   : 'bg-white/5 hover:bg-white/10 border-white/5'
                   }`}
@@ -177,7 +159,7 @@ const Sidebar = ({ isOpen, onNavigate }) => {
                   <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-blue-200 group-hover:text-white transition-colors">
                     {category.title}
                   </span>
-                  {(category.title !== 'UNIVERSAL CORE' && isModuleLocked(category.title.split(' ')[0])) && <FiLock className="text-slate-500 text-xs" />}
+                  {(category.title !== 'UNIVERSAL CORE' && isModuleLocked(category.title.split(' ')[0].replace('Architectural', 'Architecture'))) && <FiLock className="text-slate-500 text-xs" />}
                 </div>
                 <span className="text-blue-300 group-hover:text-white transition-colors">
                   {expandedSections[category.title] ? <FiChevronDown /> : <FiChevronRight />}
@@ -207,6 +189,27 @@ const Sidebar = ({ isOpen, onNavigate }) => {
               </div>
             </li>
           ))}
+
+          <div className="h-px bg-white/5 my-4 mx-2"></div>
+
+          <li>
+            <button
+              onClick={() => handleMenuClick('subscription')}
+              style={activeMenu === 'subscription' ? { background: theme.gradients.button } : {}}
+              className={`w-full flex items-center px-4 py-3 text-left rounded-xl transition-all ${activeMenu === 'subscription'
+                ? 'text-white shadow-brand-sm font-semibold'
+                : 'text-white/80 hover:bg-white/5 hover:text-white font-medium border border-white/5'
+                }`}
+            >
+              <span className={`mr-3 text-lg transition-colors ${activeMenu === 'subscription' ? 'text-white' : 'text-slate-400 group-hover:text-blue-200'}`}>
+                <FiCreditCard />
+              </span>
+              <div className="flex flex-col">
+                <span className="text-sm tracking-tight" style={{ color: activeMenu === 'subscription' ? theme.textOnPrimary : 'rgba(255,255,255,0.8)' }}>Subscription</span>
+                <span className="text-[8px] font-black uppercase tracking-[0.1em] opacity-60" style={{ color: activeMenu === 'subscription' ? theme.textOnPrimary : 'rgba(255,255,255,0.6)' }}>Plans & Billing</span>
+              </div>
+            </button>
+          </li>
         </ul>
       </nav>
     </aside>

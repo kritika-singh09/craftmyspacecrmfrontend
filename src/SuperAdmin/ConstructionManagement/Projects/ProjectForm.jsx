@@ -71,7 +71,11 @@ const ProjectForm = ({ initialData, companies, onSubmit, onCancel }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSubmit(formData);
+        const payload = { ...formData };
+        if (payload.projectLead === '') {
+            delete payload.projectLead;
+        }
+        onSubmit(payload);
     };
 
     const tabs = [
@@ -160,11 +164,11 @@ const ProjectForm = ({ initialData, companies, onSubmit, onCancel }) => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div className="space-y-2">
                             <label className="text-[10px] font-black text-brand-500 uppercase tracking-[0.2em] ml-2">Commencement Date</label>
-                            <input type="date" name="startDate" value={formData.startDate?.split('T')[0]} onChange={handleChange} className="input-premium py-3 px-4" />
+                            <input type="date" name="startDate" value={formData.startDate && (typeof formData.startDate === 'string' ? formData.startDate.split('T')[0] : (formData.startDate.$date ? formData.startDate.$date.split('T')[0] : new Date(formData.startDate).toISOString().split('T')[0]))} onChange={handleChange} className="input-premium py-3 px-4" />
                         </div>
                         <div className="space-y-2">
                             <label className="text-[10px] font-black text-brand-500 uppercase tracking-[0.2em] ml-2">Scheduled Completion</label>
-                            <input type="date" name="endDate" value={formData.endDate?.split('T')[0]} onChange={handleChange} className="input-premium py-3 px-4" />
+                            <input type="date" name="endDate" value={formData.endDate && (typeof formData.endDate === 'string' ? formData.endDate.split('T')[0] : (formData.endDate.$date ? formData.endDate.$date.split('T')[0] : new Date(formData.endDate).toISOString().split('T')[0]))} onChange={handleChange} className="input-premium py-3 px-4" />
                         </div>
                         <div className="space-y-2">
                             <label className="text-[10px] font-black text-brand-500 uppercase tracking-[0.2em] ml-2">Project Status</label>

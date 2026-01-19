@@ -7,7 +7,7 @@ import { FiSave, FiX, FiCheck, FiAlertCircle, FiLock } from 'react-icons/fi';
 import { MdHome, MdArchitecture } from 'react-icons/md';
 import { GiHammerNails } from 'react-icons/gi';
 
-const ProjectForm = ({ existingProject = null, initialModule = null, onClose }) => {
+const ProjectForm = ({ existingProject = null, initialModule = null, onClose, isReadOnly = false }) => {
     const navigate = useNavigate();
     const { theme } = useTheme();
     const { isModuleLocked, updatePlan, processPayment } = useSubscription();
@@ -25,40 +25,87 @@ const ProjectForm = ({ existingProject = null, initialModule = null, onClose }) 
         progress: 0,
         projectLead: '',
         description: '',
-        modules: {
-            architecture: { enabled: false, status: 'LOCKED' },
-            interior: { enabled: false, status: 'LOCKED' },
-            construction: { enabled: false, status: 'LOCKED' }
-        }
+        // modules: {
+        //     architecture: { enabled: false, status: 'LOCKED' },
+        //     interior: { enabled: false, status: 'LOCKED' },
+        //     construction: { enabled: false, status: 'LOCKED' }
+        // }
     });
 
     const [draftSaved, setDraftSaved] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
     const [showPaymentModal, setShowPaymentModal] = useState(false);
     const [pendingModule, setPendingModule] = useState(null);
+    const [users, setUsers] = useState([]);
+
+    // Fetch users for project lead selection
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/auth/users`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setUsers(data);
+                }
+            } catch (err) {
+                console.error('Failed to fetch users:', err);
+            }
+        };
+        fetchUsers();
+    }, []);
 
     // Load existing project or draft
     useEffect(() => {
         if (existingProject) {
+            const getVal = (obj, field) => {
+                const val = obj[field];
+                if (!val) return '';
+                if (typeof val === 'string') return val;
+                if (typeof val === 'object' && val._id) return val._id;
+                if (typeof val === 'object' && val.$oid) return val.$oid;
+                return val;
+            };
+
+            const getDate = (dateVal) => {
+                if (!dateVal) return '';
+                const d = (typeof dateVal === 'object' && dateVal.$date) ? dateVal.$date : dateVal;
+                try {
+                    if (typeof d === 'string') return d.split('T')[0];
+                    return new Date(d).toISOString().split('T')[0];
+                } catch (e) {
+                    return '';
+                }
+            };
+
             setFormData({
                 name: existingProject.name || '',
                 location: existingProject.location || '',
                 client: existingProject.client || '',
                 budget: existingProject.budget || '',
-                start_date: existingProject.start_date?.split('T')[0] || '',
-                end_date: existingProject.end_date?.split('T')[0] || '',
+                start_date: getDate(existingProject.start_date),
+                end_date: getDate(existingProject.end_date),
                 status: existingProject.status || 'Planning',
                 progress: existingProject.progress || 0,
-                projectLead: existingProject.projectLead?._id || '',
+                projectLead: getVal(existingProject, 'projectLead'),
                 description: existingProject.description || '',
-                modules: existingProject.modules || formData.modules
+                // modules: existingProject.modules || {
+                //     architecture: { enabled: false, status: 'LOCKED' },
+                //     interior: { enabled: false, status: 'LOCKED' },
+                //     construction: { enabled: false, status: 'LOCKED' }
+                // }
             });
-            // Load draft from localStorage
+        } else {
+            // Only load draft for NEW projects
             const draft = localStorage.getItem('projectDraft');
             if (draft) {
-                setFormData(JSON.parse(draft));
+                try {
+                    setFormData(JSON.parse(draft));
+                } catch (e) {
+                    localStorage.removeItem('projectDraft');
+                }
             } else if (initialModule) {
-                // Pre-select module if provided
+                // Pre-select module if provided (Logic disabled since modules are commented out)
+                /*
                 setFormData(prev => ({
                     ...prev,
                     modules: {
@@ -67,6 +114,7 @@ const ProjectForm = ({ existingProject = null, initialModule = null, onClose }) 
                         construction: { enabled: initialModule === 'construction', status: initialModule === 'construction' ? 'ONGOING' : 'LOCKED' }
                     }
                 }));
+                */
             }
         }
     }, [existingProject, initialModule]);
@@ -166,14 +214,27 @@ const ProjectForm = ({ existingProject = null, initialModule = null, onClose }) 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (isReadOnly) return;
 
         if (!validate()) {
             return;
         }
 
+        const payload = { ...formData };
+        if (!payload.projectLead || payload.projectLead === '' || payload.projectLead === 'null') {
+            delete payload.projectLead;
+        }
+
+        // Remove modules from payload as it's been removed from backend
+        delete payload.modules;
+
+        const targetId = typeof existingProject?._id === 'object' && existingProject?._id.$oid
+            ? existingProject._id.$oid
+            : existingProject?._id;
+
         const result = existingProject
-            ? await updateProject(existingProject._id, formData)
-            : await createProject(formData);
+            ? await updateProject(targetId, payload)
+            : await createProject(payload);
 
         if (result.success) {
             // Clear draft
@@ -196,9 +257,11 @@ const ProjectForm = ({ existingProject = null, initialModule = null, onClose }) 
     ];
 
     const inputStyle = {
-        backgroundColor: `${theme.iconBg}10`,
-        borderColor: theme.cardBorder,
-        color: theme.textPrimary
+        backgroundColor: isReadOnly ? 'transparent' : (theme.mode === 'dark' ? '#1e293b' : 'white'),
+        borderColor: isReadOnly ? 'transparent' : (theme.mode === 'dark' ? '#334155' : '#e2e8f0'),
+        color: theme.textPrimary,
+        paddingLeft: isReadOnly ? '0' : '1rem',
+        boxShadow: isReadOnly ? 'none' : 'none'
     };
 
 
@@ -247,7 +310,7 @@ const ProjectForm = ({ existingProject = null, initialModule = null, onClose }) 
                         <div className="flex justify-between items-center">
                             <div>
                                 <h2 className="text-3xl font-black tracking-tight text-white">
-                                    {existingProject ? 'Edit Project' : 'Create New Project'}
+                                    {isReadOnly ? 'Project Details' : existingProject ? 'Edit Project' : 'Create New Project'}
                                 </h2>
                                 <p className="text-sm font-medium mt-1 text-white/80">
                                     {existingProject ? `Project Code: ${existingProject.projectCode}` : 'Project code will be auto-generated'}
@@ -277,7 +340,9 @@ const ProjectForm = ({ existingProject = null, initialModule = null, onClose }) 
                                         name="name"
                                         value={formData.name}
                                         onChange={handleChange}
-                                        className={`w-full px-4 py-3 rounded-xl border ${validationErrors.name ? 'border-red-500' : ''} focus:outline-none theme-focus`}
+                                        readOnly={isReadOnly}
+                                        disabled={isReadOnly}
+                                        className={`w-full px-4 py-3 rounded-xl border ${validationErrors.name ? 'border-red-500' : ''} focus:outline-none theme-focus ${isReadOnly ? 'px-0 font-black text-xl' : ''} ${isReadOnly ? 'cursor-default opacity-80' : ''}`}
                                         style={inputStyle}
                                         placeholder="Enter project name"
                                     />
@@ -395,11 +460,34 @@ const ProjectForm = ({ existingProject = null, initialModule = null, onClose }) 
                                         name="status"
                                         value={formData.status}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 rounded-xl border focus:outline-none theme-focus"
+                                        disabled={isReadOnly}
+                                        className={`w-full px-4 py-3 rounded-xl border focus:outline-none theme-focus ${isReadOnly ? 'cursor-default opacity-80 appearance-none' : ''}`}
                                         style={inputStyle}
                                     >
                                         {statusOptions.map(status => (
                                             <option key={status} value={status}>{status}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* Project Lead */}
+                                <div>
+                                    <label className="block text-sm font-bold mb-2" style={{ color: theme.textSecondary }}>
+                                        Project Lead
+                                    </label>
+                                    <select
+                                        name="projectLead"
+                                        value={formData.projectLead}
+                                        onChange={handleChange}
+                                        disabled={isReadOnly}
+                                        className={`w-full px-4 py-3 rounded-xl border focus:outline-none theme-focus ${isReadOnly ? 'cursor-default opacity-80 appearance-none' : ''}`}
+                                        style={inputStyle}
+                                    >
+                                        <option value="">Select Project Lead</option>
+                                        {users.map(u => (
+                                            <option key={u._id} value={u._id}>
+                                                {u.name} ({u.role})
+                                            </option>
                                         ))}
                                     </select>
                                 </div>
@@ -416,7 +504,8 @@ const ProjectForm = ({ existingProject = null, initialModule = null, onClose }) 
                                         onChange={handleChange}
                                         min="0"
                                         max="100"
-                                        className="w-full range-slider cursor-pointer"
+                                        disabled={isReadOnly}
+                                        className={`w-full range-slider transition-all ${isReadOnly ? 'cursor-default opacity-50 grayscale' : 'cursor-pointer'}`}
                                     />
                                 </div>
 
@@ -430,7 +519,9 @@ const ProjectForm = ({ existingProject = null, initialModule = null, onClose }) 
                                         value={formData.description}
                                         onChange={handleChange}
                                         rows="4"
-                                        className="w-full px-4 py-3 rounded-xl border focus:outline-none theme-focus"
+                                        readOnly={isReadOnly}
+                                        disabled={isReadOnly}
+                                        className={`w-full px-4 py-3 rounded-xl border focus:outline-none theme-focus ${isReadOnly ? 'cursor-default opacity-80' : ''}`}
                                         style={inputStyle}
                                         placeholder="Enter project description or notes"
                                     />
@@ -439,7 +530,7 @@ const ProjectForm = ({ existingProject = null, initialModule = null, onClose }) 
                         </div>
 
                         {/* Module Selection */}
-                        <div className="mb-10">
+                        {/* <div className="mb-10">
                             <h3 className="text-xl font-black mb-4" style={{ color: theme.textPrimary }}>Project Modules</h3>
                             <p className="text-sm font-medium mb-6" style={{ color: theme.textMuted }}>
                                 Select which modules to enable for this project
@@ -453,8 +544,8 @@ const ProjectForm = ({ existingProject = null, initialModule = null, onClose }) 
                                     return (
                                         <div
                                             key={module.id}
-                                            onClick={() => toggleModule(module.id)}
-                                            className={`p-6 rounded-2xl border-2 transition-all relative overflow-hidden group cursor-pointer hover:-translate-y-1 ${isLocked ? 'opacity-80' : ''}`}
+                                            onClick={() => !isReadOnly && toggleModule(module.id)}
+                                            className={`p-6 rounded-2xl border-2 transition-all relative overflow-hidden group ${isReadOnly ? 'cursor-default' : 'cursor-pointer hover:-translate-y-1'} ${isLocked ? 'opacity-80' : ''}`}
                                             style={{
                                                 borderColor: isEnabled
                                                     ? theme.primary
@@ -489,7 +580,7 @@ const ProjectForm = ({ existingProject = null, initialModule = null, onClose }) 
                                     );
                                 })}
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* Action Buttons */}
                         <div className="flex justify-end gap-4 pt-6" style={{ borderTop: `1px solid ${theme.borderColor || theme.cardBorder}` }}>
@@ -499,17 +590,19 @@ const ProjectForm = ({ existingProject = null, initialModule = null, onClose }) 
                                 className="px-6 py-3 rounded-xl font-bold text-sm border hover:bg-opacity-10 transition-all"
                                 style={{ color: theme.textPrimary, borderColor: theme.cardBorder, backgroundColor: theme.background }}
                             >
-                                <FiX className="inline mr-2" /> Cancel
+                                <FiX className="inline mr-2" /> {isReadOnly ? 'Close' : 'Cancel'}
                             </button>
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className="px-6 py-3 rounded-xl font-bold text-sm text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:-translate-y-0.5"
-                                style={{ background: theme.gradients.button }}
-                            >
-                                <FiSave className="inline mr-2" />
-                                {loading ? 'Saving...' : existingProject ? 'Update Project' : 'Create Project'}
-                            </button>
+                            {!isReadOnly && (
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="px-6 py-3 rounded-xl font-bold text-sm text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:-translate-y-0.5"
+                                    style={{ background: theme.gradients.button }}
+                                >
+                                    <FiSave className="inline mr-2" />
+                                    {loading ? 'Saving...' : existingProject ? 'Update Project' : 'Create Project'}
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>
