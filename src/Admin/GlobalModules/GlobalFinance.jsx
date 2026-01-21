@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
-import Loader from '../../common/Loader';
+
 import InvoiceGenerationModal from './InvoiceGenerationModal';
 import PaymentVoucherModal from './PaymentVoucherModal';
 import ReceiptVoucherModal from './ReceiptVoucherModal';
@@ -60,7 +60,7 @@ const GlobalFinance = ({ contextType }) => {
             // Update stats based on real data
             if (txnRes.success && invRes.success) {
                 const totalRevenue = invRes.data.reduce((sum, inv) => sum + (inv.status === 'PAID' ? inv.totalAmount : 0), 0);
-                const totalExpenses = txnRes.data.reduce((sum, txn) => sum + (txn.type === 'outflow' ? txn.amount : 0), 0);
+                const totalExpenses = txnRes.data.reduce((sum, txn) => sum + (txn.type === 'EXPENSE' ? txn.amount : 0), 0);
                 const outstanding = invRes.data.reduce((sum, inv) => sum + (inv.status !== 'PAID' ? inv.totalAmount : 0), 0);
 
                 setStats([
@@ -77,18 +77,41 @@ const GlobalFinance = ({ contextType }) => {
         }
     };
 
+    const handleStatusUpdate = async (type, id, newStatus) => {
+        try {
+            let res;
+            if (type === 'transaction') {
+                res = await financeService.updateTransactionStatus(id, newStatus);
+            } else if (type === 'invoice') {
+                res = await financeService.updateInvoiceStatus(id, newStatus);
+            }
+
+            if (res?.success) {
+                fetchFinanceData();
+            } else {
+                alert('Update failed: ' + (res?.message || 'Unknown error'));
+            }
+        } catch (error) {
+            console.error('Status update error:', error);
+            alert('Failed to update status');
+        }
+    };
+
     const getStatusColor = (status) => {
+        const s = status?.toUpperCase();
         const colors = {
-            paid: { bg: 'bg-emerald-50 dark:bg-emerald-900/20', text: 'text-emerald-600', border: 'border-emerald-200' },
-            pending: { bg: 'bg-amber-50 dark:bg-amber-900/20', text: 'text-amber-600', border: 'border-amber-200' },
-            overdue: { bg: 'bg-rose-50 dark:bg-rose-900/20', text: 'text-rose-600', border: 'border-rose-200' },
-            cleared: { bg: 'bg-blue-50 dark:bg-blue-900/20', text: 'text-blue-600', border: 'border-blue-200' }
+            PAID: { bg: 'bg-emerald-50 dark:bg-emerald-900/20', text: 'text-emerald-600', border: 'border-emerald-200' },
+            SETTLED: { bg: 'bg-emerald-50 dark:bg-emerald-900/20', text: 'text-emerald-600', border: 'border-emerald-200' },
+            APPROVED: { bg: 'bg-blue-50 dark:bg-blue-900/20', text: 'text-blue-600', border: 'border-blue-200' },
+            PENDING: { bg: 'bg-amber-50 dark:bg-amber-900/20', text: 'text-amber-600', border: 'border-amber-200' },
+            OVERDUE: { bg: 'bg-rose-50 dark:bg-rose-900/20', text: 'text-rose-600', border: 'border-rose-200' },
+            CANCELLED: { bg: 'bg-slate-50 dark:bg-slate-900/20', text: 'text-slate-600', border: 'border-slate-200' }
         };
-        return colors[status] || colors.pending;
+        return colors[s] || colors.PENDING;
     };
 
     // Early return AFTER all hooks
-    if (loading) return <Loader fullScreen message="Loading Financial Data..." />;
+
 
     return (
         <div className="space-y-8 pb-12 animate-in fade-in duration-700">
@@ -107,7 +130,7 @@ const GlobalFinance = ({ contextType }) => {
                     </div>
                 </div>
 
-                <div className="flex flex-wrap gap-3">
+                <div className="flex items-center gap-4">
                     <button onClick={() => setShowInvoiceModal(true)} className="group flex items-center gap-3 px-6 py-4 rounded-2xl text-white font-black text-xs uppercase tracking-[0.2em] shadow-xl transition-all hover:-translate-y-1 bg-gradient-to-r from-emerald-500 to-emerald-600">
                         <FiPlus className="text-lg transition-transform group-hover:rotate-90" /> New Invoice
                     </button>
@@ -157,8 +180,22 @@ const GlobalFinance = ({ contextType }) => {
                 <div className="min-h-[400px]">
                     {activeTab === 'overview' && (
                         <div className="space-y-6">
-                            <div className="flex justify-between items-center">
+                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                                 <h3 className="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Financial Transactions</h3>
+                                <div className="flex gap-3 w-full sm:w-auto">
+                                    <button
+                                        onClick={() => setShowReceiptModal(true)}
+                                        className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-black text-[10px] uppercase tracking-widest border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 transition-all shadow-sm"
+                                    >
+                                        <FiArrowDown className="text-sm" /> Record Receipt
+                                    </button>
+                                    <button
+                                        onClick={() => setShowPaymentModal(true)}
+                                        className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 font-black text-[10px] uppercase tracking-widest border border-rose-200 dark:border-rose-800 hover:bg-rose-100 transition-all shadow-sm"
+                                    >
+                                        <FiArrowUp className="text-sm" /> Record Payment
+                                    </button>
+                                </div>
                             </div>
                             <div className="overflow-x-auto">
                                 <table className="w-full">
@@ -181,13 +218,20 @@ const GlobalFinance = ({ contextType }) => {
                                                     <p className="text-sm font-bold text-slate-900 dark:text-white">{txn.description}</p>
                                                     <p className="text-[10px] font-bold text-slate-400 mt-0.5 uppercase tracking-wider">{txn.category}</p>
                                                 </td>
-                                                <td className={`px-6 py-5 text-right font-black text-lg ${txn.type === 'inflow' ? 'text-emerald-500' : 'text-rose-500'}`}>
-                                                    {txn.type === 'inflow' ? '+' : '-'} ₹{txn.amount.toLocaleString()}
+                                                <td className={`px-6 py-5 text-right font-black text-lg ${txn.type === 'INCOME' ? 'text-emerald-500' : 'text-rose-500'}`}>
+                                                    {txn.type === 'INCOME' ? '+' : '-'} ₹{txn.amount.toLocaleString()}
                                                 </td>
                                                 <td className="px-6 py-5 text-center">
-                                                    <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${getStatusColor(txn.status).bg} ${getStatusColor(txn.status).text} ${getStatusColor(txn.status).border}`}>
-                                                        {txn.status}
-                                                    </span>
+                                                    <select
+                                                        value={txn.status}
+                                                        onChange={(e) => handleStatusUpdate('transaction', txn._id || txn.id, e.target.value)}
+                                                        className={`px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border outline-none cursor-pointer transition-all ${getStatusColor(txn.status).bg} ${getStatusColor(txn.status).text} ${getStatusColor(txn.status).border} hover:shadow-lg`}
+                                                    >
+                                                        <option value="PENDING">Pending</option>
+                                                        <option value="APPROVED">Approved</option>
+                                                        <option value="SETTLED">Settled</option>
+                                                        <option value="CANCELLED">Cancelled</option>
+                                                    </select>
                                                 </td>
                                             </tr>
                                         ))}
@@ -228,9 +272,16 @@ const GlobalFinance = ({ contextType }) => {
                                                     ₹{(inv.totalAmount || inv.amount).toLocaleString()}
                                                 </td>
                                                 <td className="px-6 py-5 text-center">
-                                                    <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${getStatusColor(inv.status).bg} ${getStatusColor(inv.status).text} ${getStatusColor(inv.status).border}`}>
-                                                        {inv.status}
-                                                    </span>
+                                                    <select
+                                                        value={inv.status}
+                                                        onChange={(e) => handleStatusUpdate('invoice', inv._id || inv.id, e.target.value)}
+                                                        className={`px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border outline-none cursor-pointer transition-all ${getStatusColor(inv.status).bg} ${getStatusColor(inv.status).text} ${getStatusColor(inv.status).border} hover:shadow-lg`}
+                                                    >
+                                                        <option value="PENDING">Pending</option>
+                                                        <option value="PAID">Paid</option>
+                                                        <option value="OVERDUE">Overdue</option>
+                                                        <option value="CANCELLED">Cancelled</option>
+                                                    </select>
                                                 </td>
                                                 <td className="px-6 py-5">
                                                     <div className="flex justify-center gap-2">
@@ -272,23 +323,39 @@ const GlobalFinance = ({ contextType }) => {
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-slate-50 dark:divide-white/5">
-                                        {chartOfAccounts.map(acc => (
-                                            <tr key={acc.code} className="hover:bg-slate-50/50 dark:hover:bg-white/5 transition-colors">
-                                                <td className="px-6 py-4 text-sm font-bold text-slate-500">{acc.code}</td>
-                                                <td className="px-6 py-4 text-sm font-black text-slate-900 dark:text-white">{acc.name}</td>
-                                                <td className="px-6 py-4">
-                                                    <span className={`px-3 py-1 rounded-lg text-[9px] font-bold uppercase ${acc.type === 'Asset' ? 'bg-blue-50 text-blue-600' :
-                                                        acc.type === 'Liability' ? 'bg-rose-50 text-rose-600' :
-                                                            'bg-amber-50 text-amber-600'
-                                                        }`}>
-                                                        {acc.type}
-                                                    </span>
-                                                </td>
-                                                <td className="px-6 py-4 text-right text-sm font-black text-slate-900 dark:text-white">
-                                                    ₹{((acc.balance || 0) / 100000).toFixed(2)}L
+                                        {chartOfAccounts.length > 0 ? (
+                                            chartOfAccounts.map(acc => (
+                                                <tr key={acc.code} className="hover:bg-slate-50/50 dark:hover:bg-white/5 transition-colors">
+                                                    <td className="px-6 py-4 text-sm font-bold text-slate-500">{acc.code}</td>
+                                                    <td className="px-6 py-4 text-sm font-black text-slate-900 dark:text-white">{acc.name}</td>
+                                                    <td className="px-6 py-4">
+                                                        <span className={`px-3 py-1 rounded-lg text-[9px] font-bold uppercase ${acc.type === 'Asset' ? 'bg-blue-50 text-blue-600' :
+                                                            acc.type === 'Liability' ? 'bg-rose-50 text-rose-600' :
+                                                                'bg-amber-50 text-amber-600'
+                                                            }`}>
+                                                            {acc.type}
+                                                        </span>
+                                                    </td>
+                                                    <td className="px-6 py-4 text-right text-sm font-black text-slate-900 dark:text-white">
+                                                        ₹{((acc.balance || 0) / 100000).toFixed(2)}L
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr>
+                                                <td colSpan="4" className="px-6 py-12 text-center">
+                                                    <div className="flex flex-col items-center gap-3">
+                                                        <div className="w-16 h-16 rounded-2xl bg-slate-50 dark:bg-white/5 flex items-center justify-center text-2xl text-slate-400">
+                                                            📚
+                                                        </div>
+                                                        <div>
+                                                            <p className="font-black text-slate-900 dark:text-white uppercase tracking-tight">Your Ledger is empty</p>
+                                                            <p className="text-xs font-bold text-slate-500 mt-1">Click "Chart of Accounts" &gt; "Quick Setup Defaults" to begin.</p>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             </tr>
-                                        ))}
+                                        )}
                                     </tbody>
                                 </table>
                             </div>

@@ -77,20 +77,20 @@ const Login = () => {
             >
               Register New Company
             </Link>
-            <Link
+            {/* <Link
               to="/superadmin-register"
               className="text-brand-600 hover:text-brand-800 font-medium"
             >
               Register as Super Admin
-            </Link>
+            </Link> */}
           </div>
 
-          <div className="bg-gray-50 p-4 rounded-md text-sm">
+          {/* <div className="bg-gray-50 p-4 rounded-md text-sm">
             <p className="font-medium mb-2">Demo Credentials:</p>
             <p>Admin: admin@harr.com / 123456</p>
             <p>Manager: manager@harr.com / 123456</p>
             <p>Engineer: engineer@harr.com / 123456</p>
-          </div>
+          </div> */}
         </form>
       </div>
     </div>

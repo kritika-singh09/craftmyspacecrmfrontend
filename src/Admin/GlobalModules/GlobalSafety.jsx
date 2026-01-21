@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../hooks/useAuth';
-import Loader from '../../common/Loader';
+
 import {
     FiShield,
     FiAlertTriangle,
@@ -165,7 +165,7 @@ const GlobalSafety = () => {
         return () => clearTimeout(timer);
     }, []);
 
-    if (loading) return <Loader fullScreen message="Loading Safety Protocols..." />;
+
 
     const renderContent = () => {
         switch (activeTab) {
@@ -192,7 +192,7 @@ const GlobalSafety = () => {
                 </div>
 
                 {/* Scrollable Tabs Container */}
-                <div className="w-full lg:w-auto overflow-x-auto pb-2 -mb-2 hide-scrollbar">
+                <div className="w-full lg:w-auto overflow-x-auto pb-2 -mb-2 no-scrollbar">
                     <div className="flex gap-2 min-w-max">
                         <button
                             onClick={() => setActiveTab('dashboard')}

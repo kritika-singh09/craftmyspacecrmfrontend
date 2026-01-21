@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../../../context/ThemeContext';
 import { useAuth } from '../../../hooks/useAuth';
-import { FiAlertTriangle, FiFileText, FiCamera, FiMapPin, FiActivity } from 'react-icons/fi';
+import { FiAlertTriangle, FiFileText, FiCamera, FiMapPin, FiActivity, FiX } from 'react-icons/fi';
 
 const IncidentReporting = () => {
     const { theme } = useTheme();
@@ -14,6 +14,8 @@ const IncidentReporting = () => {
     const [description, setDescription] = useState('');
     const [incidents, setIncidents] = useState([]);
     const [submitting, setSubmitting] = useState(false);
+    const [selectedFiles, setSelectedFiles] = useState([]);
+    const fileInputRef = useRef(null);
 
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
@@ -40,11 +42,21 @@ const IncidentReporting = () => {
         } catch (err) { console.error(err); }
     };
 
+    const handleFileChange = (e) => {
+        const files = Array.from(e.target.files);
+        setSelectedFiles(prev => [...prev, ...files]);
+    };
+
+    const removeFile = (index) => {
+        setSelectedFiles(prev => prev.filter((_, i) => i !== index));
+    };
+
     const handleSubmit = async () => {
         if (!selectedProject || !description) return alert("Please fill all fields");
 
         setSubmitting(true);
         try {
+            const formData = new FormData();
             const payload = {
                 project: selectedProject,
                 type: incidentType,
@@ -52,18 +64,23 @@ const IncidentReporting = () => {
                 description: description,
             };
 
+            formData.append('data', JSON.stringify(payload));
+            selectedFiles.forEach(file => {
+                formData.append('photos', file);
+            });
+
             const res = await fetch(`${API_URL}/safety/incidents`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify(payload)
+                body: formData
             });
 
             if (res.ok) {
                 alert("Incident Reported Successfully");
                 setDescription('');
+                setSelectedFiles([]);
                 fetchIncidents(); // Refresh list
             } else {
                 alert("Failed to report incident");
@@ -132,9 +149,33 @@ const IncidentReporting = () => {
                         ></textarea>
                     </div>
 
-                    <button className="w-full py-3 border border-dashed border-slate-300 dark:border-slate-600 rounded-xl text-xs font-black uppercase tracking-wider text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
-                        <FiCamera className="inline mr-2" /> Attach Evidence
-                    </button>
+                    <div className="space-y-2">
+                        <button
+                            type="button"
+                            onClick={() => fileInputRef.current.click()}
+                            className="w-full py-3 border border-dashed border-slate-300 dark:border-slate-600 rounded-xl text-xs font-black uppercase tracking-wider text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
+                        >
+                            <FiCamera className="inline mr-2" /> Attach Evidence
+                        </button>
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            onChange={handleFileChange}
+                            multiple
+                            className="hidden"
+                            accept="image/*"
+                        />
+                        {selectedFiles.length > 0 && (
+                            <div className="flex flex-wrap gap-2">
+                                {selectedFiles.map((file, idx) => (
+                                    <div key={idx} className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        <span className="text-[10px] font-bold truncate max-w-[100px]">{file.name}</span>
+                                        <button onClick={() => removeFile(idx)} className="text-red-500 hover:text-red-700"><FiX /></button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
 
                     <button
                         onClick={handleSubmit}
@@ -168,6 +209,13 @@ const IncidentReporting = () => {
                                     <span className="flex items-center gap-1"><FiActivity /> {inc.severity} Severity</span>
                                     <span className="flex items-center gap-1">Reported by: {inc.reportedBy?.name}</span>
                                 </div>
+                                {inc.photos && inc.photos.length > 0 && (
+                                    <div className="flex gap-2 mt-4 overflow-x-auto pb-2 no-scrollbar">
+                                        {inc.photos.map((url, i) => (
+                                            <img key={i} src={url} alt="Evidence" className="w-24 h-24 object-cover rounded-xl border border-white/20 shadow-sm transition-transform hover:scale-110 cursor-pointer" onClick={() => window.open(url, '_blank')} />
+                                        ))}
+                                    </div>
+                                )}
                             </div>
 
                             {inc.severity === 'Critical' && (

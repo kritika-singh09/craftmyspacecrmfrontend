@@ -19,9 +19,16 @@ const Layout = ({ children }) => {
   return (
     <div className="min-h-screen pt-16 transition-all duration-500" style={{ background: theme.background }}>
       <Header onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
-      <div className="flex">
+      <div className="flex relative">
+        {/* Mobile Backdrop */}
+        {sidebarOpen && (
+          <div 
+            className="fixed inset-0 bg-black/50 z-30 lg:hidden backdrop-blur-sm transition-opacity"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
         <Sidebar isOpen={sidebarOpen} onNavigate={handleNavigate} />
-        <main className="flex-1 p-8 ml-0 lg:ml-72 transition-all duration-500">
+        <main className={`flex-1 p-4 lg:p-8 ml-0 lg:ml-72 transition-all duration-500 w-full`}>
           {children}
         </main>
       </div>

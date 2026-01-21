@@ -4,10 +4,10 @@ import { FiUsers, FiMonitor } from 'react-icons/fi';
 import SiteStaffForm from './SiteStaffForm';
 import OfficeStaffForm from './OfficeStaffForm';
 
-const AddStaffModal = ({ onClose, onSuccess }) => {
+const AddStaffModal = ({ onClose, onSuccess, editData }) => {
     const { theme } = useTheme();
-    const [step, setStep] = useState('select'); // 'select', 'site', 'office'
-    const [selection, setSelection] = useState(null);
+    const [step, setStep] = useState(editData ? (editData.type?.toLowerCase() === 'site' ? 'site' : 'office') : 'select');
+    const [selection, setSelection] = useState(editData ? editData.type?.toLowerCase() : null);
 
     const handleSelection = (type) => {
         setSelection(type);
@@ -21,8 +21,11 @@ const AddStaffModal = ({ onClose, onSuccess }) => {
 
     const handleSubmit = async (data) => {
         try {
-            const response = await fetch('http://localhost:5000/api/workers', {
-                method: 'POST',
+            const url = editData ? `http://localhost:5000/api/workers/${editData._id}` : 'http://localhost:5000/api/workers';
+            const method = editData ? 'PUT' : 'POST';
+
+            const response = await fetch(url, {
+                method,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             });
@@ -46,7 +49,7 @@ const AddStaffModal = ({ onClose, onSuccess }) => {
                 {step === 'select' && (
                     <>
                         <div className="table-header-premium p-6 text-white relative" style={{ background: theme.gradients.primary }}>
-                            <h3 className="text-xl font-black">Add New Staff</h3>
+                            <h3 className="text-xl font-black">{editData ? 'Edit Staff' : 'Add New Staff'}</h3>
                             <button onClick={onClose} className="absolute top-6 right-6 text-white text-xl">×</button>
                         </div>
                         <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -79,13 +82,13 @@ const AddStaffModal = ({ onClose, onSuccess }) => {
 
                 {step === 'site' && (
                     <div className="p-8 max-h-[85vh] overflow-y-auto">
-                        <SiteStaffForm onBack={handleBack} onSubmit={handleSubmit} />
+                        <SiteStaffForm editData={editData} onBack={handleBack} onSubmit={handleSubmit} />
                     </div>
                 )}
 
                 {step === 'office' && (
                     <div className="p-8 max-h-[85vh] overflow-y-auto">
-                        <OfficeStaffForm onBack={handleBack} onSubmit={handleSubmit} />
+                        <OfficeStaffForm editData={editData} onBack={handleBack} onSubmit={handleSubmit} />
                     </div>
                 )}
 

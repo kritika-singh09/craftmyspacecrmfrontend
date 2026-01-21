@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FiLock, FiCheckCircle, FiLoader, FiCreditCard } from 'react-icons/fi';
+import { FiLock, FiCheckCircle, FiCreditCard } from 'react-icons/fi';
 import { useSubscription } from '../../hooks/useSubscription';
 
 const CheckoutUI = ({ plan, onCancel }) => {
@@ -58,7 +58,7 @@ const CheckoutUI = ({ plan, onCancel }) => {
 
             {step === 'processing' ? (
                 <div className="flex flex-col items-center justify-center py-12">
-                    <FiLoader className="animate-spin text-brand-600 mb-4" size={32} />
+
                     <p className="text-sm font-bold text-slate-600 dark:text-slate-400">Processing Secure Payment...</p>
                 </div>
             ) : (

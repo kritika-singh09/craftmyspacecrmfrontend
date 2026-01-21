@@ -5,6 +5,7 @@ import projectService from '../../services/projectService';
 
 const PaymentVoucherModal = ({ isOpen, onClose, onSuccess, initialBusinessType }) => {
     const [projects, setProjects] = useState([]);
+    const [coaAccounts, setCoaAccounts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         voucherNo: 'PMT-2024-' + Math.floor(Math.random() * 1000).toString().padStart(3, '0'),
@@ -18,13 +19,14 @@ const PaymentVoucherModal = ({ isOpen, onClose, onSuccess, initialBusinessType }
         tdsDeduction: 0,
         netAmount: 0,
         referenceNo: '', // Cheque/Transaction ID
-        costHead: 'material',
+        coaAccount: '',
         narration: ''
     });
 
     React.useEffect(() => {
         if (isOpen) {
             fetchProjects();
+            fetchCOA();
         }
     }, [isOpen]);
 
@@ -32,6 +34,19 @@ const PaymentVoucherModal = ({ isOpen, onClose, onSuccess, initialBusinessType }
         const res = await projectService.getProjects();
         if (res.success) {
             setProjects(res.data);
+        }
+    };
+
+    const fetchCOA = async () => {
+        const res = await financeService.getCOA();
+        if (res.success) {
+            // Filter only Expense types for payments (Case-insensitive)
+            // Also include Liability for things like TDS payments or loan repayments
+            const filtered = res.data.filter(acc => {
+                const type = acc.type?.toLowerCase();
+                return type === 'expense' || type === 'liability';
+            });
+            setCoaAccounts(filtered);
         }
     };
 
@@ -52,12 +67,15 @@ const PaymentVoucherModal = ({ isOpen, onClose, onSuccess, initialBusinessType }
     };
 
     const handleSubmit = async () => {
+        if (!formData.coaAccount) return alert('Please select a Ledger Account');
         setLoading(true);
         try {
+            const selectedAcc = coaAccounts.find(a => a._id === formData.coaAccount);
             const txnData = {
                 transactionId: formData.voucherNo,
                 type: 'EXPENSE',
-                category: formData.costHead.charAt(0).toUpperCase() + formData.costHead.slice(1),
+                category: selectedAcc ? selectedAcc.name : 'Expense',
+                coaAccount: formData.coaAccount,
                 amount: parseFloat(formData.amount),
                 project: formData.projectId,
                 paymentMode: formData.paymentMode,
@@ -247,19 +265,16 @@ const PaymentVoucherModal = ({ isOpen, onClose, onSuccess, initialBusinessType }
 
                     {/* Cost Head & Narration */}
                     <div>
-                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Cost Head Allocation</label>
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Ledger Account (Expense Head)</label>
                         <select
-                            value={formData.costHead}
-                            onChange={(e) => handleChange('costHead', e.target.value)}
+                            value={formData.coaAccount}
+                            onChange={(e) => handleChange('coaAccount', e.target.value)}
                             className="w-full h-12 px-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-bold outline-none focus:ring-2 focus:ring-emerald-500/20 mb-4"
                         >
-                            <option value="material">Material Expense</option>
-                            <option value="labor">Labor Expense</option>
-                            <option value="subcontract">Subcontractor Payment</option>
-                            <option value="marketing">Marketing & Sales</option>
-                            <option value="siteExpense">Site Expenses</option>
-                            <option value="admin">Administrative</option>
-                            <option value="design">Design & Consultancy</option>
+                            <option value="">Select Account</option>
+                            {coaAccounts.map(acc => (
+                                <option key={acc._id} value={acc._id}>{acc.code} - {acc.name}</option>
+                            ))}
                         </select>
                     </div>
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTheme } from '../../../context/ThemeContext';
-import Loader from '../../../common/Loader';
+
 import { FiAlertTriangle, FiShield, FiTrendingUp, FiCheckCircle, FiInfo } from 'react-icons/fi';
 
 const RiskManagement = () => {
@@ -18,7 +18,7 @@ const RiskManagement = () => {
         return () => clearTimeout(timer);
     }, []);
 
-    if (loading) return <Loader fullScreen message="Calculating Risk Vectors..." />;
+
 
     const getStatusStyle = (status) => {
         switch (status) {

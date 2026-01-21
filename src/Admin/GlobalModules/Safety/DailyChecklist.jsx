@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../../../context/ThemeContext';
 import { useAuth } from '../../../hooks/useAuth';
-import { FiCheckCircle, FiXCircle, FiCamera, FiMapPin, FiSave, FiAlertTriangle } from 'react-icons/fi';
+import { FiCheckCircle, FiXCircle, FiCamera, FiMapPin, FiSave, FiAlertTriangle, FiX } from 'react-icons/fi';
 
 const DailyChecklist = () => {
     const { theme } = useTheme();
@@ -13,6 +13,8 @@ const DailyChecklist = () => {
     const [riskLevel, setRiskLevel] = useState('Low');
     const [location, setLocation] = useState(null);
     const [submitting, setSubmitting] = useState(false);
+    const [selectedFiles, setSelectedFiles] = useState([]);
+    const fileInputRef = useRef(null);
 
     // Standard Checklist Items
     const [items, setItems] = useState([
@@ -59,6 +61,15 @@ const DailyChecklist = () => {
         setItems(items.map(i => i.id === id ? { ...i, remarks } : i));
     };
 
+    const handleFileChange = (e) => {
+        const files = Array.from(e.target.files);
+        setSelectedFiles(prev => [...prev, ...files]);
+    };
+
+    const removeFile = (index) => {
+        setSelectedFiles(prev => prev.filter((_, i) => i !== index));
+    };
+
     const handleSubmit = async () => {
         if (!selectedProject) return alert("Please select a project");
 
@@ -68,6 +79,7 @@ const DailyChecklist = () => {
 
         setSubmitting(true);
         try {
+            const formData = new FormData();
             const payload = {
                 project: selectedProject,
                 module: moduleType,
@@ -76,13 +88,17 @@ const DailyChecklist = () => {
                 riskLevel: calculatedRisk
             };
 
+            formData.append('data', JSON.stringify(payload));
+            selectedFiles.forEach(file => {
+                formData.append('photos', file);
+            });
+
             const res = await fetch(`${API_URL}/safety/checklists`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify(payload)
+                body: formData
             });
 
             if (res.ok) {
@@ -90,6 +106,7 @@ const DailyChecklist = () => {
                 // Reset form
                 setItems(items.map(i => ({ ...i, status: 'NA', remarks: '' })));
                 setSelectedProject('');
+                setSelectedFiles([]);
             } else {
                 alert("Failed to submit checklist");
             }
@@ -183,10 +200,34 @@ const DailyChecklist = () => {
                     <div className="flex items-center gap-2 text-xs font-bold opacity-50">
                         <FiMapPin /> {location || "Locating..."}
                     </div>
-                    <div className="flex gap-4">
-                        <button className="px-6 py-3 rounded-xl border border-dashed border-slate-300 dark:border-slate-600 text-slate-400 text-xs font-black uppercase tracking-wider hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
-                            <FiCamera className="inline mr-2 text-lg" /> Attach Photo
-                        </button>
+                    <div className="flex gap-4 items-center">
+                        <div className="relative">
+                            <button
+                                type="button"
+                                onClick={() => fileInputRef.current.click()}
+                                className="px-6 py-3 rounded-xl border border-dashed border-slate-300 dark:border-slate-600 text-slate-400 text-xs font-black uppercase tracking-wider hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
+                            >
+                                <FiCamera className="inline mr-2 text-lg" /> Attach Photo
+                            </button>
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                onChange={handleFileChange}
+                                multiple
+                                className="hidden"
+                                accept="image/*"
+                            />
+                            {selectedFiles.length > 0 && (
+                                <div className="absolute bottom-full left-0 mb-4 flex flex-wrap gap-2 min-w-[300px] bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-800 animate-in slide-in-from-bottom-2">
+                                    {selectedFiles.map((file, idx) => (
+                                        <div key={idx} className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg">
+                                            <span className="text-[10px] font-bold truncate max-w-[80px]">{file.name}</span>
+                                            <button onClick={() => removeFile(idx)} className="text-red-500 hover:text-red-700"><FiX /></button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                         <button
                             onClick={handleSubmit}
                             disabled={submitting}

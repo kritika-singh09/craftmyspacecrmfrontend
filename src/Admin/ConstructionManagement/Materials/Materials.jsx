@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTheme } from '../../../context/ThemeContext';
 import { useMaterials } from '../../../hooks/useMaterials.jsx';
 import { useProcurement } from '../../../hooks/useProcurement.jsx';
-import Loader from '../../../common/Loader';
+
 import MaterialDashStats from './MaterialDashStats';
 import MaterialMasterList from './MaterialMasterList';
 import InventoryView from './InventoryView';

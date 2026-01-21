@@ -3,7 +3,7 @@ import { useTenant } from '../../../hooks/useTenant.jsx';
 import { useAuth } from '../../../hooks/useAuth.jsx';
 import RoleGuard from '../../../common/RoleGuard';
 import { useTheme } from '../../../context/ThemeContext.jsx';
-import Loader from '../../../common/Loader';
+
 import DPRForm from './DPRForm';
 import { FiGrid, FiUsers, FiBox, FiShield, FiCamera, FiCheckCircle, FiAlertTriangle, FiActivity, FiMessageSquare } from 'react-icons/fi';
 
@@ -147,7 +147,7 @@ const DailySite = () => {
                     <div className="flex justify-between items-start">
                       <div>
                         <h4 className="text-lg font-black leading-none" style={{ color: theme.textPrimary }}>{report.project?.name || 'Project Site'}</h4>
-                        <p className="text-[10px] font-bold uppercase tracking-widest opacity-40 mt-1">{new Date(report.reportDate).toLocaleDateString(undefined, { weekday: 'long', month: 'pretty_long', day: 'numeric' })}</p>
+                        <p className="text-[10px] font-bold uppercase tracking-widest opacity-40 mt-1">{new Date(report.reportDate).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</p>
                       </div>
                       <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest ${report.approvals?.projectManager?.status === 'Approved' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
                         {report.approvals?.projectManager?.status || 'Review Pending'}

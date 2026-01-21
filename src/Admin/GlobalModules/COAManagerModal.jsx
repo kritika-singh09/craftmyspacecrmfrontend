@@ -16,8 +16,28 @@ const COAManagerModal = ({ isOpen, onClose, onSuccess }) => {
     const categories = {
         asset: ['Current Assets', 'Fixed Assets', 'Bank Accounts', 'Cash', 'Receivables'],
         liability: ['Current Liabilities', 'Long Term Liabilities', 'Payables', 'Tax Payable'],
-        income: ['Direct Income', 'Indirect Income', 'Sales'],
+        equity: ['Owner Capital', 'Retained Earnings', 'Drawings'],
+        revenue: ['Direct Income', 'Indirect Income', 'Sales'],
         expense: ['Direct Expense', 'Indirect Expense', 'Cost of Goods Sold', 'Administrative']
+    };
+
+    const handleInitializeDefaults = async () => {
+        if (!window.confirm('This will create standard accounting heads for your company. Proceed?')) return;
+        setLoading(true);
+        try {
+            const res = await financeService.setupDefaultCOA();
+            if (res.success) {
+                alert('Default accounts initialized successfully!');
+                if (onSuccess) onSuccess();
+                onClose();
+            } else {
+                alert('Error: ' + res.message);
+            }
+        } catch (error) {
+            alert('Failed to initialize defaults');
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleChange = (field, value) => {
@@ -58,13 +78,23 @@ const COAManagerModal = ({ isOpen, onClose, onSuccess }) => {
 
                 {/* Header */}
                 <div className="flex justify-between items-center p-6 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
-                    <div>
-                        <h3 className="text-2xl font-black uppercase tracking-tight text-slate-900 dark:text-white">
-                            New Account Head
-                        </h3>
-                        <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-1">
-                            Chart of Accounts Master
-                        </p>
+                    <div className="flex-1">
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <h3 className="text-2xl font-black uppercase tracking-tight text-slate-900 dark:text-white">
+                                    New Account Head
+                                </h3>
+                                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-1">
+                                    Chart of Accounts Master
+                                </p>
+                            </div>
+                            <button
+                                onClick={handleInitializeDefaults}
+                                className="px-4 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 font-black text-[10px] uppercase tracking-widest border border-emerald-100 hover:bg-emerald-100 transition-all mr-4"
+                            >
+                                ✨ Quick Setup Defaults
+                            </button>
+                        </div>
                     </div>
                     <button onClick={onClose} className="p-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 transition-colors">
                         <FiX size={24} className="text-slate-500 dark:text-slate-400" />
@@ -102,11 +132,19 @@ const COAManagerModal = ({ isOpen, onClose, onSuccess }) => {
                                 onChange={(e) => handleChange('parentCategory', e.target.value)}
                                 className="w-full h-12 px-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-bold outline-none focus:ring-2 focus:ring-emerald-500/20"
                             >
-                                <option value="asset">Asset (Balance Sheet)</option>
-                                <option value="liability">Liability (Balance Sheet)</option>
-                                <option value="income">Income (P&L)</option>
-                                <option value="expense">Expense (P&L)</option>
+                                <option value="asset">Asset (What you have / Property / Bank)</option>
+                                <option value="liability">Liability (What you owe / Loans / Payables)</option>
+                                <option value="equity">Equity (Owner's Investment / Capital)</option>
+                                <option value="revenue">Revenue (Earnings / Sales)</option>
+                                <option value="expense">Expense (Spending / Costs)</option>
                             </select>
+                            <p className="text-[10px] font-bold text-slate-400 mt-2 px-1 italic italic italic">
+                                {formData.parentCategory === 'asset' && "Assets are things the company owns (Cash, Equipment, Receivables)."}
+                                {formData.parentCategory === 'liability' && "Liabilities are debts the company owes (Loans, Unpaid Bills)."}
+                                {formData.parentCategory === 'equity' && "Equity is the owner's stake in the business."}
+                                {formData.parentCategory === 'revenue' && "Revenue is money coming in from projects or services."}
+                                {formData.parentCategory === 'expense' && "Expenses are costs incurred to run the business (Rent, Materials, Labor)."}
+                            </p>
                         </div>
                     </div>
 

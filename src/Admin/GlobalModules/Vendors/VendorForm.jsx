@@ -22,6 +22,9 @@ const VendorForm = ({ onClose, onSuccess, initialData = null }) => {
         creditLimit: 0
     });
 
+    const [customSpecInput, setCustomSpecInput] = useState({});
+    const [showCustomInput, setShowCustomInput] = useState({});
+
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
     const domainsList = [
@@ -52,6 +55,15 @@ const VendorForm = ({ onClose, onSuccess, initialData = null }) => {
                 : [...prev.specializations, spec];
             return { ...prev, specializations: newSpecs };
         });
+    };
+
+    const handleAddCustomSpec = (domain) => {
+        const customValue = customSpecInput[domain]?.trim();
+        if (customValue && !formData.specializations.includes(customValue)) {
+            toggleSpec(customValue);
+            setCustomSpecInput(prev => ({ ...prev, [domain]: '' }));
+            setShowCustomInput(prev => ({ ...prev, [domain]: false }));
+        }
     };
 
     const handleChange = (section, field, value) => {
@@ -118,34 +130,36 @@ const VendorForm = ({ onClose, onSuccess, initialData = null }) => {
     ];
 
     return (
-        <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-4xl overflow-hidden flex flex-col max-h-[90vh]" style={{ backgroundColor: theme.cardBg }}>
-            <div className="p-6 text-white flex justify-between items-center" style={{ background: theme.gradients.primary }}>
+        <div className="bg-white rounded-2xl sm:rounded-[2rem] shadow-2xl w-full max-w-4xl overflow-hidden flex flex-col max-h-[90vh]" style={{ backgroundColor: theme.cardBg }}>
+            <div className="p-4 sm:p-6 text-white flex justify-between items-center" style={{ background: theme.gradients.primary }}>
                 <div>
-                    <h2 className="text-xl font-black uppercase tracking-tight">Onboard Vendor</h2>
+                    <h2 className="text-lg sm:text-xl font-black uppercase tracking-tight">Onboard Vendor</h2>
                     <p className="text-blue-100 text-[10px] font-bold uppercase tracking-widest opacity-80">Universal Vendor Master</p>
                 </div>
                 <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-all text-white">✕</button>
             </div>
 
-            <div className="flex flex-1 overflow-hidden">
-                <div className="w-64 border-r p-4 space-y-2" style={{ borderColor: theme.cardBorder, backgroundColor: `${theme.cardBg}50` }}>
-                    {tabs.map(tab => (
-                        <button
-                            key={tab.id}
-                            onClick={() => setActiveTab(tab.id)}
-                            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all ${activeTab === tab.id ? 'text-white shadow-md' : 'hover:bg-slate-100 dark:hover:bg-slate-800'}`}
-                            style={activeTab === tab.id ? { background: theme.gradients.button } : { color: theme.textSecondary }}
-                        >
-                            <span className="text-lg">{tab.icon}</span>
-                            {tab.label}
-                        </button>
-                    ))}
+            <div className="flex flex-1 overflow-hidden flex-col sm:flex-row">
+                <div className="sm:w-64 border-b sm:border-b-0 sm:border-r p-4 space-y-2 overflow-x-auto sm:overflow-x-visible" style={{ borderColor: theme.cardBorder, backgroundColor: `${theme.cardBg}50` }}>
+                    <div className="flex sm:flex-col gap-2">
+                        {tabs.map(tab => (
+                            <button
+                                key={tab.id}
+                                onClick={() => setActiveTab(tab.id)}
+                                className={`flex-1 sm:flex-none sm:w-full flex items-center justify-center sm:justify-start gap-2 sm:gap-3 px-3 sm:px-4 py-3 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${activeTab === tab.id ? 'text-white shadow-md' : 'hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+                                style={activeTab === tab.id ? { background: theme.gradients.button } : { color: theme.textSecondary }}
+                            >
+                                <span className="text-lg">{tab.icon}</span>
+                                <span className="hidden sm:inline">{tab.label}</span>
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
-                <div className="flex-1 p-8 overflow-y-auto">
+                <div className="flex-1 p-4 sm:p-8 overflow-y-auto">
                     {activeTab === 'basic' && (
                         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <div className="grid grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                                 {renderInput("Vendor / Firm Name", formData.name, v => handleChange(null, 'name', v), "Company Name")}
                                 <div className="w-full">
                                     <label className="text-[10px] font-black uppercase tracking-widest ml-1 block mb-1.5 opacity-60" style={{ color: theme.textSecondary }}>Type</label>
@@ -164,7 +178,7 @@ const VendorForm = ({ onClose, onSuccess, initialData = null }) => {
                             </div>
 
                             <h4 className="flex items-center gap-2 text-sm font-bold text-blue-500 mt-4"><FiUser /> Contact Person</h4>
-                            <div className="grid grid-cols-3 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 {renderInput("Name", formData.contactPerson.name, v => handleChange('contactPerson', 'name', v))}
                                 {renderInput("Phone", formData.contactPerson.phone, v => handleChange('contactPerson', 'phone', v))}
                                 {renderInput("Email", formData.contactPerson.email, v => handleChange('contactPerson', 'email', v))}
@@ -176,7 +190,7 @@ const VendorForm = ({ onClose, onSuccess, initialData = null }) => {
                         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                             <div>
                                 <h3 className="text-sm font-black uppercase tracking-widest mb-4" style={{ color: theme.textPrimary }}>1. Select Business Domains</h3>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                     {domainsList.map(item => {
                                         const isSelected = formData.domains.includes(item.id);
                                         return (
@@ -216,7 +230,48 @@ const VendorForm = ({ onClose, onSuccess, initialData = null }) => {
                                                             {spec}
                                                         </button>
                                                     ))}
-                                                    <button className="px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase border border-dashed border-slate-300 text-slate-400 hover:text-blue-500 hover:border-blue-500 transition-colors">+ Add Custom</button>
+
+                                                    {!showCustomInput[domain] ? (
+                                                        <button
+                                                            onClick={() => setShowCustomInput(prev => ({ ...prev, [domain]: true }))}
+                                                            className="px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase border border-dashed border-slate-300 text-slate-400 hover:text-blue-500 hover:border-blue-500 transition-colors"
+                                                        >
+                                                            + Add Custom
+                                                        </button>
+                                                    ) : (
+                                                        <div className="flex items-center gap-2">
+                                                            <input
+                                                                type="text"
+                                                                value={customSpecInput[domain] || ''}
+                                                                onChange={(e) => setCustomSpecInput(prev => ({ ...prev, [domain]: e.target.value }))}
+                                                                onKeyPress={(e) => {
+                                                                    if (e.key === 'Enter') {
+                                                                        e.preventDefault();
+                                                                        handleAddCustomSpec(domain);
+                                                                    }
+                                                                }}
+                                                                placeholder="Enter custom item..."
+                                                                className="px-3 py-1.5 rounded-lg text-[10px] font-bold border border-blue-500 outline-none focus:ring-2 focus:ring-blue-500/20"
+                                                                style={{ backgroundColor: theme.mode === 'dark' ? '#1e293b' : '#ffffff', color: theme.textPrimary }}
+                                                                autoFocus
+                                                            />
+                                                            <button
+                                                                onClick={() => handleAddCustomSpec(domain)}
+                                                                className="px-3 py-1.5 rounded-lg text-[10px] font-bold bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+                                                            >
+                                                                Add
+                                                            </button>
+                                                            <button
+                                                                onClick={() => {
+                                                                    setShowCustomInput(prev => ({ ...prev, [domain]: false }));
+                                                                    setCustomSpecInput(prev => ({ ...prev, [domain]: '' }));
+                                                                }}
+                                                                className="px-3 py-1.5 rounded-lg text-[10px] font-bold bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+                                                            >
+                                                                Cancel
+                                                            </button>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         ))}
@@ -229,13 +284,13 @@ const VendorForm = ({ onClose, onSuccess, initialData = null }) => {
                     {activeTab === 'legal' && (
                         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                             <h3 className="text-sm font-black uppercase tracking-widest mb-4 text-blue-500"><FiCheckCircle className="inline mr-2" /> Compliance Details</h3>
-                            <div className="grid grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                                 {renderInput("GST Number", formData.gstNumber, v => handleChange(null, 'gstNumber', v))}
                                 {renderInput("PAN Number", formData.panNumber, v => handleChange(null, 'panNumber', v))}
                             </div>
 
                             <h3 className="text-sm font-black uppercase tracking-widest mb-4 mt-6 text-blue-500"><FiCreditCard className="inline mr-2" /> Banking Information</h3>
-                            <div className="grid grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                                 {renderInput("Bank Name", formData.bankDetails.bankName, v => handleChange('bankDetails', 'bankName', v))}
                                 {renderInput("Branch", formData.bankDetails.branch, v => handleChange('bankDetails', 'branch', v))}
                                 {renderInput("Account Number", formData.bankDetails.accountNumber, v => handleChange('bankDetails', 'accountNumber', v))}
@@ -246,9 +301,9 @@ const VendorForm = ({ onClose, onSuccess, initialData = null }) => {
                 </div>
             </div>
 
-            <div className="p-6 border-t flex justify-end gap-4" style={{ borderColor: theme.cardBorder, backgroundColor: theme.cardBg }}>
-                <button onClick={onClose} className="px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all hover:bg-slate-100 dark:hover:bg-slate-800" style={{ color: theme.textSecondary }}>Cancel</button>
-                <button onClick={handleSubmit} disabled={submitting} className="px-8 py-3 rounded-xl font-black text-xs uppercase tracking-widest text-white shadow-lg transition-all hover:-translate-y-1 hover:shadow-xl disabled:opacity-50" style={{ background: theme.gradients.button }}>
+            <div className="p-4 sm:p-6 border-t flex flex-col sm:flex-row justify-end gap-3 sm:gap-4" style={{ borderColor: theme.cardBorder, backgroundColor: theme.cardBg }}>
+                <button onClick={onClose} className="px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all hover:bg-slate-100 dark:hover:bg-slate-800 order-2 sm:order-1" style={{ color: theme.textSecondary }}>Cancel</button>
+                <button onClick={handleSubmit} disabled={submitting} className="px-8 py-3 rounded-xl font-black text-xs uppercase tracking-widest text-white shadow-lg transition-all hover:-translate-y-1 hover:shadow-xl disabled:opacity-50 order-1 sm:order-2" style={{ background: theme.gradients.button }}>
                     {submitting ? 'Saving...' : 'Register Vendor'}
                 </button>
             </div>

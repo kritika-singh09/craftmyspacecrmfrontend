@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import { FiDollarSign, FiTrendingUp, FiPieChart, FiCreditCard, FiArrowUpRight, FiClock, FiFileText, FiPlus, FiShield, FiAlertTriangle, FiBookOpen, FiCheckCircle, FiArrowRight } from 'react-icons/fi';
 import RoleGuard from '../../common/RoleGuard';
-import Loader from '../../common/Loader';
+
 
 // --- GLOBAL REPORTS ---
 export const GlobalReports = () => {
@@ -16,7 +16,7 @@ export const GlobalReports = () => {
         return () => clearTimeout(timer);
     }, []);
 
-    if (loading) return <Loader fullScreen message="Syncing Multi-Business Intelligence..." />;
+
 
     return (
         <div className="space-y-10 pb-20 animate-in fade-in duration-1000">

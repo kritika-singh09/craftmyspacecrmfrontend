@@ -32,12 +32,12 @@ const VendorDetails = ({ vendor, onBack }) => {
                     </div>
                 </div>
 
-                <div className="flex p-1 rounded-2xl border" style={{ backgroundColor: `${theme.iconBg}05`, borderColor: theme.cardBorder }}>
+                <div className="flex p-1 rounded-2xl border overflow-x-auto" style={{ backgroundColor: `${theme.iconBg}05`, borderColor: theme.cardBorder }}>
                     {['info', 'orders', 'performance'].map((tab) => (
                         <button
                             key={tab}
                             onClick={() => setActiveTab(tab)}
-                            className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === tab ? 'shadow-brand-sm' : 'opacity-60 hover:opacity-100'}`}
+                            className={`px-3 sm:px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === tab ? 'shadow-brand-sm' : 'opacity-60 hover:opacity-100'}`}
                             style={{
                                 background: activeTab === tab ? theme.gradients.button : 'transparent',
                                 color: activeTab === tab ? theme.textOnPrimary : theme.textPrimary
@@ -59,35 +59,35 @@ const VendorDetails = ({ vendor, onBack }) => {
             </div>
 
             {activeTab === 'info' && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in duration-500">
-                    <div className="card-premium p-6" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 animate-in fade-in duration-500">
+                    <div className="card-premium p-4 sm:p-6" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
                         <h4 className="text-xs font-black uppercase tracking-widest mb-6 flex items-center gap-2" style={{ color: theme.textSecondary }}>
                             <FiPhone className="text-primary" style={{ color: theme.primary }} /> Contact Information
                         </h4>
                         <div className="space-y-4">
-                            <div className="flex items-center gap-4 p-4 rounded-xl border border-transparent hover:border-slate-100 transition-all cursor-default" style={{ backgroundColor: `${theme.iconBg}05` }}>
-                                <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm" style={{ backgroundColor: theme.cardBg, color: theme.primary }}>
+                            <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border border-transparent hover:border-slate-100 transition-all cursor-default" style={{ backgroundColor: `${theme.iconBg}05` }}>
+                                <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0" style={{ backgroundColor: theme.cardBg, color: theme.primary }}>
                                     <FiPhone size={16} />
                                 </div>
-                                <div>
+                                <div className="min-w-0">
                                     <p className="text-[10px] font-bold uppercase tracking-tight opacity-50" style={{ color: theme.textSecondary }}>Primary Phone</p>
                                     <p className="text-sm font-black" style={{ color: theme.textPrimary }}>+91 98765 00000</p>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-4 p-4 rounded-xl border border-transparent hover:border-slate-100 transition-all cursor-default" style={{ backgroundColor: `${theme.iconBg}05` }}>
-                                <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm" style={{ backgroundColor: theme.cardBg, color: theme.primary }}>
+                            <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border border-transparent hover:border-slate-100 transition-all cursor-default" style={{ backgroundColor: `${theme.iconBg}05` }}>
+                                <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0" style={{ backgroundColor: theme.cardBg, color: theme.primary }}>
                                     <FiMail size={16} />
                                 </div>
-                                <div>
+                                <div className="min-w-0">
                                     <p className="text-[10px] font-bold uppercase tracking-tight opacity-50" style={{ color: theme.textSecondary }}>Business Email</p>
-                                    <p className="text-sm font-black" style={{ color: theme.textPrimary }}>contact@{vendor.name.toLowerCase().replace(/ /g, '')}.com</p>
+                                    <p className="text-sm font-black break-all" style={{ color: theme.textPrimary }}>contact@{vendor.name.toLowerCase().replace(/ /g, '')}.com</p>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-4 p-4 rounded-xl border border-transparent hover:border-slate-100 transition-all cursor-default" style={{ backgroundColor: `${theme.iconBg}05` }}>
-                                <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm" style={{ backgroundColor: theme.cardBg, color: theme.primary }}>
+                            <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border border-transparent hover:border-slate-100 transition-all cursor-default" style={{ backgroundColor: `${theme.iconBg}05` }}>
+                                <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0" style={{ backgroundColor: theme.cardBg, color: theme.primary }}>
                                     <FiMapPin size={16} />
                                 </div>
-                                <div>
+                                <div className="min-w-0">
                                     <p className="text-[10px] font-bold uppercase tracking-tight opacity-50" style={{ color: theme.textSecondary }}>Registered Office</p>
                                     <p className="text-sm font-black leading-snug" style={{ color: theme.textPrimary }}>Industrial Area Phase II, Mohali, Punjab</p>
                                 </div>
@@ -95,19 +95,19 @@ const VendorDetails = ({ vendor, onBack }) => {
                         </div>
                     </div>
 
-                    <div className="card-premium p-6" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
+                    <div className="card-premium p-4 sm:p-6" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
                         <h4 className="text-xs font-black uppercase tracking-widest mb-6 flex items-center gap-2" style={{ color: theme.textSecondary }}>
                             <FiCreditCard className="text-primary" style={{ color: theme.primary }} /> Payment & Compliance
                         </h4>
                         <div className="space-y-4">
-                            <div className="p-5 rounded-2xl border" style={{ borderColor: theme.cardBorder, backgroundColor: `${theme.iconBg}03` }}>
+                            <div className="p-4 sm:p-5 rounded-2xl border" style={{ borderColor: theme.cardBorder, backgroundColor: `${theme.iconBg}03` }}>
                                 <p className="text-[10px] font-bold uppercase tracking-tight opacity-50" style={{ color: theme.textSecondary }}>GST Registration</p>
                                 <div className="flex items-center justify-between mt-1">
                                     <p className="text-sm font-black" style={{ color: theme.textPrimary }}>{vendor.gstNumber || 'N/A'}</p>
                                     <span className="text-[9px] font-black uppercase bg-green-50 text-green-700 px-2 py-1 rounded-md border border-green-100">Verified</span>
                                 </div>
                             </div>
-                            <div className="p-5 rounded-2xl border" style={{ borderColor: theme.cardBorder, backgroundColor: `${theme.iconBg}03` }}>
+                            <div className="p-4 sm:p-5 rounded-2xl border" style={{ borderColor: theme.cardBorder, backgroundColor: `${theme.iconBg}03` }}>
                                 <p className="text-[10px] font-bold uppercase tracking-tight opacity-50" style={{ color: theme.textSecondary }}>Banking Details</p>
                                 <p className="text-sm font-black mt-1" style={{ color: theme.textPrimary }}>{vendor.bankDetails?.bankName || 'N/A'} - {vendor.bankDetails?.accountNumber}</p>
                                 <p className="text-[10px] font-bold tracking-widest mt-0.5" style={{ color: theme.textMuted }}>IFSC: {vendor.bankDetails?.ifscCode}</p>
@@ -115,7 +115,7 @@ const VendorDetails = ({ vendor, onBack }) => {
                         </div>
                     </div>
 
-                    <div className="col-span-1 md:col-span-2 card-premium p-6" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
+                    <div className="col-span-1 lg:col-span-2 card-premium p-4 sm:p-6" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
                         <h4 className="text-xs font-black uppercase tracking-widest mb-6 flex items-center gap-2" style={{ color: theme.textSecondary }}>
                             <FiAward className="text-primary" style={{ color: theme.primary }} /> Scope of Work & Specializations
                         </h4>
@@ -133,8 +133,8 @@ const VendorDetails = ({ vendor, onBack }) => {
 
             {activeTab === 'performance' && (
                 <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-500">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div className="card-premium p-6 border-l-4 border-l-yellow-400" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div className="card-premium p-4 sm:p-6 border-l-4 border-l-yellow-400" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
                             <div className="flex justify-between items-start mb-4">
                                 <div className="w-10 h-10 rounded-xl bg-yellow-50 flex items-center justify-center text-yellow-600">
                                     <FiAward size={20} />
@@ -144,7 +144,7 @@ const VendorDetails = ({ vendor, onBack }) => {
                             <h5 className="text-3xl font-black" style={{ color: theme.textPrimary }}>{performanceMetrics.rating}</h5>
                             <p className="text-[10px] font-black uppercase tracking-widest mt-1" style={{ color: theme.textMuted }}>Weighted Rating</p>
                         </div>
-                        <div className="card-premium p-6 border-l-4 border-l-green-400" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
+                        <div className="card-premium p-4 sm:p-6 border-l-4 border-l-green-400" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
                             <div className="flex justify-between items-start mb-4">
                                 <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center text-green-600">
                                     <FiClock size={20} />
@@ -154,7 +154,7 @@ const VendorDetails = ({ vendor, onBack }) => {
                             <h5 className="text-3xl font-black" style={{ color: theme.textPrimary }}>{performanceMetrics.onTimeDelivery}%</h5>
                             <p className="text-[10px] font-black uppercase tracking-widest mt-1" style={{ color: theme.textMuted }}>On-Time Delivery</p>
                         </div>
-                        <div className="card-premium p-6 border-l-4 border-l-blue-400" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
+                        <div className="card-premium p-4 sm:p-6 border-l-4 border-l-blue-400" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
                             <div className="flex justify-between items-start mb-4">
                                 <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
                                     <FiCheckCircle size={20} />
@@ -164,7 +164,7 @@ const VendorDetails = ({ vendor, onBack }) => {
                             <h5 className="text-3xl font-black" style={{ color: theme.textPrimary }}>{performanceMetrics.qualityPassRate}%</h5>
                             <p className="text-[10px] font-black uppercase tracking-widest mt-1" style={{ color: theme.textMuted }}>Quality Pass Rate</p>
                         </div>
-                        <div className="card-premium p-6 border-l-4 border-l-purple-400" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
+                        <div className="card-premium p-4 sm:p-6 border-l-4 border-l-purple-400" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
                             <div className="flex justify-between items-start mb-4">
                                 <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600">
                                     <FiTrendingUp size={20} />
@@ -176,7 +176,7 @@ const VendorDetails = ({ vendor, onBack }) => {
                         </div>
                     </div>
 
-                    <div className="card-premium p-8" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
+                    <div className="card-premium p-4 sm:p-6 md:p-8" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
                         <h4 className="text-sm font-black uppercase tracking-[0.2em] mb-8" style={{ color: theme.textSecondary }}>Detailed Performance Scorecard</h4>
                         <div className="space-y-8">
                             <div>
@@ -205,7 +205,7 @@ const VendorDetails = ({ vendor, onBack }) => {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 border-t" style={{ borderColor: theme.cardBorder }}>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-4 border-t" style={{ borderColor: theme.cardBorder }}>
                                 <div className="flex items-center gap-4">
                                     <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-blue-500 shadow-sm" style={{ backgroundColor: `${theme.iconBg}05` }}>
                                         <FiPackage size={22} />
@@ -231,7 +231,7 @@ const VendorDetails = ({ vendor, onBack }) => {
             )}
 
             {activeTab === 'orders' && (
-                <div className="card-premium p-12 text-center animate-in fade-in duration-500" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
+                <div className="card-premium p-6 sm:p-8 md:p-12 text-center animate-in fade-in duration-500" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
                     <div className="w-16 h-16 rounded-3xl bg-slate-50 flex items-center justify-center mx-auto mb-4 text-slate-300">
                         <FiPackage size={32} />
                     </div>

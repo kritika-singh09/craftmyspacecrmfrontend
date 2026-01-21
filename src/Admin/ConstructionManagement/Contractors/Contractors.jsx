@@ -6,7 +6,7 @@ import RoleGuard from '../../../common/RoleGuard';
 import ContractorForm from './ContractorForm';
 import ContractorProfile from './ContractorProfile';
 import { FiPlus, FiEdit2, FiTrash2, FiX, FiCheckCircle, FiStar, FiAlertTriangle } from 'react-icons/fi';
-import Loader from '../../../common/Loader';
+
 
 const Contractors = () => {
   const { currentTenant } = useTenant();

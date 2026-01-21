@@ -20,7 +20,7 @@ const Register = () => {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/companies');
+        const response = await fetch('http://localhost:5000/api/auth/companies');
         const data = await response.json();
         setCompanies(data);
         setLoading(false);
@@ -108,11 +108,12 @@ const Register = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border-2 border-brand-600 rounded-md"
             >
+              <option value="SUPER_ADMIN">Super Admin</option>
+              <option value="COMPANY_ADMIN">Company Admin</option>
               <option value="ENGINEER">Engineer</option>
-              <option value="CONTRACTOR">Contractor</option>
-              <option value="PROJECT_MANAGER">Project Manager</option>
               <option value="ACCOUNTANT">Accountant</option>
               <option value="SUPERVISOR">Supervisor</option>
+              <option value="CONTRACTOR">Contractor</option>
             </select>
           </div>
 

@@ -2,7 +2,7 @@ import { useTenant } from '../hooks/useTenant.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { useTheme } from '../context/ThemeContext.jsx';
 import { useSocket } from '../context/SocketContext.jsx';
-import { FiMenu, FiLayers, FiBell } from 'react-icons/fi';
+import { FiMenu, FiLayers, FiBell, FiAlertTriangle } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
@@ -52,8 +52,8 @@ const Header = ({ onMenuClick }) => {
         </div>
       )}
 
-      <div className="flex items-center justify-between px-8 h-full">
-        <div className="flex items-center gap-4">
+      <div className="flex items-center justify-between px-4 lg:px-8 h-full">
+        <div className="flex items-center gap-2 lg:gap-4">
           <button
             onClick={onMenuClick}
             className="lg:hidden p-2 rounded-xl text-white hover:bg-white/10 transition-colors"
@@ -61,23 +61,23 @@ const Header = ({ onMenuClick }) => {
             <FiMenu className="w-5 h-5" />
           </button>
 
-          <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-10 h-10 bg-white/10 backdrop-blur-md rounded-xl shadow-sm border border-white/20" style={{ color: theme.textOnPrimary }}>
-              <FiLayers className="w-5 h-5" />
+          <div className="flex items-center gap-2 lg:gap-3">
+            <div className="flex items-center justify-center w-8 h-8 lg:w-10 lg:h-10 bg-white/10 backdrop-blur-md rounded-xl shadow-sm border border-white/20" style={{ color: theme.textOnPrimary }}>
+              <FiLayers className="w-4 h-4 lg:w-5 lg:h-5" />
             </div>
-            <h1 className="text-xl font-bold hidden sm:block" style={{ color: theme.textOnPrimary }}>
+            <h1 className="text-lg lg:text-xl font-bold hidden sm:block" style={{ color: theme.textOnPrimary }}>
               Craft My Space
             </h1>
           </div>
         </div>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3 lg:gap-6">
           <div className="flex items-center gap-2">
             <div className="hidden md:flex items-center gap-2 bg-white/10 p-1.5 rounded-2xl border border-white/20">
               <select
                 value={currentTenant.id}
                 onChange={(e) => switchTenant(e.target.value)}
-                className="bg-transparent text-xs font-semibold px-3 py-1.5 border-none focus:ring-0 text-white cursor-pointer"
+                className="bg-transparent text-xs font-semibold px-2 lg:px-3 py-1.5 border-none focus:ring-0 text-white cursor-pointer max-w-[120px] lg:max-w-none text-ellipsis"
               >
                 {tenants.map(tenant => (
                   <option key={tenant.id} value={tenant.id} className="text-gray-900">{tenant.name}</option>
@@ -88,15 +88,15 @@ const Header = ({ onMenuClick }) => {
 
           <button
             onClick={() => navigate('/profile')}
-            className="flex items-center gap-3 pl-4 border-l border-white/20 hover:bg-white/5 transition-all p-1.5 rounded-2xl group"
+            className="flex items-center gap-3 pl-2 lg:pl-4 lg:border-l border-white/20 hover:bg-white/5 transition-all p-1.5 rounded-2xl group"
           >
-            <div className="text-right hidden sm:block">
+            <div className="text-right hidden md:block">
               <div className="text-sm font-semibold group-hover:text-white/90" style={{ color: theme.textOnPrimary }}>{user?.name}</div>
               <div className="text-[10px] font-black uppercase tracking-wider opacity-80 group-hover:opacity-100" style={{ color: theme.textOnPrimary }}>{user?.role}</div>
             </div>
 
             <div
-              className="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold shadow-soft border border-white/30 group-hover:scale-105 transition-all"
+              className="w-8 h-8 lg:w-9 lg:h-9 rounded-xl flex items-center justify-center text-sm font-bold shadow-soft border border-white/30 group-hover:scale-105 transition-all"
               style={{ background: 'rgba(255,255,255,0.2)', color: theme.textOnPrimary }}
             >
               {user?.name?.charAt(0)}

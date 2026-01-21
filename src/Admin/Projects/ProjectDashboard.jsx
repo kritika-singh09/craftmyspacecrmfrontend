@@ -98,7 +98,7 @@ const ProjectDashboard = () => {
             </div>
 
             {/* Key Metrics */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                 {/* Progress */}
                 <div className="card-premium p-6" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
                     <div className="flex items-center justify-between mb-4">
@@ -121,7 +121,7 @@ const ProjectDashboard = () => {
                 <div className="card-premium p-6" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
                     <div className="flex items-center gap-3 mb-4">
                         <FiMapPin className="text-2xl" style={{ color: theme.primary }} />
-                        <span className="text-sm font-black" style={{ color: theme.textPrimary }}>{project.location}</span>
+                        <span className="text-sm font-black truncate" style={{ color: theme.textPrimary }}>{project.location}</span>
                     </div>
                     <p className="text-xs font-black uppercase tracking-widest" style={{ color: theme.textMuted }}>Location</p>
                 </div>
@@ -130,7 +130,7 @@ const ProjectDashboard = () => {
                 <div className="card-premium p-6" style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}>
                     <div className="flex items-center gap-3 mb-4">
                         <FiUsers className="text-2xl" style={{ color: theme.primary }} />
-                        <span className="text-sm font-black" style={{ color: theme.textPrimary }}>{project.client}</span>
+                        <span className="text-sm font-black truncate" style={{ color: theme.textPrimary }}>{project.client}</span>
                     </div>
                     <p className="text-xs font-black uppercase tracking-widest" style={{ color: theme.textMuted }}>Client</p>
                 </div>

@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
-import { useProjects } from '../../hooks/useProjects';
+import { useProjects, useProjectMutations } from '../../hooks/useProjects';
 import RoleGuard from '../../common/RoleGuard';
-import { FiMapPin, FiPlus, FiLoader, FiX, FiArrowRight, FiEdit2, FiSearch, FiFilter, FiEye, FiClock, FiActivity, FiTag, FiLayers, FiLock, FiCheckCircle, FiChevronRight, FiBriefcase, FiZap } from 'react-icons/fi';
+import { FiMapPin, FiPlus, FiLoader, FiX, FiArrowRight, FiEdit2, FiSearch, FiFilter, FiEye, FiClock, FiActivity, FiTag, FiLayers, FiLock, FiCheckCircle, FiChevronRight, FiBriefcase, FiZap, FiAlertTriangle, FiChevronDown } from 'react-icons/fi';
 import { MdArchitecture, MdHome } from 'react-icons/md';
 import { GiHammerNails } from 'react-icons/gi';
 import ProjectForm from '../Projects/ProjectForm';
 import { useSubscription } from '../../hooks/useSubscription';
-import Loader from '../../common/Loader';
+
 import CheckoutUI from '../Subscription/CheckoutUI';
 
 const GlobalProjects = ({ contextType }) => {
@@ -17,6 +17,7 @@ const GlobalProjects = ({ contextType }) => {
     const location = useLocation();
     const { projects, loading, error, refetch } = useProjects();
     const { isModuleLocked, updatePlan, processPayment } = useSubscription();
+    const { updateStatus } = useProjectMutations();
 
     const [searchTerm, setSearchTerm] = useState('');
     const [showProjectForm, setShowProjectForm] = useState(false);
@@ -141,22 +142,22 @@ const GlobalProjects = ({ contextType }) => {
         return matchesSearch && matchesStatus && matchesModule;
     });
 
-    if (loading) return <Loader fullScreen message="Syncing Enterprise Portfolio..." />;
+
 
     return (
         <div className="space-y-10 pb-12 animate-in fade-in duration-700">
             {/* Landing Page or Module Header */}
             {activeContext === 'universal' && showLanding ? (
-                <div className="space-y-12">
-                    <div className="bg-white dark:bg-slate-900/40 p-12 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-premium flex flex-col items-center text-center space-y-6">
-                        <div className="w-24 h-24 rounded-[2.5rem] bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center text-5xl shadow-2xl ring-8 ring-slate-50 dark:ring-slate-800/50">
+                <div className="space-y-8 lg:space-y-12">
+                    <div className="bg-white dark:bg-slate-900/40 p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-premium flex flex-col items-center text-center space-y-4 md:space-y-6">
+                        <div className="w-16 h-16 md:w-24 md:h-24 rounded-[1.5rem] md:rounded-[2.5rem] bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center text-3xl md:text-5xl shadow-2xl ring-4 md:ring-8 ring-slate-50 dark:ring-slate-800/50">
                             🌐
                         </div>
                         <div className="space-y-2">
-                            <h1 className="text-5xl font-black tracking-tighter text-slate-900 dark:text-white uppercase transition-all">
+                            <h1 className="text-3xl md:text-5xl font-black tracking-tighter text-slate-900 dark:text-white uppercase transition-all">
                                 Global <span className="text-brand-600">Portfolio</span>
                             </h1>
-                            <p className="text-sm font-bold text-slate-400 uppercase tracking-[0.3em]">Managed Enterprise Assets & Performance</p>
+                            <p className="text-xs md:text-sm font-bold text-slate-400 uppercase tracking-[0.2em] md:tracking-[0.3em]">Managed Enterprise Assets & Performance</p>
                         </div>
                     </div>
 
@@ -221,23 +222,23 @@ const GlobalProjects = ({ contextType }) => {
             ) : (
                 <>
                     {/* Superior Header */}
-                    <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 bg-white dark:bg-slate-900/40 p-10 rounded-[3rem] border border-slate-100 dark:border-slate-800 shadow-premium">
-                        <div className="flex items-center gap-6">
-                            <div className="w-20 h-20 rounded-3xl flex items-center justify-center text-4xl shadow-2xl relative overflow-hidden" style={{ background: viewModule ? config[viewModule].themeGradient : active.themeGradient }}>
+                    <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 lg:gap-8 bg-white dark:bg-slate-900/40 p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] border border-slate-100 dark:border-slate-800 shadow-premium">
+                        <div className="flex items-center gap-4 md:gap-6">
+                            <div className="w-14 h-14 md:w-20 md:h-20 rounded-2xl md:rounded-3xl flex items-center justify-center text-2xl md:text-4xl shadow-2xl relative overflow-hidden" style={{ background: viewModule ? config[viewModule].themeGradient : active.themeGradient }}>
                                 <div className="absolute inset-0 bg-white/10 opacity-50"></div>
                                 <span className="relative z-10">{viewModule ? config[viewModule].icon : active.icon}</span>
                             </div>
                             <div>
-                                <h1 className="text-4xl font-black tracking-tight text-slate-900 dark:text-white uppercase">
+                                <h1 className="text-2xl md:text-4xl font-black tracking-tight text-slate-900 dark:text-white uppercase">
                                     {viewModule ? config[viewModule].title : active.title} <span className="text-slate-300 dark:text-slate-700 ml-2">[{finalProjects.length}]</span>
                                 </h1>
-                                <p className="text-sm font-bold mt-1 text-slate-500 uppercase tracking-widest dark:text-slate-400">{viewModule ? config[viewModule].subtitle : active.subtitle}</p>
+                                <p className="text-xs md:text-sm font-bold mt-1 text-slate-500 uppercase tracking-widest dark:text-slate-400">{viewModule ? config[viewModule].subtitle : active.subtitle}</p>
                             </div>
                         </div>
                         <RoleGuard requiredRole="manager">
                             <button
                                 onClick={() => { setEditingProject(null); setIsViewOnly(false); setShowProjectForm(true); }}
-                                className="group flex items-center gap-4 px-10 py-5 rounded-2xl text-white font-black text-xs uppercase tracking-[0.2em] shadow-2xl transition-all hover:-translate-y-1 hover:shadow-brand-600/40 active:scale-95"
+                                className="w-full lg:w-auto group flex items-center justify-center gap-4 px-6 md:px-10 py-4 md:py-5 rounded-2xl text-white font-black text-xs uppercase tracking-[0.2em] shadow-2xl transition-all hover:-translate-y-1 hover:shadow-brand-600/40 active:scale-95"
                                 style={{ background: viewModule ? config[viewModule].themeGradient : active.themeGradient }}
                             >
                                 <FiPlus className="text-xl transition-transform group-hover:rotate-90" />
@@ -253,14 +254,14 @@ const GlobalProjects = ({ contextType }) => {
                             <input
                                 type="text"
                                 placeholder="Search by name, code or location..."
-                                className="w-full h-16 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl pl-16 pr-6 text-sm font-bold text-slate-700 dark:text-white shadow-premium focus:ring-4 focus:ring-brand-500/10 transition-all outline-none"
+                                className="w-full h-16 bg-white dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 rounded-3xl pl-16 pr-6 text-sm font-bold text-slate-700 dark:text-white shadow-premium focus:ring-4 focus:ring-brand-500/10 transition-all outline-none"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
                         </div>
-                        <div className="flex gap-4">
+                        <div className="flex gap-4 relative">
                             <select
-                                className="h-16 px-8 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl text-[10px] font-black uppercase tracking-widest text-slate-700 dark:text-slate-300 shadow-premium outline-none appearance-none cursor-pointer hover:bg-slate-50 transition-all"
+                                className="h-16 pl-8 pr-12 bg-white dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 rounded-3xl text-[10px] font-black uppercase tracking-widest text-slate-700 dark:text-slate-300 shadow-premium outline-none appearance-none cursor-pointer hover:bg-slate-50 transition-all"
                                 value={filterStatus}
                                 onChange={(e) => setFilterStatus(e.target.value)}
                             >
@@ -268,6 +269,7 @@ const GlobalProjects = ({ contextType }) => {
                                     <option key={s} value={s}>{s} Status</option>
                                 ))}
                             </select>
+                            <FiChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={18} />
                         </div>
                     </div>
 
@@ -385,7 +387,7 @@ const GlobalProjects = ({ contextType }) => {
                                     <tr className="border-b border-slate-200 dark:border-slate-800">
                                         <th className="text-left px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Project</th>
                                         <th className="text-left px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Owner & Location</th>
-                                        <th className="text-center px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Health</th>
+                                        <th className="text-left px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Project Lead</th>
                                         <th className="text-right px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Value</th>
                                         <th className="text-center px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Progress</th>
                                         <th className="text-center px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Status</th>
@@ -401,6 +403,20 @@ const GlobalProjects = ({ contextType }) => {
                                             prj.type === 'interior' ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' :
                                                 theme.gradients?.primary || 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)';
 
+                                        // Deadline Logic
+                                        const now = new Date();
+                                        now.setHours(0, 0, 0, 0);
+
+                                        const deadline = new Date(prj.end_date);
+                                        deadline.setHours(0, 0, 0, 0);
+
+                                        const timeDiff = deadline.getTime() - now.getTime();
+                                        const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24)); // Days remaining
+
+                                        const isOverdue = daysDiff < 0 && prj.status !== 'Completed';
+                                        const isApproaching = daysDiff >= 0 && daysDiff <= 2 && prj.status !== 'Completed';
+                                        const isCompleted = prj.status === 'Completed';
+
                                         return (
                                             <tr key={prj._id} className="border-b border-slate-100 dark:border-slate-800/50 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-all group">
                                                 <td className="px-6 py-5">
@@ -413,6 +429,24 @@ const GlobalProjects = ({ contextType }) => {
                                                             </span>
                                                         </div>
                                                         <p className="text-sm font-black text-slate-900 dark:text-white tracking-tight">{prj.name}</p>
+                                                        {isOverdue && (
+                                                            <div className="flex items-center gap-1 text-rose-600 mt-1 animate-pulse">
+                                                                <FiAlertTriangle size={10} />
+                                                                <span className="text-[9px] font-black uppercase tracking-widest">Overdue • Action Required</span>
+                                                            </div>
+                                                        )}
+                                                        {isApproaching && (
+                                                            <div className="flex items-center gap-1 text-amber-500 mt-1 animate-pulse">
+                                                                <FiClock size={10} />
+                                                                <span className="text-[9px] font-black uppercase tracking-widest">Deadline Approaching ({daysDiff} Days)</span>
+                                                            </div>
+                                                        )}
+                                                        {isCompleted && (
+                                                            <div className="flex items-center gap-1 text-emerald-600 mt-1">
+                                                                <FiCheckCircle size={10} />
+                                                                <span className="text-[9px] font-black uppercase tracking-widest">Project Completed Successfully</span>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-5">
@@ -423,10 +457,26 @@ const GlobalProjects = ({ contextType }) => {
                                                         </p>
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-5 text-center">
-                                                    <span className="inline-flex px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 text-xs font-black uppercase tracking-wider">
-                                                        Optimum
-                                                    </span>
+                                                <td className="px-6 py-5">
+                                                    <div className="space-y-2">
+                                                        <div className="flex items-center gap-2">
+                                                            <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-600 border-2 border-white shadow-sm">
+                                                                {(prj.projectLead?.name || 'UA').substring(0, 2).toUpperCase()}
+                                                            </div>
+                                                            <div>
+                                                                <p className="text-xs font-bold text-slate-900 dark:text-white">
+                                                                    {prj.projectLead?.name || 'Unassigned'}
+                                                                    <span className="text-[9px] text-slate-400 ml-1 font-black uppercase tracking-wider">(PROJ_MGR)</span>
+                                                                </p>
+                                                                <p className="text-[10px] font-bold text-slate-500">Progress: {prj.progress}%</p>
+                                                            </div>
+                                                        </div>
+                                                        {prj.description && (
+                                                            <p className="text-[10px] text-slate-400 leading-relaxed line-clamp-2 max-w-[200px]">
+                                                                {prj.description}
+                                                            </p>
+                                                        )}
+                                                    </div>
                                                 </td>
                                                 <td className="px-6 py-5 text-right">
                                                     <p className="text-sm font-black text-slate-900 dark:text-white">
@@ -449,12 +499,32 @@ const GlobalProjects = ({ contextType }) => {
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-5 text-center">
-                                                    <span className={`inline-flex px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-wider ${status.bg} ${status.text}`}>
-                                                        {prj.status}
-                                                    </span>
+                                                    <div className="relative group/status">
+                                                        <span className={`inline-flex px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-wider cursor-pointer border ${status.border} ${status.bg} ${status.text}`}>
+                                                            {prj.status}
+                                                        </span>
+                                                        <select
+                                                            className="absolute inset-0 opacity-0 cursor-pointer"
+                                                            value={prj.status}
+                                                            onChange={(e) => {
+                                                                if (window.confirm(`Update status to ${e.target.value}?`)) {
+                                                                    updateStatus(prj._id, e.target.value).then(() => refetch());
+                                                                }
+                                                            }}
+                                                        >
+                                                            {['Planning', 'Ongoing', 'Pending', 'On Hold', 'Completed'].map(s => (
+                                                                <option key={s} value={s}>{s}</option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
                                                 </td>
                                                 <td className="px-6 py-5 text-center">
-                                                    <span className="text-xs font-bold text-slate-500">Dec 20, 2024</span>
+                                                    <div className="flex flex-col gap-1">
+                                                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Start: {new Date(prj.start_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: '2-digit' })}</span>
+                                                        <span className={`text-[10px] font-black uppercase tracking-wider ${isOverdue ? 'text-rose-600' : 'text-slate-900 dark:text-white'}`}>
+                                                            End: {new Date(prj.end_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: '2-digit' })}
+                                                        </span>
+                                                    </div>
                                                 </td>
                                                 <td className="px-6 py-5">
                                                     <div className="flex items-center justify-center gap-2">

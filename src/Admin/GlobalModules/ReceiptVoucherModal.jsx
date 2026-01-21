@@ -5,6 +5,7 @@ import projectService from '../../services/projectService';
 
 const ReceiptVoucherModal = ({ isOpen, onClose, onSuccess, initialBusinessType }) => {
     const [projects, setProjects] = useState([]);
+    const [coaAccounts, setCoaAccounts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         receiptNo: 'RCP-2024-' + Math.floor(Math.random() * 1000).toString().padStart(3, '0'),
@@ -18,6 +19,7 @@ const ReceiptVoucherModal = ({ isOpen, onClose, onSuccess, initialBusinessType }
         tdsReceivable: 0,
         totalCredited: 0,
         referenceNo: '', // Cheque/Transaction ID
+        coaAccount: '',
         narration: '',
         linkedInvoices: [] // For future implementation of invoice linking
     });
@@ -25,6 +27,7 @@ const ReceiptVoucherModal = ({ isOpen, onClose, onSuccess, initialBusinessType }
     React.useEffect(() => {
         if (isOpen) {
             fetchProjects();
+            fetchCOA();
         }
     }, [isOpen]);
 
@@ -32,6 +35,19 @@ const ReceiptVoucherModal = ({ isOpen, onClose, onSuccess, initialBusinessType }
         const res = await projectService.getProjects();
         if (res.success) {
             setProjects(res.data);
+        }
+    };
+
+    const fetchCOA = async () => {
+        const res = await financeService.getCOA();
+        if (res.success) {
+            // Filter Revenue/Income types for receipts (Case-insensitive check)
+            // Also include Assets for things like security deposits or refunds
+            const filtered = res.data.filter(acc => {
+                const type = acc.type?.toLowerCase();
+                return type === 'revenue' || type === 'income' || type === 'asset' || type === 'equity';
+            });
+            setCoaAccounts(filtered);
         }
     };
 
@@ -52,12 +68,15 @@ const ReceiptVoucherModal = ({ isOpen, onClose, onSuccess, initialBusinessType }
     };
 
     const handleSubmit = async () => {
+        if (!formData.coaAccount) return alert('Please select a Ledger Account');
         setLoading(true);
         try {
+            const selectedAcc = coaAccounts.find(a => a._id === formData.coaAccount);
             const txnData = {
                 transactionId: formData.receiptNo,
                 type: 'INCOME',
-                category: 'Revenue', // Default category for receipts
+                category: selectedAcc ? selectedAcc.name : 'Revenue',
+                coaAccount: formData.coaAccount,
                 amount: parseFloat(formData.amount),
                 project: formData.projectId,
                 paymentMode: formData.receiptMode,
@@ -143,16 +162,13 @@ const ReceiptVoucherModal = ({ isOpen, onClose, onSuccess, initialBusinessType }
                         </div>
                         <div>
                             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Payer Name / Client</label>
-                            <select
+                            <input
+                                type="text"
+                                placeholder="Enter client or payer name..."
                                 value={formData.payerName}
                                 onChange={(e) => handleChange('payerName', e.target.value)}
                                 className="w-full h-12 px-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-bold outline-none focus:ring-2 focus:ring-emerald-500/20"
-                            >
-                                <option value="">Select Client</option>
-                                <option value="Realty Corp">Realty Corp</option>
-                                <option value="Metro Developers">Metro Developers</option>
-                                <option value="Elite Homes">Elite Homes</option>
-                            </select>
+                            />
                         </div>
                     </div>
 
@@ -245,6 +261,19 @@ const ReceiptVoucherModal = ({ isOpen, onClose, onSuccess, initialBusinessType }
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div>
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Ledger Account (Revenue / Income Head)</label>
+                        <select
+                            value={formData.coaAccount}
+                            onChange={(e) => handleChange('coaAccount', e.target.value)}
+                            className="w-full h-12 px-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-bold outline-none focus:ring-2 focus:ring-emerald-500/20 mb-4"
+                        >
+                            <option value="">Select Account</option>
+                            {coaAccounts.map(acc => (
+                                <option key={acc._id} value={acc._id}>{acc.code} - {acc.name}</option>
+                            ))}
+                        </select>
                     </div>
 
                     <div>

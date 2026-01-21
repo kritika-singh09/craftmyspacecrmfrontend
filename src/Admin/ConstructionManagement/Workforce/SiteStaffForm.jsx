@@ -1,34 +1,35 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useTheme } from '../../../context/ThemeContext';
-import { FiUser, FiBriefcase, FiArrowLeft } from 'react-icons/fi';
+import { FiUser, FiBriefcase, FiArrowLeft, FiUploadCloud, FiFileText } from 'react-icons/fi';
 
-const SiteStaffForm = ({ onSubmit, onBack, projects = [] }) => {
+const SiteStaffForm = ({ onSubmit, onBack, projects = [], editData }) => {
     const { theme } = useTheme();
     const [formData, setFormData] = useState({
-        workerType: 'Worker',
-        vendorSubType: '',
-        userRole: '', // if client/staff/investor
-        name: '',
-        workerId: '',
-        mobile: '',
-        email: '',
-        dateOfJoining: '',
-        address: '',
-        aadharNumber: '',
-        panNumber: '',
-        wage: '',
+        workerType: editData?.category || 'Worker',
+        vendorSubType: editData?.vendorSubType || '',
+        userRole: '',
+        name: editData?.personalDetails?.name || '',
+        workerId: editData?.workerId || '',
+        mobile: editData?.personalDetails?.mobile || '',
+        email: editData?.personalDetails?.email || '',
+        dateOfJoining: editData?.personalDetails?.dateOfJoining ? new Date(editData.personalDetails.dateOfJoining).toISOString().split('T')[0] : '',
+        address: editData?.personalDetails?.address || '',
+        aadharNumber: editData?.personalDetails?.aadharNumber || '',
+        panNumber: editData?.personalDetails?.panNumber || '',
+        wage: editData?.dailyWage || '',
         project: projects[0]?.name || '',
         bankDetails: {
-            accountHolderName: '',
-            accountNumber: '',
-            bankName: '',
-            ifscCode: '',
-            branchName: ''
+            accountHolderName: editData?.bankDetails?.accountHolderName || '',
+            accountNumber: editData?.bankDetails?.accountNumber || '',
+            bankName: editData?.bankDetails?.bankName || '',
+            ifscCode: editData?.bankDetails?.ifscCode || '',
+            branchName: editData?.bankDetails?.branchName || ''
         },
-        documents: [] // Placeholder for file upload
+        documents: editData?.documents || []
     });
 
-    const [showBankDetails, setShowBankDetails] = useState(false);
+    const [showBankDetails, setShowBankDetails] = useState(!!editData?.bankDetails?.accountNumber);
+    const fileInputRef = useRef(null);
 
     const workerTypes = ['Client', 'Staff', 'Worker', 'Investor', 'Vendor'];
     const vendorSubTypes = ['Material Supplier', 'Labour Contractor', 'Equipment Supplier', 'Contractor', 'Other Vendor'];
@@ -46,14 +47,60 @@ const SiteStaffForm = ({ onSubmit, onBack, projects = [] }) => {
         }
     };
 
+    const handleFileChange = (e) => {
+        const files = Array.from(e.target.files);
+        // In a real app, you'd upload to cloud/server here. 
+        // For now, we simulate by adding them to the state.
+        const newDocs = files.map(file => ({
+            name: file.name,
+            url: URL.createObjectURL(file), // Mock URL
+            uploadedAt: new Date()
+        }));
+        setFormData(prev => ({
+            ...prev,
+            documents: [...prev.documents, ...newDocs]
+        }));
+    };
+
+    const removeDoc = (index) => {
+        setFormData(prev => ({
+            ...prev,
+            documents: prev.documents.filter((_, i) => i !== index)
+        }));
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Construct payload
+
+        // Sanitize payload: If ID is empty, dont send it (let backend generate)
+        // or send it as undefined so backend logic catches it easily.
+        let finalId = formData.workerId;
+        if (!finalId || finalId.trim() === '') {
+            finalId = undefined;
+        }
+
         const payload = {
-            ...formData,
+            workerId: finalId, // Will be undefined if empty
             type: 'Site',
-            category: formData.workerType
+            category: formData.workerType,
+            vendorSubType: formData.workerType === 'Vendor' ? formData.vendorSubType : undefined,
+            personalDetails: {
+                name: formData.name,
+                mobile: formData.mobile,
+                email: formData.email,
+                dateOfJoining: formData.dateOfJoining,
+                address: formData.address,
+                aadharNumber: formData.aadharNumber,
+                panNumber: formData.panNumber
+            },
+            bankDetails: formData.bankDetails,
+            dailyWage: Number(formData.wage) || 0,
+            documents: formData.documents
         };
+
+        // Remove undefined keys to keep payload clean
+        Object.keys(payload).forEach(key => payload[key] === undefined && delete payload[key]);
+
         onSubmit(payload);
     };
 
@@ -70,7 +117,7 @@ const SiteStaffForm = ({ onSubmit, onBack, projects = [] }) => {
                 <button type="button" onClick={onBack} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                     <FiArrowLeft size={20} style={{ color: theme.textPrimary }} />
                 </button>
-                <h3 className="text-lg font-black" style={{ color: theme.textPrimary }}>Site Staff Registration</h3>
+                <h3 className="text-lg font-black" style={{ color: theme.textPrimary }}>{editData ? 'Edit Site Staff' : 'Site Staff Registration'}</h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -172,11 +219,34 @@ const SiteStaffForm = ({ onSubmit, onBack, projects = [] }) => {
 
             <div className="border-t pt-4" style={{ borderColor: theme.cardBorder }}>
                 <div className="space-y-1.5">
-                    <label className="text-[10px] font-black uppercase tracking-widest ml-1" style={{ color: theme.textMuted }}>Upload Documents</label>
-                    <div className="border-2 border-dashed rounded-2xl p-6 text-center" style={{ borderColor: theme.cardBorder }}>
-                        <p className="text-xs font-bold" style={{ color: theme.textSecondary }}>Drag and drop files here, or click to upload</p>
-                        <input type="file" multiple className="hidden" />
+                    <label className="text-[10px] font-black uppercase tracking-widest ml-1" style={{ color: theme.textMuted }}>Documents (Aadhar, Photo, Contract, etc.)</label>
+                    <div
+                        onClick={() => fileInputRef.current.click()}
+                        className="border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer hover:bg-slate-50 transition-colors flex flex-col items-center justify-center gap-2"
+                        style={{ borderColor: theme.cardBorder }}
+                    >
+                        <FiUploadCloud size={32} className="text-slate-300" />
+                        <p className="text-xs font-bold" style={{ color: theme.textSecondary }}>Drag & drop files or click to upload</p>
+                        <p className="text-[10px] opacity-50" style={{ color: theme.textSecondary }}>Supported: PDF, JPG, PNG</p>
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            multiple
+                            className="hidden"
+                            onChange={handleFileChange}
+                        />
                     </div>
+                    {formData.documents.length > 0 && (
+                        <div className="mt-4 flex flex-wrap gap-2">
+                            {formData.documents.map((doc, idx) => (
+                                <div key={idx} className="flex items-center gap-2 bg-slate-100 px-3 py-2 rounded-xl border border-slate-200">
+                                    <FiFileText className="text-slate-400" />
+                                    <span className="text-xs font-bold truncate max-w-[150px]">{doc.name}</span>
+                                    <button type="button" onClick={() => removeDoc(idx)} className="text-rose-500 hover:text-rose-700 ml-1">×</button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -185,7 +255,7 @@ const SiteStaffForm = ({ onSubmit, onBack, projects = [] }) => {
                 className="w-full text-white py-3.5 px-6 rounded-2xl font-black uppercase tracking-widest shadow-premium hover:-translate-y-0.5 active:translate-y-0 transition-all mt-6"
                 style={{ background: theme.gradients.button }}
             >
-                Create Staff Member
+                {editData ? 'Update Staff Member' : 'Create Staff Member'}
             </button>
         </form>
     );
