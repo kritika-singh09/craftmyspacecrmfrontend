@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useAuth } from './hooks/useAuth.jsx';
 import GlobalProjects from './Admin/GlobalModules/GlobalProjects';
 import GlobalWorkforce from './Admin/GlobalModules/GlobalWorkforce';
+import LabourManagement from './Admin/GlobalModules/LabourManagement';
 import GlobalPayroll from './Admin/GlobalModules/GlobalPayroll';
 
 // GlobalFinance is now a default export from its own file, so we need to adjust imports
@@ -168,6 +169,7 @@ function AppContent() {
           <Route path="/contractors" element={<Contractors />} />
           <Route path="/vendors" element={<Vendors />} />
           <Route path="/workforce" element={<GlobalWorkforce />} />
+          <Route path="/labour-management" element={<LabourManagement />} />
           <Route path="/workforce/add" element={<UserForm onSubmit={(data) => console.log(data)} tenants={[]} />} />
           <Route path="/dailysite" element={<DailySite />} />
           <Route path="/tasks/add" element={<TaskForm onSubmit={(data) => console.log(data)} projects={projects} contractors={contractors} sites={[]} />} />

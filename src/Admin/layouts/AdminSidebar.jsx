@@ -50,6 +50,7 @@ const Sidebar = ({ isOpen, onNavigate }) => {
       items: [
         { id: 'projects', name: 'Global Projects', icon: <FiBriefcase /> },
         { id: 'workforce', name: 'Staff & Attendance', icon: <FiUserCheck /> },
+        { id: 'labour-management', name: 'Labour Management', icon: <FiUsers /> },
         // { id: 'payroll', name: 'Global Payroll & HR', icon: <FiDollarSign /> },
         { id: 'finance', name: 'Financial Ledger', icon: <FiPieChart /> },
         { id: 'vendors', name: 'Vendors', icon: <FiShoppingCart /> },
@@ -118,12 +119,12 @@ const Sidebar = ({ isOpen, onNavigate }) => {
       if (isSuperAdmin) return true;
       if (isCompanyAdmin) {
         return [
-          'projects', 'workforce', 'vendors',
+          'projects', 'workforce', 'labour-management', 'vendors',
           'clients', 'contractors', 'materials'
         ].includes(item.id);
       }
       if (isStaff) {
-        return item.id === 'workforce';
+        return ['workforce', 'labour-management'].includes(item.id);
       }
       return false;
     })
