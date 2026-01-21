@@ -48,14 +48,14 @@ const AddStaffModal = ({ onClose, onSuccess, editData }) => {
                 {/* Header is handled inside forms for steps, or common header for select */}
                 {step === 'select' && (
                     <>
-                        <div className="table-header-premium p-6 text-white relative" style={{ background: theme.gradients.primary }}>
+                        <div className="table-header-premium p-5 md:p-6 text-white relative" style={{ background: theme.gradients.primary }}>
                             <h3 className="text-xl font-black">{editData ? 'Edit Staff' : 'Add New Staff'}</h3>
                             <button onClick={onClose} className="absolute top-6 right-6 text-white text-xl">×</button>
                         </div>
-                        <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="p-5 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                             <button
                                 onClick={() => handleSelection('site')}
-                                className="group p-8 rounded-3xl border-2 transition-all hover:-translate-y-1 hover:shadow-xl text-left"
+                                className="group p-5 md:p-8 rounded-3xl border-2 transition-all hover:-translate-y-1 hover:shadow-xl text-left"
                                 style={{ borderColor: theme.cardBorder, backgroundColor: theme.background }}
                             >
                                 <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-6 transition-colors group-hover:bg-blue-500 group-hover:text-white" style={{ backgroundColor: theme.secondary, color: theme.primary }}>
@@ -81,13 +81,13 @@ const AddStaffModal = ({ onClose, onSuccess, editData }) => {
                 )}
 
                 {step === 'site' && (
-                    <div className="p-8 max-h-[85vh] overflow-y-auto">
+                    <div className="p-5 md:p-8 max-h-[85vh] overflow-y-auto">
                         <SiteStaffForm editData={editData} onBack={handleBack} onSubmit={handleSubmit} />
                     </div>
                 )}
 
                 {step === 'office' && (
-                    <div className="p-8 max-h-[85vh] overflow-y-auto">
+                    <div className="p-5 md:p-8 max-h-[85vh] overflow-y-auto">
                         <OfficeStaffForm editData={editData} onBack={handleBack} onSubmit={handleSubmit} />
                     </div>
                 )}

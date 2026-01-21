@@ -471,7 +471,7 @@ const GlobalWorkforce = () => {
             {
                 isCalendarModalOpen && selectedCalendarStaff && (
                     <div className="fixed inset-0 z-[110] flex items-center justify-center p-2 sm:p-4 md:p-6 bg-slate-900/80 backdrop-blur-xl animate-in fade-in duration-300">
-                        <div className="w-full max-w-4xl bg-white dark:bg-slate-950 rounded-2xl md:rounded-[2.5rem] overflow-y-auto max-h-[95vh] shadow-2xl border border-white/10 p-4 sm:p-6 md:p-10">
+                        <div className="w-full max-w-4xl bg-white dark:bg-slate-950 rounded-2xl md:rounded-[2.5rem] overflow-y-auto max-h-[95vh] shadow-2xl border border-white/10 p-3 sm:p-6 md:p-10">
                             <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6 md:mb-10">
                                 <div>
                                     <h3 className="text-lg md:text-2xl font-black uppercase tracking-tight" style={{ color: theme.textPrimary }}>Attendance Journal</h3>
@@ -673,30 +673,32 @@ const GlobalWorkforce = () => {
                                     <div>
                                         <h4 className="text-sm font-black uppercase tracking-widest text-slate-500 mb-4">Unsettled Advances</h4>
                                         <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 overflow-hidden">
-                                            <table className="w-full text-left">
-                                                <thead className="bg-slate-50 dark:bg-slate-800/50">
-                                                    <tr>
-                                                        <th className="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-slate-400">Date</th>
-                                                        <th className="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-slate-400">Reason</th>
-                                                        <th className="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-slate-400 text-right">Amount</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                                                    {selectedCalendarStaff.advances?.filter(a => !a.settled).length > 0 ? (
-                                                        selectedCalendarStaff.advances.filter(a => !a.settled).map((adv, idx) => (
-                                                            <tr key={idx}>
-                                                                <td className="px-6 py-4 text-xs font-bold text-slate-600 dark:text-slate-400">{new Date(adv.date).toLocaleDateString()}</td>
-                                                                <td className="px-6 py-4 text-xs font-bold text-slate-600 dark:text-slate-400">{adv.reason}</td>
-                                                                <td className="px-6 py-4 text-sm font-black text-rose-600 text-right">-₹{adv.amount}</td>
-                                                            </tr>
-                                                        ))
-                                                    ) : (
+                                            <div className="overflow-x-auto">
+                                                <table className="w-full text-left min-w-[500px]">
+                                                    <thead className="bg-slate-50 dark:bg-slate-800/50">
                                                         <tr>
-                                                            <td colSpan="3" className="px-6 py-8 text-center text-xs font-bold text-slate-400">No unsettled advances</td>
+                                                            <th className="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-slate-400">Date</th>
+                                                            <th className="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-slate-400">Reason</th>
+                                                            <th className="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-slate-400 text-right">Amount</th>
                                                         </tr>
-                                                    )}
-                                                </tbody>
-                                            </table>
+                                                    </thead>
+                                                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                                                        {selectedCalendarStaff.advances?.filter(a => !a.settled).length > 0 ? (
+                                                            selectedCalendarStaff.advances.filter(a => !a.settled).map((adv, idx) => (
+                                                                <tr key={idx}>
+                                                                    <td className="px-6 py-4 text-xs font-bold text-slate-600 dark:text-slate-400">{new Date(adv.date).toLocaleDateString()}</td>
+                                                                    <td className="px-6 py-4 text-xs font-bold text-slate-600 dark:text-slate-400">{adv.reason}</td>
+                                                                    <td className="px-6 py-4 text-sm font-black text-rose-600 text-right">-₹{adv.amount}</td>
+                                                                </tr>
+                                                            ))
+                                                        ) : (
+                                                            <tr>
+                                                                <td colSpan="3" className="px-6 py-8 text-center text-xs font-bold text-slate-400">No unsettled advances</td>
+                                                            </tr>
+                                                        )}
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
 
