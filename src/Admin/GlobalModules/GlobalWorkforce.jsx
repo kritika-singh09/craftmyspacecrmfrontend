@@ -57,6 +57,13 @@ const GlobalWorkforce = () => {
 
 
 
+    // Helper to get YYYY-MM-DD in local time
+    const formatDate = (date) => {
+        if (!date) return '';
+        const d = new Date(date);
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    };
+
     const getCalendarData = (year, month) => {
         const firstDay = new Date(year, month, 1).getDay();
         const startOffset = firstDay === 0 ? 6 : firstDay - 1;
@@ -64,16 +71,43 @@ const GlobalWorkforce = () => {
         return { startOffset, totalDays };
     };
 
+    const markQuickAttendance = async (staffId, status) => {
+        const allowedRoles = ['SUPERVISOR', 'COMPANY_ADMIN', 'SUPER_ADMIN'];
+        if (!allowedRoles.includes(user?.role)) {
+            alert('Access Denied: Only Supervisors and Admins can mark attendance.');
+            return;
+        }
+
+        const dateStr = formatDate(new Date());
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/workers/${staffId}/attendance`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({ date: dateStr, status, lateFee: 0 })
+            });
+            const result = await response.json();
+            if (result.success) {
+                setStaffData(prev => prev.map(s => s._id === result.data._id ? result.data : s));
+            }
+        } catch (error) {
+            console.error('Failed to update quick attendance:', error);
+        }
+    };
+
     const handleAttendanceUpdate = async (dayIndex, status, fee) => {
         const year = viewDate.getFullYear();
         const month = viewDate.getMonth();
-        const date = new Date(year, month, dayIndex + 1);
+        // Send a fixed date string to avoid TZ shifts
+        const dateStr = formatDate(new Date(year, month, dayIndex + 1));
 
         try {
             const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/workers/${selectedCalendarStaff._id}/attendance`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ date, status, lateFee: fee })
+                body: JSON.stringify({ date: dateStr, status, lateFee: fee })
             });
             const result = await response.json();
             if (result.success) {
@@ -89,10 +123,10 @@ const GlobalWorkforce = () => {
     const toggleCalendarStatus = (dayIndex) => {
         const year = viewDate.getFullYear();
         const month = viewDate.getMonth();
-        const dateKey = new Date(year, month, dayIndex + 1).toISOString().split('T')[0];
+        const dateKey = formatDate(new Date(year, month, dayIndex + 1));
 
         const existingAtt = selectedCalendarStaff.attendance?.find(a =>
-            new Date(a.date).toISOString().split('T')[0] === dateKey
+            formatDate(a.date) === dateKey
         );
 
         const currentStatus = existingAtt?.status || 'None';
@@ -399,6 +433,32 @@ const GlobalWorkforce = () => {
                         <div className="space-y-4 pt-6 border-t border-slate-50 dark:border-white/5">
                             <div className="flex items-center gap-3 text-xs font-bold text-slate-500"><FiMail className="shrink-0" /> {staff.personalDetails?.email}</div>
                             <div className="flex items-center gap-3 text-xs font-bold text-slate-500"><FiPhone className="shrink-0" /> {staff.personalDetails?.mobile}</div>
+                            <div className="flex items-center justify-between pt-4 pb-2 border-t border-slate-50 dark:border-white/5">
+                                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Today's Attendance</span>
+                                {(() => {
+                                    const todayStr = formatDate(new Date());
+                                    const att = staff.attendance?.find(a => formatDate(a.date) === todayStr);
+                                    const status = att?.status || 'None';
+                                    return (
+                                        <select
+                                            value={status}
+                                            onChange={(e) => markQuickAttendance(staff._id, e.target.value)}
+                                            className={`text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border-none outline-none cursor-pointer transition-all ${status === 'P' ? 'bg-emerald-100 text-emerald-700' :
+                                                status === 'A' ? 'bg-rose-100 text-rose-700' :
+                                                    status === 'HD' ? 'bg-amber-100 text-amber-700' :
+                                                        status === 'Late' ? 'bg-orange-100 text-orange-700' :
+                                                            'bg-slate-100 text-slate-500'
+                                                }`}
+                                        >
+                                            <option value="None">Mark</option>
+                                            <option value="P">P</option>
+                                            <option value="A">A</option>
+                                            <option value="HD">HD</option>
+                                            <option value="Late">L</option>
+                                        </select>
+                                    );
+                                })()}
+                            </div>
                             <div className="flex items-center justify-between pt-2">
                                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{staff.type === 'Office' ? 'Monthly Salary' : 'Daily Wage'}</span>
                                 <span className="text-lg font-black tracking-tight" style={{ color: theme.textPrimary }}>₹{(staff.dailyWage || 0).toLocaleString()}</span>
@@ -421,6 +481,7 @@ const GlobalWorkforce = () => {
                                 <th className="text-left px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Role & Department</th>
                                 <th className="text-left px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Contact</th>
                                 <th className="text-right px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Earnings Basis</th>
+                                <th className="text-center px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Attendance (Today)</th>
                                 <th className="text-center px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Actions</th>
                             </tr>
                         </thead>
@@ -457,6 +518,33 @@ const GlobalWorkforce = () => {
                                     <td className="px-6 py-5 text-right">
                                         <p className="text-lg font-black tracking-tight" style={{ color: theme.textPrimary }}>₹{(staff.dailyWage || 0).toLocaleString()}</p>
                                         <p className="text-[9px] font-bold text-slate-400 uppercase">{staff.type === 'Office' ? 'Monthly Salary' : 'Daily Wage'}</p>
+                                    </td>
+                                    <td className="px-6 py-5">
+                                        <div className="flex justify-center">
+                                            {(() => {
+                                                const todayStr = formatDate(new Date());
+                                                const att = staff.attendance?.find(a => formatDate(a.date) === todayStr);
+                                                const status = att?.status || 'None';
+                                                return (
+                                                    <select
+                                                        value={status}
+                                                        onChange={(e) => markQuickAttendance(staff._id, e.target.value)}
+                                                        className={`text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border-none outline-none cursor-pointer transition-all ${status === 'P' ? 'bg-emerald-100 text-emerald-700' :
+                                                            status === 'A' ? 'bg-rose-100 text-rose-700' :
+                                                                status === 'HD' ? 'bg-amber-100 text-amber-700' :
+                                                                    status === 'Late' ? 'bg-orange-100 text-orange-700' :
+                                                                        'bg-slate-100 text-slate-500'
+                                                            }`}
+                                                    >
+                                                        <option value="None">Mark</option>
+                                                        <option value="P">Present (P)</option>
+                                                        <option value="A">Absent (A)</option>
+                                                        <option value="HD">Half Day (HD)</option>
+                                                        <option value="Late">Late Entry</option>
+                                                    </select>
+                                                );
+                                            })()}
+                                        </div>
                                     </td>
                                     <td className="px-6 py-5">
                                         <div className="flex items-center justify-center gap-2">
@@ -517,10 +605,10 @@ const GlobalWorkforce = () => {
                                         {Array.from({ length: getCalendarData(viewDate.getFullYear(), viewDate.getMonth()).totalDays }, (_, i) => i + 1).map(day => {
                                             const year = viewDate.getFullYear();
                                             const month = viewDate.getMonth();
-                                            const dateKey = new Date(year, month, day).toISOString().split('T')[0];
+                                            const dateKey = formatDate(new Date(year, month, day));
 
                                             const attEntry = selectedCalendarStaff.attendance?.find(a =>
-                                                new Date(a.date).toISOString().split('T')[0] === dateKey
+                                                formatDate(a.date) === dateKey
                                             );
 
                                             const status = attEntry?.status || 'None';
@@ -547,12 +635,12 @@ const GlobalWorkforce = () => {
                                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4 mb-8">
                                         {(() => {
                                             const attendance = selectedCalendarStaff.attendance || [];
-                                            const monthStart = new Date(viewDate.getFullYear(), viewDate.getMonth(), 1);
-                                            const monthEnd = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 0);
+                                            const targetMonth = viewDate.getMonth();
+                                            const targetYear = viewDate.getFullYear();
 
                                             const currentMonthAtt = attendance.filter(a => {
                                                 const d = new Date(a.date);
-                                                return d >= monthStart && d <= monthEnd;
+                                                return d.getMonth() === targetMonth && d.getFullYear() === targetYear;
                                             });
 
                                             const stats = currentMonthAtt.reduce((acc, curr) => {
@@ -725,14 +813,14 @@ const GlobalWorkforce = () => {
                                             const dailyRate = isOfficeStaff ? (monthlySalary / 26) : monthlySalary; // 26 working days for office staff
 
                                             const attendance = selectedCalendarStaff.attendance || [];
-                                            const monthStart = new Date(viewDate.getFullYear(), viewDate.getMonth(), 1);
-                                            const monthEnd = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 0);
+                                            const targetMonth = viewDate.getMonth();
+                                            const targetYear = viewDate.getFullYear();
 
                                             // Calculate Gross Month Earnings (Regardless of paid status)
                                             let totalMonthEarnings = 0;
                                             const currentMonthAtt = attendance.filter(a => {
                                                 const d = new Date(a.date);
-                                                return d >= monthStart && d <= monthEnd;
+                                                return d.getMonth() === targetMonth && d.getFullYear() === targetYear;
                                             });
 
                                             currentMonthAtt.forEach(att => {
