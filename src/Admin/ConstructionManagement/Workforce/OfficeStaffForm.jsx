@@ -46,14 +46,10 @@ const OfficeStaffForm = ({ onSubmit, onBack, editData }) => {
 
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
-        const newDocs = files.map(file => ({
-            name: file.name,
-            url: URL.createObjectURL(file), // Mock URL
-            uploadedAt: new Date()
-        }));
+        // Store the actual File objects so we can access file.type and create object URLs
         setFormData(prev => ({
             ...prev,
-            documents: [...prev.documents, ...newDocs]
+            documents: [...prev.documents, ...files]
         }));
     };
 
@@ -225,14 +221,39 @@ const OfficeStaffForm = ({ onSubmit, onBack, editData }) => {
                         />
                     </div>
                     {formData.documents.length > 0 && (
-                        <div className="mt-4 flex flex-wrap gap-2">
-                            {formData.documents.map((doc, idx) => (
-                                <div key={idx} className="flex items-center gap-2 bg-slate-100 px-3 py-2 rounded-xl border border-slate-200">
-                                    <FiFileText className="text-slate-400" />
-                                    <span className="text-xs font-bold truncate max-w-[150px]">{doc.name}</span>
-                                    <button type="button" onClick={() => removeDoc(idx)} className="text-rose-500 hover:text-rose-700 ml-1">×</button>
-                                </div>
-                            ))}
+                        <div className="mt-4 space-y-2">
+                            <p className="text-[10px] font-black uppercase tracking-widest ml-1" style={{ color: theme.textMuted }}>Uploaded Files ({formData.documents.length})</p>
+                            <div className="space-y-2">
+                                {formData.documents.map((doc, idx) => (
+                                    <div key={idx} className="flex items-center gap-3 p-3 rounded-xl border-2 bg-white" style={{ borderColor: theme.cardBorder }}>
+                                        {doc.type?.startsWith('image/') ? (
+                                            <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 border" style={{ borderColor: theme.cardBorder }}>
+                                                <img
+                                                    src={URL.createObjectURL(doc)}
+                                                    alt={doc.name}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            </div>
+                                        ) : (
+                                            <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${theme.primary}15` }}>
+                                                <FiFileText size={24} style={{ color: theme.primary }} />
+                                            </div>
+                                        )}
+                                        <div className="flex-1 min-w-0">
+                                            <p className="text-sm font-bold truncate" style={{ color: theme.textPrimary }}>{doc.name}</p>
+                                            <p className="text-xs" style={{ color: theme.textMuted }}>{doc.size ? (doc.size / 1024).toFixed(1) + ' KB' : 'Unknown size'}</p>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={() => removeDoc(idx)}
+                                            className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-red-50 transition-colors flex-shrink-0"
+                                            style={{ color: '#ef4444' }}
+                                        >
+                                            ×
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     )}
                 </div>

@@ -327,13 +327,13 @@ const GlobalWorkforce = () => {
                     <p className="text-[10px] font-black mt-1 opacity-50 uppercase tracking-widest" style={{ color: theme.textSecondary }}>Manage Personnel & Base Salaries Manually</p>
                 </div>
                 <div className="flex gap-2 md:gap-3 w-full md:w-auto">
-                    <button
+                    {/* <button
                         onClick={() => setIsSettingsModalOpen(true)}
                         className="h-12 md:h-14 px-4 md:px-6 rounded-xl md:rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5 text-slate-400 hover:text-brand-600 transition-all flex items-center justify-center gap-3 min-w-[44px]"
                     >
                         <FiSettings size={18} />
                         <span className="hidden sm:inline text-[10px] font-black uppercase tracking-widest">Settings</span>
-                    </button>
+                    </button> */}
                     <button
                         onClick={() => setIsAddModalOpen(true)}
                         className="flex-1 md:flex-none h-12 md:h-14 px-6 md:px-8 text-white rounded-xl md:rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 md:gap-3" style={{ background: theme.gradients.button }}
