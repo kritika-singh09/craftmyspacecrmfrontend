@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/finance';
+const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api/finance`;
 
 const getAuthToken = () => {
     const user = JSON.parse(localStorage.getItem('user'));

@@ -21,7 +21,7 @@ const AddStaffModal = ({ onClose, onSuccess, editData }) => {
 
     const handleSubmit = async (data) => {
         try {
-            const url = editData ? `http://localhost:5000/api/workers/${editData._id}` : 'http://localhost:5000/api/workers';
+            const url = editData ? `${import.meta.env.VITE_API_BASE_URL}/api/workers/${editData._id}` : `${import.meta.env.VITE_API_BASE_URL}/api/workers`;
             const method = editData ? 'PUT' : 'POST';
 
             const response = await fetch(url, {

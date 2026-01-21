@@ -6,7 +6,7 @@ export const useMaterials = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+    const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api`;
 
     const fetchWithAuth = useCallback(async (endpoint, options = {}) => {
         setLoading(true);

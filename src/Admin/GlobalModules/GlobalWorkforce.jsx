@@ -39,7 +39,7 @@ const GlobalWorkforce = () => {
 
     const fetchStaff = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/workers');
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/workers`);
             const result = await response.json();
             if (result.success) {
                 setStaffData(result.data);
@@ -70,7 +70,7 @@ const GlobalWorkforce = () => {
         const date = new Date(year, month, dayIndex + 1);
 
         try {
-            const response = await fetch(`http://localhost:5000/api/workers/${selectedCalendarStaff._id}/attendance`, {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/workers/${selectedCalendarStaff._id}/attendance`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ date, status, lateFee: fee })
@@ -133,7 +133,7 @@ const GlobalWorkforce = () => {
     const handleAddAdvance = async () => {
         if (!advanceAmount || !advanceReason) return alert('Please enter amount and reason');
         try {
-            const response = await fetch(`http://localhost:5000/api/workers/${selectedCalendarStaff._id}/advance`, {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/workers/${selectedCalendarStaff._id}/advance`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ amount: Number(advanceAmount), reason: advanceReason })
@@ -163,7 +163,7 @@ const GlobalWorkforce = () => {
 
         try {
             const body = amountPaying !== '' ? { amountPaid: Number(amountPaying) } : {};
-            const response = await fetch(`http://localhost:5000/api/workers/${selectedCalendarStaff._id}/settle`, {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/workers/${selectedCalendarStaff._id}/settle`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body)
@@ -194,7 +194,7 @@ const GlobalWorkforce = () => {
         if (!window.confirm(confirmMsg)) return;
 
         try {
-            const response = await fetch(`http://localhost:5000/api/workers/${selectedCalendarStaff._id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/workers/${selectedCalendarStaff._id}`, {
                 method: 'DELETE'
             });
             const result = await response.json();
@@ -220,7 +220,7 @@ const GlobalWorkforce = () => {
         if (!window.confirm(`Are you sure you want to delete ${staffName}? This action cannot be undone.`)) return;
 
         try {
-            const response = await fetch(`http://localhost:5000/api/workers/${staffId}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/workers/${staffId}`, {
                 method: 'DELETE'
             });
             const result = await response.json();
@@ -275,7 +275,7 @@ const GlobalWorkforce = () => {
             await Promise.all(lateDays.map(a => {
                 const dayIndex = new Date(a.date).getDate() - 1; // 0-indexed
                 // Reuse logic but direct fetch to avoid multiple state updates
-                return fetch(`http://localhost:5000/api/workers/${selectedCalendarStaff._id}/attendance`, {
+                return fetch(`${import.meta.env.VITE_API_BASE_URL}/api/workers/${selectedCalendarStaff._id}/attendance`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ date: a.date, status: 'Late', lateFee: fee })
