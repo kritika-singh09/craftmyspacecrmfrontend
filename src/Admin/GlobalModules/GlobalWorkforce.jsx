@@ -378,9 +378,14 @@ const GlobalWorkforce = () => {
                             <div className="w-16 h-16 rounded-2xl bg-slate-50 dark:bg-white/5 flex items-center justify-center text-2xl font-black text-slate-300 border border-slate-100 dark:border-white/5">
                                 {staff?.personalDetails?.name?.[0] || 'S'}
                             </div>
-                            <button onClick={() => handleEdit(staff)} className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 text-slate-400 hover:text-brand-600 transition-colors">
-                                <FiEdit3 size={18} />
-                            </button>
+                            <div className="flex gap-2">
+                                <button onClick={() => handleEdit(staff)} className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 text-slate-400 hover:text-brand-600 transition-colors">
+                                    <FiEdit3 size={18} />
+                                </button>
+                                <button onClick={() => handleDeleteStaff(staff._id, staff.personalDetails?.name)} className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 text-slate-400 hover:text-rose-600 transition-colors">
+                                    <FiTrash2 size={18} />
+                                </button>
+                            </div>
                         </div>
                         <div className="space-y-1 mb-6">
                             <div className="flex items-center gap-2 mb-2">
@@ -539,7 +544,7 @@ const GlobalWorkforce = () => {
                                         })}
                                     </div>
                                     {/* Attendance Stats & Salary Calculation */}
-                                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-8 gap-4 mb-8">
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4 mb-8">
                                         {(() => {
                                             const attendance = selectedCalendarStaff.attendance || [];
                                             const monthStart = new Date(viewDate.getFullYear(), viewDate.getMonth(), 1);
@@ -558,16 +563,20 @@ const GlobalWorkforce = () => {
                                                 return acc;
                                             }, { P: 0, A: 0, HD: 0, Late: 0, totalLateFee: 0 }); // Removed L from initial object
 
-                                            const dailyWage = selectedCalendarStaff.dailyWage || 0;
+                                            // Calculate daily rate based on staff type
+                                            const isOfficeStaff = selectedCalendarStaff.type === 'Office';
+                                            const monthlySalary = selectedCalendarStaff.dailyWage || 0;
+                                            const dailyRate = isOfficeStaff ? (monthlySalary / 26) : monthlySalary; // 26 working days for office staff
+
                                             // Calculation logic: P (full), HD (half), Late (full minus fee)
-                                            // Note: If status is 'Late', we add full dailyWage here, then subtract totalLateFee at the end.
-                                            const totalSalary = (stats.P * dailyWage) + (stats.HD * dailyWage * 0.5) + (stats.Late * dailyWage) - stats.totalLateFee;
+                                            const totalSalary = (stats.P * dailyRate) + (stats.HD * dailyRate * 0.5) + (stats.Late * dailyRate) - stats.totalLateFee;
 
                                             return (
                                                 <>
                                                     <div className="bg-slate-50 dark:bg-white/5 p-4 rounded-2xl border border-slate-100 dark:border-white/5 text-center">
-                                                        <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Daily Wage</p>
-                                                        <p className="text-xl font-black text-slate-600 dark:text-slate-300">₹{dailyWage}</p>
+                                                        <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">{isOfficeStaff ? 'Daily Rate' : 'Daily Wage'}</p>
+                                                        <p className="text-xl font-black text-slate-600 dark:text-slate-300">₹{dailyRate.toFixed(2)}</p>
+                                                        {isOfficeStaff && <p className="text-[8px] font-bold text-slate-400 mt-1">(₹{monthlySalary.toLocaleString()}/month)</p>}
                                                     </div>
                                                     <div className="bg-emerald-50 dark:bg-emerald-500/5 p-4 rounded-2xl border border-emerald-100 dark:border-emerald-500/10 text-center">
                                                         <p className="text-[9px] font-black text-emerald-600 uppercase tracking-widest mb-1">Present (P)</p>
@@ -618,24 +627,24 @@ const GlobalWorkforce = () => {
                                         })()}
                                     </div>
 
-                                    <div className="flex flex-col sm:flex-row gap-4">
-                                        <div className="flex-1 flex items-center gap-3 bg-slate-50 dark:bg-white/5 p-4 rounded-2xl border border-slate-100 dark:border-white/5">
-                                            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Late Fee (₹):</span>
+                                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                                        <div className="flex-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 bg-slate-50 dark:bg-white/5 p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-white/5">
+                                            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 whitespace-nowrap">Late Fee (₹):</span>
                                             <input
                                                 type="number"
                                                 value={lateFeeInput}
                                                 onChange={(e) => setLateFeeInput(e.target.value)}
-                                                className="bg-transparent font-black text-lg w-24 outline-none border-b-2 border-orange-400"
+                                                className="bg-transparent font-black text-base sm:text-lg w-full sm:w-24 outline-none border-b-2 border-orange-400 px-2 py-1"
                                             />
                                             <button
                                                 onClick={applyLateFeeToAll}
                                                 disabled={isSaving}
-                                                className="ml-2 px-3 py-1.5 bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400 rounded-lg text-[9px] font-black uppercase tracking-widest hover:bg-orange-200 transition-colors"
+                                                className="w-full sm:w-auto px-3 py-2 sm:py-1.5 bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400 rounded-lg text-[9px] font-black uppercase tracking-widest hover:bg-orange-200 transition-colors"
                                             >
                                                 Apply to All
                                             </button>
                                         </div>
-                                        <button onClick={() => setIsCalendarModalOpen(false)} className="px-12 h-14 bg-brand-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl flex items-center justify-center gap-2">
+                                        <button onClick={() => setIsCalendarModalOpen(false)} className="w-full sm:w-auto px-8 sm:px-12 h-12 sm:h-14 bg-brand-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl flex items-center justify-center gap-2">
                                             <FiSave size={18} /> Close Journal
                                         </button>
                                     </div>
@@ -710,7 +719,11 @@ const GlobalWorkforce = () => {
                                         </div>
 
                                         {(() => {
-                                            const dailyWage = selectedCalendarStaff.dailyWage || 0;
+                                            // Calculate daily rate based on staff type
+                                            const isOfficeStaff = selectedCalendarStaff.type === 'Office';
+                                            const monthlySalary = selectedCalendarStaff.dailyWage || 0;
+                                            const dailyRate = isOfficeStaff ? (monthlySalary / 26) : monthlySalary; // 26 working days for office staff
+
                                             const attendance = selectedCalendarStaff.attendance || [];
                                             const monthStart = new Date(viewDate.getFullYear(), viewDate.getMonth(), 1);
                                             const monthEnd = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 0);
@@ -725,9 +738,9 @@ const GlobalWorkforce = () => {
                                             currentMonthAtt.forEach(att => {
                                                 if (att.paid) return; // Skip already paid attendance
                                                 const s = (att.status === 'L' || att.status === 'Late') ? 'Late' : att.status;
-                                                if (s === 'P') totalMonthEarnings += dailyWage;
-                                                if (s === 'HD') totalMonthEarnings += (dailyWage * 0.5);
-                                                if (s === 'Late') totalMonthEarnings += (dailyWage - (att.lateFee || 0));
+                                                if (s === 'P') totalMonthEarnings += dailyRate;
+                                                if (s === 'HD') totalMonthEarnings += (dailyRate * 0.5);
+                                                if (s === 'Late') totalMonthEarnings += (dailyRate - (att.lateFee || 0));
                                             });
 
                                             const unsettledAdvances = selectedCalendarStaff.advances?.filter(a => !a.settled).reduce((sum, a) => sum + a.amount, 0) || 0;
