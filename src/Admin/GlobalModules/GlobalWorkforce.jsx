@@ -261,7 +261,7 @@ const GlobalWorkforce = () => {
             const result = await response.json();
             if (!result.success) {
                 setStaffData(previousData);
-                alert('Failed to update attendance');
+                alert('Failed to update attendance: ' + (result.error || 'Unknown error'));
             }
         } catch (error) {
             console.error('Failed to update quick attendance:', error);
@@ -291,14 +291,17 @@ const GlobalWorkforce = () => {
         try {
             const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/workers/${selectedCalendarStaff._id}/attendance`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
                 body: JSON.stringify({ date: dateStr, status, lateFee: fee })
             });
             const result = await response.json();
             if (!result.success) {
                 setSelectedCalendarStaff(previousSelectedStaff);
                 setStaffData(prev => prev.map(s => s._id === previousSelectedStaff._id ? previousSelectedStaff : s));
-                alert('Failed to update attendance');
+                alert('Failed to update attendance: ' + (result.error || 'Unknown error'));
             }
         } catch (error) {
             console.error('Failed to update attendance:', error);
@@ -319,7 +322,7 @@ const GlobalWorkforce = () => {
         const currentStatus = existingAtt?.status || 'None';
         const currentFee = existingAtt?.lateFee || 0;
 
-        const cycle = { 'None': 'P', 'P': 'A', 'A': 'HD', 'HD': 'Late', 'Late': 'P' };
+        const cycle = { 'None': 'P', 'P': 'A', 'A': 'HD', 'HD': 'Late', 'Late': 'None' };
 
         const allowedRoles = ['SUPERVISOR', 'COMPANY_ADMIN', 'SUPER_ADMIN'];
         if (!allowedRoles.includes(user?.role)) {
@@ -351,7 +354,10 @@ const GlobalWorkforce = () => {
         try {
             const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/workers/${selectedCalendarStaff._id}/advance`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
                 body: JSON.stringify({ amount: Number(advanceAmount), reason: advanceReason })
             });
             const result = await response.json();
@@ -379,7 +385,10 @@ const GlobalWorkforce = () => {
             const body = amountPaying !== '' ? { amountPaid: Number(amountPaying) } : {};
             const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/workers/${selectedCalendarStaff._id}/settle`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
                 body: JSON.stringify(body)
             });
             const result = await response.json();
@@ -409,7 +418,10 @@ const GlobalWorkforce = () => {
 
         try {
             const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/workers/${selectedCalendarStaff._id}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
             });
             const result = await response.json();
             if (result.success) {
@@ -434,7 +446,10 @@ const GlobalWorkforce = () => {
 
         try {
             const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/workers/${staffId}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
             });
             const result = await response.json();
             if (result.success) {
@@ -487,7 +502,10 @@ const GlobalWorkforce = () => {
 
             const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/workers/${selectedCalendarStaff._id}/attendance-batch`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
                 body: JSON.stringify({ updates })
             });
             const result = await response.json();

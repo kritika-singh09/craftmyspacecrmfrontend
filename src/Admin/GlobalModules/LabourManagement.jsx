@@ -260,7 +260,7 @@ const LabourManagement = () => {
                     setSelectedCalendarStaff(result.data);
                 }
             } else {
-                alert('Failed to update attendance');
+                alert('Failed to update attendance: ' + (result.error || 'Unknown error'));
             }
         } catch (error) {
             console.error('Error updating attendance:', error);
