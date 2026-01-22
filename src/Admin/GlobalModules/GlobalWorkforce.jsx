@@ -171,10 +171,8 @@ const GlobalWorkforce = () => {
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [filterType, setFilterType] = useState('All');
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
     const [editingStaff, setEditingStaff] = useState(null);
-    const [selectedStaff, setSelectedStaff] = useState(null); // New state for selected staff for edit
     const [selectedCalendarStaff, setSelectedCalendarStaff] = useState(null);
     const [isSaving, setIsSaving] = useState(false);
     const [viewDate, setViewDate] = useState(new Date());
@@ -636,7 +634,7 @@ const GlobalWorkforce = () => {
                                     key={staff._id}
                                     staff={staff}
                                     theme={theme}
-                                    onEdit={(s) => { setSelectedStaff(s); setIsEditModalOpen(true); }}
+                                    onEdit={handleEdit}
                                     onDelete={handleDeleteStaff}
                                     onJournal={(s) => { setSelectedCalendarStaff(s); setIsCalendarModalOpen(true); }}
                                     onQuickAttendance={markQuickAttendance}
