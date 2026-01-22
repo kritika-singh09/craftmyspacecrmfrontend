@@ -118,9 +118,10 @@ const Sidebar = ({ isOpen, onNavigate }) => {
     items: category.items.filter(item => {
       if (isSuperAdmin) return true;
       if (isCompanyAdmin) {
+        // Restricted from: projects, vendors, and the entire Construction Management category
+        if (category.title === 'Construction Management') return false;
         return [
-          'projects', 'workforce', 'labour-management', 'vendors',
-          'clients', 'contractors', 'materials'
+          'workforce', 'labour-management'
         ].includes(item.id);
       }
       if (isStaff) {

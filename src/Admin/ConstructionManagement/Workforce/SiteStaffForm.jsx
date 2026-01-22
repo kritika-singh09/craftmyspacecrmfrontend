@@ -98,7 +98,7 @@ const SiteStaffForm = ({ onSubmit, onBack, projects = [], editData }) => {
         onSubmit(payload);
     };
 
-    const inputClasses = "w-full px-5 py-3 border rounded-2xl focus:ring-4 outline-none transition-all font-semibold text-sm";
+    const inputClasses = "w-full px-4 py-2.5 sm:px-5 sm:py-3 border rounded-xl sm:rounded-2xl focus:ring-4 outline-none transition-all font-semibold text-sm";
     const inputStyle = {
         backgroundColor: `${theme.iconBg}10`,
         borderColor: theme.cardBorder,
@@ -106,15 +106,15 @@ const SiteStaffForm = ({ onSubmit, onBack, projects = [], editData }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="flex items-center gap-4 mb-6">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+            <div className="flex items-center gap-4 mb-4 sm:mb-6">
                 <button type="button" onClick={onBack} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                     <FiArrowLeft size={20} style={{ color: theme.textPrimary }} />
                 </button>
-                <h3 className="text-lg font-black" style={{ color: theme.textPrimary }}>{editData ? 'Edit Site Staff' : 'Site Staff Registration'}</h3>
+                <h3 className="text-base sm:text-lg font-black" style={{ color: theme.textPrimary }}>{editData ? 'Edit Site Staff' : 'Site Staff Registration'}</h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <div className="space-y-1.5">
                     <label className="text-[10px] font-black uppercase tracking-widest ml-1" style={{ color: theme.textMuted }}>Worker Type</label>
                     <select name="workerType" value={formData.workerType} onChange={handleChange} className={inputClasses} style={inputStyle}>
@@ -214,16 +214,21 @@ const SiteStaffForm = ({ onSubmit, onBack, projects = [], editData }) => {
             <div className="border-t pt-4" style={{ borderColor: theme.cardBorder }}>
                 <div className="space-y-3">
                     <label className="text-[10px] font-black uppercase tracking-widest ml-1" style={{ color: theme.textMuted }}>Documents Upload</label>
-                    <div className="p-6 border-2 border-dashed rounded-2xl" style={{ borderColor: theme.cardBorder, backgroundColor: `${theme.iconBg}05` }}>
-                        <div className="flex flex-col items-center gap-3">
-                            <FiUpload size={32} style={{ color: theme.primary }} />
-                            <p className="text-sm font-bold" style={{ color: theme.textPrimary }}>Upload Documents</p>
-                            <p className="text-xs text-center" style={{ color: theme.textMuted }}>Aadhaar, PAN, Photo, etc.</p>
+                    <div
+                        className="p-4 sm:p-6 border-2 border-dashed rounded-xl sm:rounded-2xl cursor-pointer hover:bg-slate-50 transition-colors"
+                        style={{ borderColor: theme.cardBorder, backgroundColor: `${theme.iconBg}05` }}
+                        onClick={() => fileInputRef.current.click()}
+                    >
+                        <div className="flex flex-col items-center gap-2">
+                            <FiUploadCloud size={28} className="sm:w-8 sm:h-8" style={{ color: theme.primary }} />
+                            <p className="text-sm font-bold text-center" style={{ color: theme.textPrimary }}>Upload Documents</p>
+                            <p className="text-[10px] sm:text-xs text-center opacity-60" style={{ color: theme.textMuted }}>Aadhaar, PAN, Photo, etc.</p>
                             <input
+                                ref={fileInputRef}
                                 type="file"
                                 multiple
                                 onChange={handleFileChange}
-                                className="mt-2 text-sm"
+                                className="hidden"
                                 accept="image/*,.pdf,.doc,.docx"
                             />
                         </div>
@@ -233,11 +238,11 @@ const SiteStaffForm = ({ onSubmit, onBack, projects = [], editData }) => {
                     {formData.documents.length > 0 && (
                         <div className="mt-4 space-y-2">
                             <p className="text-[10px] font-black uppercase tracking-widest ml-1" style={{ color: theme.textMuted }}>Uploaded Files ({formData.documents.length})</p>
-                            <div className="space-y-2">
+                            <div className="grid grid-cols-1 gap-2">
                                 {formData.documents.map((doc, idx) => (
                                     <div key={idx} className="flex items-center gap-3 p-3 rounded-xl border-2 bg-white" style={{ borderColor: theme.cardBorder }}>
                                         {doc.type?.startsWith('image/') ? (
-                                            <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 border" style={{ borderColor: theme.cardBorder }}>
+                                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg overflow-hidden flex-shrink-0 border" style={{ borderColor: theme.cardBorder }}>
                                                 <img
                                                     src={URL.createObjectURL(doc)}
                                                     alt={doc.name}
@@ -245,13 +250,13 @@ const SiteStaffForm = ({ onSubmit, onBack, projects = [], editData }) => {
                                                 />
                                             </div>
                                         ) : (
-                                            <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${theme.primary}15` }}>
-                                                <FiFileText size={24} style={{ color: theme.primary }} />
+                                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${theme.primary}15` }}>
+                                                <FiFileText size={20} className="sm:w-6 sm:h-6" style={{ color: theme.primary }} />
                                             </div>
                                         )}
                                         <div className="flex-1 min-w-0">
-                                            <p className="text-sm font-bold truncate" style={{ color: theme.textPrimary }}>{doc.name}</p>
-                                            <p className="text-xs" style={{ color: theme.textMuted }}>{doc.size ? (doc.size / 1024).toFixed(1) + ' KB' : 'Unknown size'}</p>
+                                            <p className="text-xs sm:text-sm font-bold truncate" style={{ color: theme.textPrimary }}>{doc.name}</p>
+                                            <p className="text-[10px] sm:text-xs" style={{ color: theme.textMuted }}>{doc.size ? (doc.size / 1024).toFixed(1) + ' KB' : 'Unknown size'}</p>
                                         </div>
                                         <button
                                             type="button"

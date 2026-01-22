@@ -91,6 +91,42 @@ import SuperAdminVendors from './SuperAdmin/ConstructionManagement/Vendors/Vendo
 import SuperAdminManagers from './SuperAdmin/ConstructionManagement/Managers/Managers';
 import Placeholder from './SuperAdmin/ConstructionManagement/General/Placeholder';
 
+// Permission Gate Component
+const PermissionGate = ({ children, requiredRole, user }) => {
+  if (user?.role === 'SUPER_ADMIN') return children;
+
+  const roleHierarchy = {
+    superadmin: 5,
+    SUPER_ADMIN: 5,
+    COMPANY_ADMIN: 4,
+    admin: 4,
+    PROJECT_MANAGER: 3,
+    manager: 3,
+    ENGINEER: 2,
+    engineer: 2,
+    ACCOUNTANT: 2,
+    accountant: 2,
+    SUPERVISOR: 2,
+    supervisor: 2,
+    CONTRACTOR: 1,
+    contractor: 1
+  };
+
+  if (roleHierarchy[user.role] >= roleHierarchy[requiredRole]) {
+    return children;
+  }
+
+  return <Navigate to="/universal-dashboard" replace />;
+};
+
+// Restricted Route Component (Specifically for the user's request)
+const RestrictedForAdmin = ({ children, user }) => {
+  if (user?.role === 'COMPANY_ADMIN') {
+    return <Navigate to="/universal-dashboard" replace />;
+  }
+  return children;
+};
+
 function AppContent() {
   const { isAuthenticated, user } = useAuth();
 
@@ -146,11 +182,11 @@ function AppContent() {
           <Route path="/dashboard" element={<GlobalDashboard />} />
 
           {/* Projects Routes */}
-          <Route path="/projects" element={<GlobalProjects />} />
-          <Route path="/projects/add" element={<ProjectForm />} />
-          <Route path="/projects/edit/:id" element={<ProjectForm />} />
-          <Route path="/projects/settings" element={<ProjectSettings />} />
-          <Route path="/projects/:id" element={<UnifiedProjectDetail />} />
+          <Route path="/projects" element={<RestrictedForAdmin user={user}><GlobalProjects /></RestrictedForAdmin>} />
+          <Route path="/projects/add" element={<RestrictedForAdmin user={user}><ProjectForm /></RestrictedForAdmin>} />
+          <Route path="/projects/edit/:id" element={<RestrictedForAdmin user={user}><ProjectForm /></RestrictedForAdmin>} />
+          <Route path="/projects/settings" element={<RestrictedForAdmin user={user}><ProjectSettings /></RestrictedForAdmin>} />
+          <Route path="/projects/:id" element={<RestrictedForAdmin user={user}><UnifiedProjectDetail /></RestrictedForAdmin>} />
 
           {/* Clients Routes */}
           <Route path="/clients" element={<Clients />} />
@@ -158,25 +194,25 @@ function AppContent() {
           <Route path="/clients/edit/:id" element={<ClientForm onSubmit={(data) => console.log(data)} />} />
 
           {/* Materials Routes */}
-          <Route path="/materials" element={<Materials />} />
-          <Route path="/materials/add" element={<MaterialForm onSubmit={(data) => console.log(data)} projects={projects} vendors={vendors} />} />
-          <Route path="/materials/edit/:id" element={<MaterialForm onSubmit={(data) => console.log(data)} projects={projects} vendors={vendors} />} />
+          <Route path="/materials" element={<RestrictedForAdmin user={user}><Materials /></RestrictedForAdmin>} />
+          <Route path="/materials/add" element={<RestrictedForAdmin user={user}><MaterialForm onSubmit={(data) => console.log(data)} projects={projects} vendors={vendors} /></RestrictedForAdmin>} />
+          <Route path="/materials/edit/:id" element={<RestrictedForAdmin user={user}><MaterialForm onSubmit={(data) => console.log(data)} projects={projects} vendors={vendors} /></RestrictedForAdmin>} />
 
           {/* Finance Routes */}
           <Route path="/finance" element={<GlobalFinance contextType="construction" />} />
 
           {/* Other Routes */}
-          <Route path="/contractors" element={<Contractors />} />
-          <Route path="/vendors" element={<Vendors />} />
+          <Route path="/contractors" element={<RestrictedForAdmin user={user}><Contractors /></RestrictedForAdmin>} />
+          <Route path="/vendors" element={<RestrictedForAdmin user={user}><Vendors /></RestrictedForAdmin>} />
           <Route path="/workforce" element={<GlobalWorkforce />} />
           <Route path="/labour-management" element={<LabourManagement />} />
           <Route path="/workforce/add" element={<UserForm onSubmit={(data) => console.log(data)} tenants={[]} />} />
-          <Route path="/dailysite" element={<DailySite />} />
-          <Route path="/tasks/add" element={<TaskForm onSubmit={(data) => console.log(data)} projects={projects} contractors={contractors} sites={[]} />} />
-          <Route path="/quality" element={<Quality />} />
+          <Route path="/dailysite" element={<RestrictedForAdmin user={user}><DailySite /></RestrictedForAdmin>} />
+          <Route path="/tasks/add" element={<RestrictedForAdmin user={user}><TaskForm onSubmit={(data) => console.log(data)} projects={projects} contractors={contractors} sites={[]} /></RestrictedForAdmin>} />
+          <Route path="/quality" element={<RestrictedForAdmin user={user}><Quality /></RestrictedForAdmin>} />
           <Route path="/safety" element={<GlobalSafety />} />
-          <Route path="/risk" element={<RiskManagement />} />
-          <Route path="/documents" element={<Documents />} />
+          <Route path="/risk" element={<RestrictedForAdmin user={user}><RiskManagement /></RestrictedForAdmin>} />
+          <Route path="/documents" element={<RestrictedForAdmin user={user}><Documents /></RestrictedForAdmin>} />
           <Route path="/payroll" element={<GlobalPayroll />} />
           <Route path="/reports" element={<GlobalReports />} />
 
